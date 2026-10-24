@@ -539,8 +539,9 @@
   [data-conforto="on"] .sv-pm { stroke: #a9c8ea; }
   [data-conforto="on"] .sv-centro { fill: #ece4d6; }
 
+  /* Windows com "efeitos de animação" desligados (comum nos PCs de escola): tira só os movimentos grandes
+     que ocupam a tela. Os pequenos (Pi, botões, respostas) continuam. Para parar tudo, o modo conforto. */
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
     .confete, #fundo { display: none; }
   }
 
@@ -1671,8 +1672,9 @@
   }
 
   // ================= Movimento =================
-  function semMovimento() {
-    return estado.conforto || !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  function semMovimento() { return estado.conforto; }
+  function movimentoReduzido() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   }
   // Tira e põe a classe de novo, para a animação recomeçar
   function reanimar(el, cls) {
@@ -2432,7 +2434,7 @@
     mostrarTela('tela-fim');
     somFim();
     if (novas.length) setTimeout(somMedalha, 650);
-    if (!estado.conforto && (estrelas >= 2 || novas.length)) confetes();
+    if (!estado.conforto && !movimentoReduzido() && (estrelas >= 2 || novas.length)) confetes();
     if (estado.conforto && estado.leituraAuto) falarTexto(textoPuro(titulo) + '. ' + textoPuro(msg));
   }
 
