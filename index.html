@@ -1,35 +1,92 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-conforto="off">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quiz de Matemática 4º Ano</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Quiz de matemática grátis para o 4º ano: adição, subtração, multiplicação, divisão, frações, probleminhas e números, com três níveis e correção na hora.">
+<meta name="description" content="Quiz de matemática grátis para o 4º ano: operações, frações, geometria, medidas, relógio e probleminhas. Modo relâmpago, medalhas, leitura em voz alta e modo conforto visual.">
 <meta property="og:title" content="Quiz de Matemática 4º Ano">
-<meta property="og:description" content="Treine adição, subtração, multiplicação, divisão, frações e probleminhas. Grátis, sem cadastro.">
+<meta property="og:description" content="Treine matemática com o robô Pi: modo relâmpago, medalhas, geometria, relógio e modo conforto visual. Grátis, sem cadastro.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AE%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700;800&display=swap">
 <style>
-  /* Visual único e claro, de sala de aula: cartões brancos sobre céu azul-amarelo. */
+  /* Sala de aula clara: cartões brancos sobre céu azul-amarelo.
+     Modo conforto visual (data-conforto="on"): grafite quente, pouca luz, letras maiores e nada se mexendo. */
   :root {
     color-scheme: light;
-    --display: "Baloo 2", var(--display);
+    --display: "Baloo 2", "Comic Sans MS", "Trebuchet MS", cursive;
     --texto: "Nunito", "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+    --z: 1;
+
+    --ceu1: #e0f2fe; --ceu2: #fef9c3; --simbolos: rgba(29, 78, 216, .09);
+    --superficie: #ffffff; --superficie-2: #f1f5f9; --superficie-3: #f8fafc;
+    --tinta: #1e293b; --suave: #475569; --fraco: #64748b;
+    --borda: #cbd5e1; --linha: #e2e8f0; --sombra: rgba(15, 23, 42, .08);
+    --titulo: #1d4ed8; --titulo-brilho: #fde047; --numero: #1d4ed8;
+    --btn-texto: #ffffff;
+    --primaria: #3b82f6; --primaria-sombra: #1d4ed8; --primaria-fundo: #dbeafe;
+    --sucesso: #22c55e; --sucesso-sombra: #15803d; --sucesso-fundo: #dcfce7; --sucesso-texto: #15803d;
+    --erro: #ef4444; --erro-sombra: #dc2626; --erro-fundo: #fee2e2; --erro-texto: #dc2626;
+    --laranja: #f97316; --laranja-sombra: #c2410c; --laranja-fundo: #fff7ed;
+    --roxo: #a855f7; --roxo-sombra: #7e22ce;
+    --cinza: #94a3b8; --cinza-sombra: #64748b;
+    --amarelo-fundo: #fef9c3; --amarelo-borda: #facc15; --amarelo-texto: #854d0e;
+    --letra-fundo: #e0e7ff; --letra-texto: #3730a3;
+    --combo-fundo: #fff7ed; --combo-texto: #c2410c;
+    --tempo-fundo: #fef2f2; --tempo-texto: #b91c1c;
+    --foco: #f59e0b; --veu: rgba(15, 23, 42, .45);
   }
+
+  [data-conforto="on"] {
+    color-scheme: dark;
+    --z: 1.2;
+    --ceu1: #171513; --ceu2: #1b1916; --simbolos: transparent;
+    --superficie: #24211d; --superficie-2: #2e2a25; --superficie-3: #29261f;
+    --tinta: #ece4d6; --suave: #cbbfad; --fraco: #ada290;
+    --borda: #4d463d; --linha: #3a352f; --sombra: rgba(0, 0, 0, .25);
+    --titulo: #e7c27a; --titulo-brilho: transparent; --numero: #a9c8ea;
+    --btn-texto: #f6f0e6;
+    --primaria: #4a6f96; --primaria-sombra: #2f4a66; --primaria-fundo: #2c3a4a;
+    --sucesso: #4f8a6c; --sucesso-sombra: #345c48; --sucesso-fundo: #23362c; --sucesso-texto: #a3d6b8;
+    --erro: #b5695d; --erro-sombra: #7d463e; --erro-fundo: #3d2622; --erro-texto: #eeab9c;
+    --laranja: #a8703a; --laranja-sombra: #6e4824; --laranja-fundo: #33281d;
+    --roxo: #7a68a6; --roxo-sombra: #4e4270;
+    --cinza: #5d574f; --cinza-sombra: #3d3934;
+    --amarelo-fundo: #332d1e; --amarelo-borda: #8a7337; --amarelo-texto: #e7c27a;
+    --letra-fundo: #343a48; --letra-texto: #cdd8f0;
+    --combo-fundo: #33281d; --combo-texto: #e7b27a;
+    --tempo-fundo: #3a2622; --tempo-texto: #eeab9c;
+    --foco: #e7c27a; --veu: rgba(0, 0, 0, .6);
+  }
+  [data-conforto="on"][data-letra="enorme"] { --z: 1.4; }
+
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   html, body { margin: 0; padding: 0; }
   body {
     font-family: var(--texto);
-    background: #e0f2fe;
-    background-image: linear-gradient(160deg, #e0f2fe 0%, #fef9c3 100%);
+    background: var(--ceu1);
+    background-image: linear-gradient(160deg, var(--ceu1) 0%, var(--ceu2) 100%);
     background-attachment: fixed;
-    color: #1e293b;
+    color: var(--tinta);
     min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.4;
   }
+
+  /* ----- fundo com símbolos ----- */
+  #fundo { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  #fundo span {
+    position: absolute; bottom: -60px; font-family: var(--display); font-weight: 800;
+    color: var(--simbolos); animation: subir linear infinite;
+  }
+  @keyframes subir { from { transform: translateY(0) rotate(0); } to { transform: translateY(-120vh) rotate(160deg); } }
+
   .app {
-    max-width: 960px; margin: 0 auto; padding-block: 18px 40px;
+    position: relative; z-index: 1;
+    max-width: 1000px; margin: 0 auto; padding-block: 18px 40px;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
@@ -38,138 +95,239 @@
   @keyframes entrar { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
   h1.titulo {
-    font-family: var(--display);
-    font-size: 46px; text-align: center; color: #1d4ed8;
-    margin: 8px 0 2px; text-shadow: 3px 3px 0 #fde047;
+    font-family: var(--display); font-weight: 800; line-height: 1.05; text-wrap: balance;
+    font-size: 50px; color: var(--titulo); margin: 0; text-shadow: 3px 3px 0 var(--titulo-brilho);
   }
-  .subtitulo { text-align: center; font-size: 19px; color: #475569; margin: 0 0 18px; }
+  .subtitulo { font-size: calc(19px * var(--z)); color: var(--suave); margin: 4px 0 0; }
 
   .cartao {
-    background: #fff; border-radius: 24px; padding: 20px 24px; margin-bottom: 18px;
-    box-shadow: 0 8px 0 #cbd5e1, 0 12px 30px rgba(15, 23, 42, .08);
+    background: var(--superficie); border-radius: 24px; padding: 20px 24px; margin-bottom: 18px;
+    box-shadow: 0 8px 0 var(--borda), 0 12px 30px var(--sombra);
   }
-  .passo { font-weight: bold; font-size: 21px; margin: 0 0 12px; color: #334155; }
+  .passo { font-weight: 800; font-size: calc(21px * var(--z)); margin: 0 0 12px; color: var(--tinta); }
   .passo .num {
-    display: inline-block; width: 34px; height: 34px; border-radius: 50%;
-    background: #3b82f6; color: #fff; text-align: center; line-height: 34px; margin-right: 8px;
+    display: inline-block; width: 34px; height: 34px; border-radius: 50%; font-size: 19px;
+    background: var(--primaria); color: var(--btn-texto); text-align: center; line-height: 34px; margin-right: 8px;
   }
-  #nome {
-    width: 100%; font-size: 26px; padding: 12px 16px; font-family: inherit;
-    border: 3px solid #cbd5e1; border-radius: 16px; color: #1e293b;
-  }
-  #nome:focus { outline: none; border-color: #3b82f6; }
-  .aviso { color: #dc2626; font-weight: bold; margin-top: 8px; min-height: 1.2em; font-size: 18px; }
 
-  .temas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  .tema {
-    font-family: inherit; font-size: 18px; font-weight: bold; color: #1e293b;
-    border: 3px solid transparent; border-radius: 18px; padding: 14px 8px; cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    transition: transform .1s;
+  /* ----- início ----- */
+  .hero { display: flex; align-items: center; gap: 22px; margin: 6px 130px 20px 0; }
+  .hero .mascote { width: 150px; flex-shrink: 0; }
+  .hero-texto { min-width: 0; }
+  .bolha {
+    position: relative; background: var(--superficie); color: var(--tinta); border-radius: 18px; padding: 12px 16px;
+    font-size: calc(19px * var(--z)); box-shadow: 0 4px 0 var(--borda); margin-top: 12px; display: inline-block;
   }
-  .tema .ic { font-size: 36px; line-height: 1; }
+  .hero .bolha::before {
+    content: ""; position: absolute; left: -12px; top: 18px;
+    border-width: 10px 14px 10px 0; border-style: solid; border-color: transparent var(--superficie) transparent transparent;
+  }
+
+  #nome {
+    width: 100%; font-size: calc(26px * var(--z)); padding: 12px 16px; font-family: inherit; font-weight: 700;
+    border: 3px solid var(--borda); border-radius: 16px; color: var(--tinta); background: var(--superficie-3);
+  }
+  #nome::placeholder { color: var(--fraco); }
+  #nome:focus { outline: none; border-color: var(--primaria); }
+  .aviso { color: var(--erro-texto); font-weight: 800; margin-top: 8px; min-height: 1.2em; font-size: 18px; }
+  .rotulo { font-weight: 800; color: var(--suave); margin: 4px 0 8px; font-size: calc(16px * var(--z)); }
+  .avatares { display: flex; flex-wrap: wrap; gap: 8px; }
+  .avatar {
+    width: 56px; height: 56px; font-size: 32px; border-radius: 16px; cursor: pointer;
+    border: 3px solid transparent; background: var(--superficie-2); transition: transform .1s;
+  }
+  .avatar:hover { transform: scale(1.1); }
+  .avatar.sel { border-color: var(--primaria); background: var(--primaria-fundo); transform: scale(1.1); }
+
+  /* cartão do conforto visual */
+  .conforto-card { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .conforto-card .ic { font-size: 40px; line-height: 1; }
+  .conforto-texto { flex: 1; min-width: 220px; }
+  .conforto-texto b { font-size: calc(20px * var(--z)); display: block; }
+  .conforto-texto span { color: var(--suave); font-size: calc(16px * var(--z)); }
+  .chave {
+    font-family: inherit; font-weight: 800; font-size: calc(18px * var(--z)); cursor: pointer;
+    border-radius: 999px; padding: 10px 20px; border: 3px solid var(--borda); background: var(--superficie-2); color: var(--tinta);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .chave .trilho { width: 46px; height: 26px; border-radius: 999px; background: var(--cinza); position: relative; flex-shrink: 0; }
+  .chave .trilho::after {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--superficie);
+    transition: left .15s;
+  }
+  .chave[aria-pressed="true"] { border-color: var(--sucesso); }
+  .chave[aria-pressed="true"] .trilho { background: var(--sucesso); }
+  .chave[aria-pressed="true"] .trilho::after { left: 23px; }
+  .conforto-extra { display: flex; gap: 10px; flex-wrap: wrap; width: 100%; padding-top: 4px; }
+
+  .modos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .modo {
+    font-family: inherit; text-align: left; cursor: pointer; color: var(--tinta);
+    border: 3px solid var(--borda); background: var(--superficie-3); border-radius: 20px; padding: 16px 18px;
+    display: flex; gap: 14px; align-items: center;
+  }
+  .modo .ic { font-size: 44px; line-height: 1; }
+  .modo b { display: block; font-size: calc(22px * var(--z)); font-family: var(--display); }
+  .modo span.d { font-size: calc(16px * var(--z)); color: var(--suave); }
+  .modo.sel { border-color: var(--laranja); background: var(--laranja-fundo); box-shadow: 0 5px 0 var(--laranja); }
+
+  .temas { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .tema {
+    font-family: inherit; font-size: calc(17px * var(--z)); font-weight: 800; color: var(--tinta);
+    border: 3px solid transparent; border-radius: 18px; padding: 14px 6px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 6px; transition: transform .1s;
+  }
+  .tema .ic { font-size: 34px; line-height: 1; }
   .tema:hover { transform: translateY(-3px); }
-  .tema.sel { background: #fff !important; transform: translateY(-3px); }
+  .tema.sel { background: var(--superficie) !important; transform: translateY(-3px); }
 
   .chips { display: flex; gap: 10px; flex-wrap: wrap; }
   .chip {
-    font-family: inherit; font-size: 20px; font-weight: bold; cursor: pointer;
-    padding: 10px 22px; border-radius: 999px; border: 3px solid #cbd5e1; background: #fff; color: #334155;
+    font-family: inherit; font-size: calc(20px * var(--z)); font-weight: 800; cursor: pointer;
+    padding: 10px 22px; border-radius: 999px; border: 3px solid var(--borda); background: var(--superficie); color: var(--tinta);
   }
-  .chip.sel { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+  .chip.sel { background: var(--primaria); border-color: var(--primaria); color: var(--btn-texto); }
   .linha-config { display: flex; gap: 28px; flex-wrap: wrap; }
-  .linha-config > div { flex: 1; min-width: 260px; }
+  .linha-config > div { flex: 1; min-width: 240px; }
 
   .btn {
-    font-family: inherit; font-size: 25px; font-weight: bold; color: #fff; cursor: pointer;
-    border: none; border-radius: 18px; padding: 14px 36px; margin: 6px;
-    background: #22c55e; box-shadow: 0 6px 0 #15803d; transition: transform .08s;
+    font-family: var(--display); font-size: calc(26px * var(--z)); font-weight: 800; color: var(--btn-texto); cursor: pointer;
+    border: none; border-radius: 18px; padding: 12px 34px; margin: 6px;
+    background: var(--sucesso); box-shadow: 0 6px 0 var(--sucesso-sombra); transition: transform .08s;
   }
-  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #15803d; }
-  .btn.azul { background: #3b82f6; box-shadow: 0 6px 0 #1d4ed8; }
-  .btn.laranja { background: #f97316; box-shadow: 0 6px 0 #c2410c; }
-  .btn.cinza { background: #94a3b8; box-shadow: 0 6px 0 #64748b; }
-  .btn.pequeno { font-size: 18px; padding: 10px 20px; }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--sucesso-sombra); }
+  .btn.azul { background: var(--primaria); box-shadow: 0 6px 0 var(--primaria-sombra); }
+  .btn.laranja { background: var(--laranja); box-shadow: 0 6px 0 var(--laranja-sombra); }
+  .btn.roxo { background: var(--roxo); box-shadow: 0 6px 0 var(--roxo-sombra); }
+  .btn.cinza { background: var(--cinza); box-shadow: 0 6px 0 var(--cinza-sombra); }
+  .btn.pequeno { font-size: calc(18px * var(--z)); padding: 8px 18px; }
+  .btn.gigante { font-size: calc(32px * var(--z)); padding: 14px 48px; }
   .centro { text-align: center; }
-  .rodape { text-align: center; color: #64748b; font-size: 15px; margin-top: 10px; }
+  .rodape { text-align: center; color: var(--fraco); font-size: calc(15px * var(--z)); margin-top: 10px; }
 
-  #btn-som {
-    position: fixed; z-index: 50;
+  .canto {
+    position: fixed; z-index: 50; display: flex; gap: 8px;
     top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px));
-    width: 52px; height: 52px; border-radius: 50%; border: none; cursor: pointer;
-    background: #fff; font-size: 26px; box-shadow: 0 4px 0 #cbd5e1;
   }
+  .canto button {
+    width: 50px; height: 50px; border-radius: 50%; border: 3px solid transparent; cursor: pointer;
+    background: var(--superficie); color: var(--tinta); font-size: 23px; box-shadow: 0 4px 0 var(--borda);
+  }
+  .canto button[aria-pressed="true"] { border-color: var(--titulo); }
 
-  /* ----- Quiz ----- */
-  .topo { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 60px 12px 0; }
+  /* ----- mascote ----- */
+  .mascote svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .mascote .olhos-felizes, .mascote .boca, .mascote .lagrima { display: none; }
+  .mascote[data-humor="normal"] .boca-normal,
+  .mascote[data-humor="pensando"] .boca-pensando,
+  .mascote[data-humor="triste"] .boca-triste,
+  .mascote[data-humor="triste"] .lagrima,
+  .mascote[data-humor="feliz"] .boca-feliz,
+  .mascote[data-humor="festa"] .boca-feliz { display: inline; }
+  .mascote[data-humor="feliz"] .olhos, .mascote[data-humor="festa"] .olhos { display: none; }
+  .mascote[data-humor="feliz"] .olhos-felizes, .mascote[data-humor="festa"] .olhos-felizes { display: inline; }
+  .mascote[data-humor="pensando"] .pupila { transform: translate(3px, -3px); }
+  .mascote .antena { animation: piscar 1.6s infinite; }
+  @keyframes piscar { 0%, 100% { fill: #f97316; } 50% { fill: #fde047; } }
+  .mascote .corpo { transform-origin: 70px 150px; animation: respirar 3s ease-in-out infinite; }
+  @keyframes respirar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  .mascote.pulando .corpo { animation: pular .55s ease-out; }
+  .mascote[data-humor="festa"] .corpo { animation: pular .55s ease-out infinite; }
+  @keyframes pular { 0%, 100% { transform: translateY(0) rotate(0); } 35% { transform: translateY(-16px) rotate(-6deg); } 70% { transform: translateY(0) rotate(5deg); } }
+  .mascote.balancando .corpo { animation: balancar .5s; }
+  @keyframes balancar { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+
+  /* ----- quiz ----- */
+  .topo { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 0 180px 12px 0; }
   .pill {
-    background: #fff; border-radius: 999px; padding: 8px 16px; font-weight: bold; font-size: 18px;
-    box-shadow: 0 3px 0 #cbd5e1;
+    position: relative; background: var(--superficie); color: var(--tinta); border-radius: 999px; padding: 7px 15px;
+    font-weight: 800; font-size: calc(18px * var(--z)); box-shadow: 0 3px 0 var(--borda); white-space: nowrap;
   }
+  .pill.combo { background: var(--combo-fundo); color: var(--combo-texto); }
+  .pill.tempo { background: var(--tempo-fundo); color: var(--tempo-texto); font-variant-numeric: tabular-nums; }
   .espaco { flex: 1; }
   .btn-sair {
-    font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; color: #64748b;
-    background: #fff; border: none; border-radius: 999px; padding: 9px 16px; box-shadow: 0 3px 0 #cbd5e1;
+    font-family: inherit; font-size: calc(16px * var(--z)); font-weight: 800; cursor: pointer; color: var(--fraco);
+    background: var(--superficie); border: none; border-radius: 999px; padding: 9px 16px; box-shadow: 0 3px 0 var(--borda);
   }
+  .flutua {
+    position: absolute; left: 50%; top: -6px; transform: translateX(-50%);
+    color: var(--sucesso-texto); font-weight: 800; font-size: 22px; pointer-events: none; animation: flutuar 1s ease-out forwards;
+  }
+  @keyframes flutuar { to { transform: translate(-50%, -40px); opacity: 0; } }
+
   .progresso {
-    height: 18px; background: #fff; border-radius: 999px; overflow: hidden;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, .1);
+    height: 18px; background: var(--superficie); border-radius: 999px; overflow: hidden;
+    box-shadow: inset 0 2px 4px var(--sombra);
   }
-  #barra {
-    height: 100%; width: 0; border-radius: 999px; transition: width .4s;
-    background: linear-gradient(90deg, #22c55e, #84cc16);
+  #barra { height: 100%; width: 0; border-radius: 999px; transition: width .35s; background: var(--sucesso); }
+  #barra.relogio { transition: width .1s linear; background: var(--laranja); }
+  #barra.urgente { background: var(--erro); }
+  .linha-contador { display: flex; align-items: center; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
+  .contador { font-weight: 800; color: var(--suave); font-size: calc(18px * var(--z)); flex: 1; }
+  .btn-mini {
+    font-family: inherit; font-size: calc(17px * var(--z)); font-weight: 800; cursor: pointer; color: var(--amarelo-texto);
+    background: var(--amarelo-fundo); border: 3px solid var(--amarelo-borda); border-radius: 999px; padding: 6px 16px;
   }
-  .contador { text-align: center; font-weight: bold; color: #475569; margin: 10px 0; font-size: 18px; }
+  .btn-mini.azul { color: var(--letra-texto); background: var(--letra-fundo); border-color: var(--primaria); }
+  .btn-mini:disabled { opacity: .45; cursor: default; }
+
+  .area-pergunta { display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: center; margin-bottom: 18px; }
+  .quiz-mascote { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .quiz-mascote .mascote { width: 120px; }
+  .quiz-mascote .bolha { font-size: calc(15px * var(--z)); font-weight: 700; margin: 0; text-align: center; padding: 8px 10px; width: 140px; }
+  .quiz-mascote .bolha::before {
+    content: ""; position: absolute; top: -10px; left: 50%; margin-left: -10px;
+    border-width: 0 10px 10px 10px; border-style: solid; border-color: transparent transparent var(--superficie) transparent;
+  }
   .cartao-pergunta {
-    text-align: center; padding: 26px 24px; min-height: 190px;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 22px 24px; min-height: 190px; margin: 0;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 0;
   }
-  #enunciado { font-size: 27px; line-height: 1.4; max-width: 780px; }
+  #enunciado { font-size: calc(27px * var(--z)); line-height: 1.4; max-width: 760px; font-weight: 700; text-wrap: balance; }
   #destaque {
-    font-family: var(--display);
-    font-size: 58px; font-weight: bold; color: #1d4ed8; margin-top: 8px; letter-spacing: 1px;
+    font-family: var(--display); font-weight: 800;
+    font-size: calc(60px * var(--z)); color: var(--numero); margin-top: 6px; letter-spacing: 1px; line-height: 1.2;
   }
-  #destaque.longo { font-size: 38px; }
-  #destaque .interrog { color: #f97316; }
-  #destaque .marca {
-    color: #fff; background: #f97316; border-radius: 10px; padding: 0 8px; margin: 0 2px;
-  }
-  #visual { margin-top: 12px; }
+  #destaque.longo { font-size: calc(38px * var(--z)); }
+  #destaque .interrog { color: var(--laranja); }
+  #destaque .lacuna { display: inline-block; min-width: 1.4em; padding: 0 .2em; border: 3px dashed currentColor; border-radius: .25em; line-height: 1.1; text-align: center; }
+  #destaque .marca { color: var(--btn-texto); background: var(--laranja); border-radius: 10px; padding: 0 8px; margin: 0 2px; }
+  #visual { margin-top: 10px; max-width: 100%; }
   #visual svg { max-width: 100%; height: auto; }
 
   .opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .opcao {
-    font-family: inherit; font-size: 31px; font-weight: bold; color: #1e293b; cursor: pointer;
-    padding: 14px; min-height: 86px; border-radius: 20px; border: 3px solid #cbd5e1; background: #fff;
-    display: flex; align-items: center; gap: 12px; box-shadow: 0 5px 0 #cbd5e1;
-    transition: transform .08s;
+    font-family: inherit; font-size: calc(30px * var(--z)); font-weight: 800; color: var(--tinta); cursor: pointer;
+    padding: 12px 14px; min-height: calc(80px * var(--z)); border-radius: 20px; border: 3px solid var(--borda); background: var(--superficie);
+    display: flex; align-items: center; gap: 12px; box-shadow: 0 5px 0 var(--borda); transition: transform .08s;
   }
-  .opcao:hover { border-color: #3b82f6; transform: translateY(-2px); }
+  .opcao:hover { border-color: var(--primaria); transform: translateY(-2px); }
   .opcao:disabled { cursor: default; transform: none; }
   .opcao .letra {
-    width: 46px; height: 46px; border-radius: 12px; background: #e0e7ff; color: #3730a3; font-size: 22px;
+    width: 44px; height: 44px; border-radius: 12px; background: var(--letra-fundo); color: var(--letra-texto); font-size: 22px;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
-  .opcao .txt { flex: 1; text-align: center; padding-right: 46px; }
-  .opcao.certa { background: #dcfce7; border-color: #22c55e; box-shadow: 0 5px 0 #16a34a; }
-  .opcao.certa .letra { background: #22c55e; color: #fff; }
-  .opcao.errada { background: #fee2e2; border-color: #ef4444; box-shadow: 0 5px 0 #dc2626; animation: tremer .4s; }
-  .opcao.errada .letra { background: #ef4444; color: #fff; }
-  .opcao.apagada { opacity: .5; border-color: #cbd5e1; }
+  .opcao .txt { flex: 1; text-align: center; padding-right: 44px; }
+  .opcao.certa { background: var(--sucesso-fundo); border-color: var(--sucesso); box-shadow: 0 5px 0 var(--sucesso-sombra); animation: pulo .45s; }
+  .opcao.certa .letra { background: var(--sucesso); color: var(--btn-texto); }
+  .opcao.errada { background: var(--erro-fundo); border-color: var(--erro); box-shadow: 0 5px 0 var(--erro-sombra); animation: tremer .4s; }
+  .opcao.errada .letra { background: var(--erro); color: var(--btn-texto); }
+  .opcao.apagada { opacity: .5; }
+  .opcao.removida { opacity: .2; text-decoration: line-through; }
   @keyframes tremer {
     0%, 100% { transform: translateX(0); } 20% { transform: translateX(-8px); }
     40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); }
   }
   .pulo { animation: pulo .45s; }
-  @keyframes pulo { 0% { transform: scale(1); } 40% { transform: scale(1.06); } 100% { transform: scale(1); } }
+  @keyframes pulo { 0% { transform: scale(1); } 40% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-  #feedback { text-align: center; font-size: 25px; font-weight: bold; min-height: 44px; margin: 18px 0 6px; }
-  #feedback.bom { color: #16a34a; }
-  #feedback.ruim { color: #dc2626; }
-  #feedback .explic { display: block; font-size: 20px; color: #475569; font-weight: normal; margin-top: 6px; }
+  #feedback { text-align: center; font-size: calc(25px * var(--z)); font-weight: 800; min-height: 40px; margin: 16px 0 4px; }
+  #feedback.bom { color: var(--sucesso-texto); }
+  #feedback.ruim { color: var(--erro-texto); }
+  #feedback .explic { display: block; font-size: calc(19px * var(--z)); color: var(--suave); font-weight: 400; margin-top: 4px; }
   #btn-proxima { visibility: hidden; }
 
-  /* frações em pé */
   .frac {
     display: inline-flex; flex-direction: column; align-items: center;
     vertical-align: middle; line-height: 1.05; margin: 0 .12em;
@@ -177,28 +335,55 @@
   .frac span:first-child { border-bottom: 3px solid currentColor; padding: 0 .2em .06em; }
   .frac span:last-child { padding-top: .06em; }
 
-  /* ----- Resultado ----- */
-  .estrelas { font-size: 70px; letter-spacing: 10px; margin: 6px 0; }
+  /* ----- resultado ----- */
+  .fim-linha { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
+  .fim-linha .mascote { width: 150px; }
+  .estrelas { font-size: 64px; letter-spacing: 8px; margin: 4px 0; }
+  .estrelas span { display: inline-block; animation: estrela .5s ease-out backwards; }
+  .estrelas span:nth-child(2) { animation-delay: .2s; }
+  .estrelas span:nth-child(3) { animation-delay: .4s; }
+  @keyframes estrela { from { transform: scale(0) rotate(-90deg); } to { transform: scale(1) rotate(0); } }
   .estrelas .apagada { filter: grayscale(1); opacity: .25; }
-  .nota { font-size: 42px; font-weight: bold; color: #1d4ed8; margin: 4px 0; }
-  .mensagem { font-size: 24px; margin: 6px 0 16px; }
-  .revisao h3 { margin: 4px 0 12px; font-size: 22px; }
-  .item-rev {
-    display: flex; gap: 14px; align-items: center; border-top: 2px dashed #e2e8f0; padding: 12px 0; font-size: 19px;
+  .mensagem { font-size: calc(22px * var(--z)); margin: 6px 0 4px; max-width: 520px; }
+  .stats { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin: 16px 0; }
+  .stat { background: var(--superficie-2); border-radius: 18px; padding: 10px 22px; min-width: 130px; }
+  .stat b { display: block; font-family: var(--display); font-size: calc(38px * var(--z)); color: var(--numero); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--suave); font-weight: 700; font-size: calc(16px * var(--z)); }
+  .novas-medalhas { background: var(--amarelo-fundo); border: 3px dashed var(--amarelo-borda); border-radius: 20px; padding: 12px; margin: 6px auto 12px; max-width: 620px; }
+  .novas-medalhas h3 { margin: 0 0 8px; font-family: var(--display); font-size: calc(24px * var(--z)); color: var(--amarelo-texto); }
+  .medalha-mini {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--superficie); color: var(--tinta);
+    border-radius: 999px; padding: 6px 14px; margin: 4px; font-weight: 800; animation: pulo .6s; font-size: calc(16px * var(--z));
   }
+  .medalha-mini .ic { font-size: 26px; }
+
+  .revisao h3 { margin: 4px 0 12px; font-size: calc(22px * var(--z)); font-family: var(--display); }
+  .item-rev { display: flex; gap: 14px; align-items: center; border-top: 2px dashed var(--linha); padding: 12px 0; font-size: calc(19px * var(--z)); }
   .item-rev:first-of-type { border-top: none; }
+  .item-rev .vis { flex-shrink: 0; }
   .item-rev .vis svg { width: 90px; height: auto; }
   .item-rev .resp { margin-top: 4px; }
-  .item-rev .sua { color: #dc2626; font-weight: bold; }
-  .item-rev .ok { color: #16a34a; font-weight: bold; }
-  .item-rev .expl { color: #64748b; font-size: 17px; margin-top: 2px; }
+  .item-rev .sua { color: var(--erro-texto); font-weight: 800; }
+  .item-rev .ok { color: var(--sucesso-texto); font-weight: 800; }
+  .item-rev .expl { color: var(--fraco); font-size: calc(17px * var(--z)); margin-top: 2px; }
 
-  /* ----- Placar ----- */
-  table.placar { width: 100%; border-collapse: collapse; font-size: 20px; }
-  table.placar th { text-align: left; color: #64748b; font-size: 16px; padding: 8px; border-bottom: 3px solid #e2e8f0; }
-  table.placar td { padding: 10px 8px; border-bottom: 2px solid #f1f5f9; }
+  /* ----- placar e medalhas ----- */
+  .cabeca-tela { text-align: center; margin: 6px 130px 16px; }
+  .abas { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .tabela-rolagem { overflow-x: auto; }
+  table.placar { width: 100%; border-collapse: collapse; font-size: calc(19px * var(--z)); }
+  table.placar th { text-align: left; color: var(--fraco); font-size: calc(15px * var(--z)); padding: 8px; border-bottom: 3px solid var(--linha); }
+  table.placar td { padding: 9px 8px; border-bottom: 2px solid var(--linha); white-space: nowrap; }
   table.placar td.pos { font-size: 26px; width: 50px; text-align: center; }
-  .vazio { text-align: center; color: #64748b; font-size: 20px; padding: 20px; }
+  table.placar td.num { font-variant-numeric: tabular-nums; font-weight: 800; }
+  .vazio { text-align: center; color: var(--fraco); font-size: calc(20px * var(--z)); padding: 20px; }
+  .grade-medalhas { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .medalha { border-radius: 18px; padding: 14px; background: var(--amarelo-fundo); border: 3px solid var(--amarelo-borda); text-align: center; }
+  .medalha .ic { font-size: 46px; line-height: 1.1; }
+  .medalha b { display: block; font-family: var(--display); font-size: calc(20px * var(--z)); }
+  .medalha span { font-size: calc(15px * var(--z)); color: var(--suave); }
+  .medalha.bloqueada { background: var(--superficie-2); border-color: var(--linha); }
+  .medalha.bloqueada .ic { filter: grayscale(1); opacity: .35; }
 
   .confete {
     position: fixed; top: -50px; font-size: 30px; pointer-events: none; z-index: 99;
@@ -206,37 +391,99 @@
   }
   @keyframes cair { to { transform: translateY(115vh) rotate(600deg); } }
 
-  button:focus-visible, input:focus-visible { outline: 4px solid #f59e0b; outline-offset: 3px; }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .confete { display: none; }
-  }
-
   /* janelinha de confirmação */
   #modal {
-    position: fixed; inset: 0; z-index: 100; background: rgba(15, 23, 42, .45);
+    position: fixed; inset: 0; z-index: 100; background: var(--veu);
     display: flex; align-items: center; justify-content: center; padding: 16px;
   }
-  #modal[hidden] { display: none; }
   #modal .caixa {
-    background: #fff; color: #1e293b; border-radius: 24px; padding: 26px 24px; max-width: 460px; width: 100%;
-    text-align: center; box-shadow: 0 8px 0 #cbd5e1;
+    background: var(--superficie); color: var(--tinta); border-radius: 24px; padding: 26px 24px; max-width: 460px; width: 100%;
+    text-align: center; box-shadow: 0 8px 0 var(--borda);
   }
-  #modal p { font-size: 22px; margin: 0 0 16px; font-weight: bold; }
+  #modal p { font-size: calc(22px * var(--z)); margin: 0 0 16px; font-weight: 800; }
 
-  @media (max-width: 720px) {
-    h1.titulo { font-size: 32px; padding: 0 50px; }
+  button:focus-visible, input:focus-visible { outline: 4px solid var(--foco); outline-offset: 3px; }
+
+  /* ===== Modo conforto visual (fotossensibilidade e baixa visão, como no albinismo) ===== */
+  [data-conforto="on"] #fundo, [data-conforto="on"] .confete, [data-conforto="on"] .flutua { display: none; }
+  [data-conforto="on"] *, [data-conforto="on"] *::before, [data-conforto="on"] *::after {
+    animation: none !important; transition: none !important;
+  }
+  [data-conforto="on"] body { background-image: none; }
+  [data-conforto="on"] .cartao { box-shadow: 0 0 0 2px var(--borda); }
+  [data-conforto="on"] .tema { background: var(--superficie-2) !important; border-color: var(--linha); }
+  [data-conforto="on"] .tema.sel { border-color: var(--titulo) !important; box-shadow: 0 0 0 3px var(--titulo) !important; background: var(--superficie) !important; }
+  [data-conforto="on"] .tema:hover, [data-conforto="on"] .avatar:hover, [data-conforto="on"] .opcao:hover { transform: none; }
+  [data-conforto="on"] .opcao { border-width: 4px; }
+  [data-conforto="on"] .opcao:hover { border-color: var(--titulo); }
+  [data-conforto="on"] .opcao .letra { width: 52px; height: 52px; font-size: 26px; }
+  [data-conforto="on"] .opcao .txt { padding-right: 52px; }
+  [data-conforto="on"] .opcao.apagada { opacity: .35; }
+  [data-conforto="on"] .mascote svg, [data-conforto="on"] .tema .ic, [data-conforto="on"] .modo .ic,
+  [data-conforto="on"] .avatar, [data-conforto="on"] .estrelas, [data-conforto="on"] .medalha .ic { filter: brightness(.78) saturate(.75); }
+  [data-conforto="on"] #visual svg { min-width: 250px; }
+  [data-conforto="on"] .frac span:first-child { border-bottom-width: 4px; }
+  [data-conforto="on"] button:focus-visible, [data-conforto="on"] input:focus-visible { outline-width: 5px; outline-offset: 4px; }
+  [data-conforto="on"], [data-conforto="on"] button, [data-conforto="on"] .opcao {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M4 2 L4 34 L13 25 L19 38 L25 35 L19 23 L32 23 Z' fill='%23e7c27a' stroke='%23171513' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2, pointer;
+  }
+  /* figuras das perguntas em tons escuros e suaves */
+  [data-conforto="on"] .sv-fundo { fill: #2f2b26; }
+  [data-conforto="on"] .sv-traco { stroke: #d6ccbc; }
+  [data-conforto="on"] .sv-texto { fill: #ece4d6; }
+  [data-conforto="on"] .sv-tick { stroke: #7a7266; }
+  [data-conforto="on"] .sv-pinta { fill: #b98249; }
+  [data-conforto="on"] .sv-pinta2 { fill: #5e86b0; }
+  [data-conforto="on"] .sv-verde { fill: #5f8f74; stroke: #a3d6b8; }
+  [data-conforto="on"] .sv-grade { fill: #2a2722; stroke: #5a5349; }
+  [data-conforto="on"] .sv-fig { fill: #6b7f96; }
+  [data-conforto="on"] .sv-vert { fill: #e0926f; stroke: #24211d; }
+  [data-conforto="on"] .sv-cota { fill: #a9c8ea; }
+  [data-conforto="on"] .sv-cota2 { fill: #e6aec6; }
+  [data-conforto="on"] .sv-ret { fill: #2f3a46; stroke: #a9c8ea; }
+  [data-conforto="on"] .sv-tri { fill: #42303a; stroke: #e6aec6; }
+  [data-conforto="on"] .sv-ph { stroke: #e0926f; }
+  [data-conforto="on"] .sv-pm { stroke: #a9c8ea; }
+  [data-conforto="on"] .sv-centro { fill: #ece4d6; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .confete, #fundo { display: none; }
+  }
+
+  @media (max-width: 820px) {
     .temas { grid-template-columns: repeat(2, 1fr); }
+    .area-pergunta { grid-template-columns: 1fr; }
+    .quiz-mascote { flex-direction: row; justify-content: center; }
+    .quiz-mascote .mascote { width: 64px; }
+    .quiz-mascote .bolha { width: auto; }
+    .quiz-mascote .bolha::before { display: none; }
+  }
+  @media (max-width: 640px) {
+    h1.titulo { font-size: 34px; }
+    .hero { flex-direction: column; text-align: center; margin-right: 0; margin-top: 56px; }
+    .hero .mascote { width: 110px; }
+    .hero .bolha::before { display: none; }
+    .modos { grid-template-columns: 1fr; }
     .opcoes { grid-template-columns: 1fr; }
-    #destaque { font-size: 42px; }
-    #destaque.longo { font-size: 28px; }
-    #enunciado { font-size: 22px; }
-    .opcao { font-size: 26px; min-height: 70px; }
+    #destaque { font-size: calc(42px * var(--z)); }
+    #destaque.longo { font-size: calc(26px * var(--z)); }
+    #enunciado { font-size: calc(22px * var(--z)); }
+    .opcao { font-size: calc(25px * var(--z)); min-height: 66px; }
+    .topo { margin-right: 0; margin-top: 60px; }
+    .cabeca-tela { margin: 56px 0 16px; }
   }
 </style>
 </head>
 <body>
-<button id="btn-som" title="Ligar/desligar som">🔊</button>
+<div id="fundo" aria-hidden="true"></div>
+
+<div class="canto">
+  <button id="btn-conforto-canto" title="Modo conforto visual" aria-pressed="false">👁️</button>
+  <button id="btn-tela-cheia" title="Tela cheia">⛶</button>
+  <button id="btn-som" title="Ligar/desligar som">🔊</button>
+</div>
+
 <div id="modal" hidden>
   <div class="caixa">
     <p id="modal-texto"></p>
@@ -249,39 +496,68 @@
 
   <!-- ===================== INÍCIO ===================== -->
   <div class="tela ativa" id="tela-inicio">
-    <h1 class="titulo">🧮 Quiz de Matemática</h1>
-    <p class="subtitulo">4º ano – vamos treinar e se divertir!</p>
+    <div class="hero">
+      <div class="mascote" id="masc-inicio" data-humor="feliz"></div>
+      <div class="hero-texto">
+        <h1 class="titulo">Quiz de Matemática</h1>
+        <p class="subtitulo">4º ano · treine, ganhe medalhas e bata o recorde!</p>
+        <div class="bolha" id="bolha-inicio">Oi! Eu sou o <b>Pi</b>, o robô da matemática. Bora jogar?</div>
+      </div>
+    </div>
 
     <div class="cartao">
       <p class="passo"><span class="num">1</span>Qual é o seu nome?</p>
       <input id="nome" type="text" maxlength="25" placeholder="Digite seu nome aqui" autocomplete="off">
       <div class="aviso" id="aviso-nome"></div>
+      <p class="rotulo">Escolha seu bichinho:</p>
+      <div class="avatares" id="avatares"></div>
+    </div>
+
+    <div class="cartao conforto-card">
+      <span class="ic" aria-hidden="true">👁️</span>
+      <div class="conforto-texto">
+        <b>Conforto visual</b>
+        <span>Tela escura e suave, letras maiores, nada piscando nem se mexendo, leitura em voz alta e mais tempo no Relâmpago.</span>
+      </div>
+      <button class="chave" id="btn-conforto" aria-pressed="false"><span class="trilho"></span><span id="conforto-rotulo">Desligado</span></button>
+      <div class="conforto-extra" id="conforto-extra" hidden>
+        <button class="chip" id="btn-letra">🔠 Letra enorme</button>
+        <button class="chip" id="btn-leitura">🔈 Ler as perguntas sozinho</button>
+      </div>
     </div>
 
     <div class="cartao">
-      <p class="passo"><span class="num">2</span>Escolha o assunto</p>
+      <p class="passo"><span class="num">2</span>Como você quer jogar?</p>
+      <div class="modos" id="modos">
+        <button class="modo" data-modo="classico"><span class="ic">📝</span><span><b>Clássico</b><span class="d">Responda com calma, com 2 ajudas por rodada.</span></span></button>
+        <button class="modo" data-modo="relampago"><span class="ic">⚡</span><span><b>Relâmpago</b><span class="d" id="desc-relampago">60 segundos! Quantas você consegue acertar?</span></span></button>
+      </div>
+    </div>
+
+    <div class="cartao">
+      <p class="passo"><span class="num">3</span>Escolha o assunto</p>
       <div class="temas" id="temas"></div>
     </div>
 
     <div class="cartao">
       <div class="linha-config">
         <div>
-          <p class="passo"><span class="num">3</span>Nível</p>
+          <p class="passo"><span class="num">4</span>Nível</p>
           <div class="chips" id="niveis"></div>
         </div>
-        <div>
-          <p class="passo"><span class="num">4</span>Quantas perguntas?</p>
+        <div id="bloco-quantidade">
+          <p class="passo"><span class="num">5</span>Quantas perguntas?</p>
           <div class="chips" id="quantidades"></div>
         </div>
       </div>
     </div>
 
     <div class="centro">
-      <button class="btn" id="btn-comecar">Começar! 🚀</button>
-      <button class="btn azul" id="btn-ver-placar">🏆 Placar</button>
+      <button class="btn gigante" id="btn-comecar">Começar! 🚀</button><br>
+      <button class="btn azul pequeno" id="btn-ver-placar">🏆 Placar</button>
+      <button class="btn roxo pequeno" id="btn-ver-medalhas">🎖️ Minhas medalhas</button>
     </div>
-    <p class="rodape">Funciona sem internet. Dica: aperte <b>F11</b> para tela cheia.
-      Também dá para responder com as teclas <b>1, 2, 3, 4</b> e passar com <b>Enter</b>.</p>
+    <p class="rodape">Responda com as teclas <b>1, 2, 3, 4</b>, peça ajuda com <b>H</b>, ouça com <b>O</b> e passe com <b>Enter</b>.</p>
   </div>
 
   <!-- ===================== QUIZ ===================== -->
@@ -290,30 +566,52 @@
       <span class="pill" id="q-aluno"></span>
       <span class="pill" id="q-tema"></span>
       <span class="pill" id="q-pontos"></span>
+      <span class="pill combo" id="q-combo" hidden></span>
+      <span class="pill tempo" id="q-tempo" hidden></span>
       <span class="espaco"></span>
       <button class="btn-sair" id="btn-sair">✕ Sair</button>
     </div>
     <div class="progresso"><div id="barra"></div></div>
-    <div class="contador" id="contador"></div>
+    <div class="linha-contador">
+      <div class="contador" id="contador"></div>
+      <button class="btn-mini azul" id="btn-ouvir">🔈 Ouvir</button>
+      <button class="btn-mini" id="btn-ajuda"></button>
+    </div>
 
-    <div class="cartao cartao-pergunta" id="cartao-pergunta">
-      <div id="enunciado"></div>
-      <div id="destaque"></div>
-      <div id="visual"></div>
+    <div class="area-pergunta">
+      <div class="quiz-mascote">
+        <div class="mascote" id="masc-quiz" data-humor="normal"></div>
+        <div class="bolha" id="bolha-quiz">Vamos lá!</div>
+      </div>
+      <div class="cartao cartao-pergunta" id="cartao-pergunta">
+        <div id="enunciado"></div>
+        <div id="destaque"></div>
+        <div id="visual"></div>
+      </div>
     </div>
 
     <div class="opcoes" id="opcoes"></div>
-    <div id="feedback"></div>
+    <div id="feedback" aria-live="polite"></div>
     <div class="centro"><button class="btn azul" id="btn-proxima">Próxima ➜</button></div>
   </div>
 
   <!-- ===================== RESULTADO ===================== -->
   <div class="tela" id="tela-fim">
     <div class="cartao centro">
-      <h1 class="titulo" id="fim-titulo"></h1>
-      <div class="estrelas" id="fim-estrelas"></div>
-      <div class="nota" id="fim-nota"></div>
-      <div class="mensagem" id="fim-mensagem"></div>
+      <div class="fim-linha">
+        <div class="mascote" id="masc-fim" data-humor="festa"></div>
+        <div>
+          <h1 class="titulo" id="fim-titulo"></h1>
+          <div class="estrelas" id="fim-estrelas"></div>
+          <div class="mensagem" id="fim-mensagem"></div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><b id="st-acertos"></b><span>acertos</span></div>
+        <div class="stat"><b id="st-pontos"></b><span>pontos</span></div>
+        <div class="stat"><b id="st-combo"></b><span>maior sequência</span></div>
+      </div>
+      <div id="fim-medalhas"></div>
       <button class="btn" id="btn-de-novo">🔁 Jogar de novo</button>
       <button class="btn laranja" id="btn-outro-tema">📚 Mudar assunto</button>
       <button class="btn cinza" id="btn-trocar-aluno">👤 Próximo aluno</button>
@@ -323,13 +621,29 @@
 
   <!-- ===================== PLACAR ===================== -->
   <div class="tela" id="tela-placar">
-    <h1 class="titulo">🏆 Placar</h1>
-    <p class="subtitulo">Os melhores resultados neste aparelho</p>
+    <div class="cabeca-tela">
+      <h1 class="titulo">🏆 Placar</h1>
+      <p class="subtitulo">Os melhores resultados neste aparelho</p>
+    </div>
+    <div class="abas" id="abas-placar">
+      <button class="chip sel" data-aba="classico">📝 Clássico</button>
+      <button class="chip" data-aba="relampago">⚡ Relâmpago</button>
+    </div>
     <div class="cartao" id="placar-conteudo"></div>
     <div class="centro">
       <button class="btn azul" id="btn-voltar">⬅ Voltar</button>
       <button class="btn cinza pequeno" id="btn-limpar">Limpar placar (professor)</button>
     </div>
+  </div>
+
+  <!-- ===================== MEDALHAS ===================== -->
+  <div class="tela" id="tela-medalhas">
+    <div class="cabeca-tela">
+      <h1 class="titulo">🎖️ Medalhas</h1>
+      <p class="subtitulo" id="medalhas-sub"></p>
+    </div>
+    <div class="cartao"><div class="grade-medalhas" id="medalhas-grade"></div></div>
+    <div class="centro"><button class="btn azul" id="btn-voltar-medalhas">⬅ Voltar</button></div>
   </div>
 
 </div>
@@ -357,6 +671,9 @@
   }
   function reais(v) { return 'R$ ' + fmt(v) + ',00'; }
   function horas(v) { return v + 'h'; }
+  function cm(v) { return fmt(v) + ' cm'; }
+  function cm2(v) { return fmt(v) + ' cm²'; }
+  function fmtHora(h, m) { return h + ':' + (m < 10 ? '0' : '') + m; }
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -402,16 +719,38 @@
     var r = montarOpcoes(o.certo, o.candidatos, o.formatar, o.minimo);
     return {
       enunciado: o.enunciado || '', destaque: o.destaque || '', visual: o.visual || '',
-      opcoes: r.opcoes, certa: r.certa, explicacao: o.explicacao || ''
+      opcoes: r.opcoes, certa: r.certa, explicacao: o.explicacao || '', falaExtra: o.falaExtra || '', id: o.id || ''
+    };
+  }
+
+  // Alternativas de texto: a certa + 3 distratores diferentes
+  function deTexto(o) {
+    var ops = [o.certa], outras = embaralhar(o.outras.slice());
+    for (var i = 0; i < outras.length && ops.length < 4; i++) if (ops.indexOf(outras[i]) === -1) ops.push(outras[i]);
+    return {
+      enunciado: o.enunciado || '', destaque: o.destaque || '', visual: o.visual || '',
+      opcoes: embaralhar(ops), certa: o.certa, explicacao: o.explicacao || '', falaExtra: o.falaExtra || '', id: o.id || ''
     };
   }
 
   var CONTA = ' = <span class="interrog">?</span>';
+  var LACUNA = '<span class="interrog lacuna">?</span>';
+  // 0 = conta normal; 1 ou 2 = falta um número no meio da conta
+  function formaConta() { return Math.random() < 0.6 ? 0 : (Math.random() < 0.5 ? 1 : 2); }
 
   // ================= Operações =================
   function genAdicao(nv) {
     var r = nv === 1 ? [10, 99] : nv === 2 ? [100, 999] : [1000, 9999];
-    var a = rand(r[0], r[1]), b = rand(r[0], r[1]), c = a + b;
+    var a = rand(r[0], r[1]), b = rand(r[0], r[1]), c = a + b, forma = formaConta();
+    if (forma) {
+      var x = forma === 1 ? a : b, y = forma === 1 ? b : a;
+      return numerica({
+        enunciado: 'Qual número está faltando?',
+        destaque: forma === 1 ? LACUNA + ' + ' + fmt(b) + ' = ' + fmt(c) : fmt(a) + ' + ' + LACUNA + ' = ' + fmt(c),
+        certo: x, minimo: 1, candidatos: [c + y, x + 10, x - 10, x + 1, x - 1, c],
+        explicacao: 'Faça a conta ao contrário: ' + fmt(c) + ' − ' + fmt(y) + ' = ' + fmt(x) + '.'
+      });
+    }
     return numerica({
       enunciado: 'Quanto é?', destaque: fmt(a) + ' + ' + fmt(b) + CONTA, certo: c,
       candidatos: [c + 10, c - 10, c + 1, c - 1, c + 100],
@@ -424,7 +763,21 @@
     if (nv === 1) { a = rand(30, 99); b = rand(10, a - 5); }
     else if (nv === 2) { a = rand(200, 999); b = rand(100, a - 10); }
     else { a = rand(2000, 9999); b = rand(1000, a - 100); }
-    var c = a - b;
+    var c = a - b, forma = formaConta();
+    if (forma === 1) {
+      return numerica({
+        enunciado: 'Qual número está faltando?', destaque: LACUNA + ' − ' + fmt(b) + ' = ' + fmt(c),
+        certo: a, minimo: 1, candidatos: [c - b, a + 10, a - 10, a + 1, a - 1, b],
+        explicacao: 'Faça a conta ao contrário: ' + fmt(c) + ' + ' + fmt(b) + ' = ' + fmt(a) + '.'
+      });
+    }
+    if (forma === 2) {
+      return numerica({
+        enunciado: 'Qual número está faltando?', destaque: fmt(a) + ' − ' + LACUNA + ' = ' + fmt(c),
+        certo: b, minimo: 1, candidatos: [a + c, b + 10, b - 10, b + 1, b - 1, c],
+        explicacao: fmt(a) + ' − ' + fmt(c) + ' = ' + fmt(b) + '.'
+      });
+    }
     return numerica({
       enunciado: 'Quanto é?', destaque: fmt(a) + ' − ' + fmt(b) + CONTA, certo: c,
       candidatos: [c + 10, c - 10, c + 1, c - 1, c + 100],
@@ -437,7 +790,16 @@
     if (nv === 1) { a = rand(2, 5); b = rand(1, 10); }
     else if (nv === 2) { a = rand(2, 10); b = rand(2, 10); }
     else { a = rand(12, 99); b = rand(2, 9); }
-    var c = a * b;
+    var c = a * b, forma = formaConta();
+    if (forma && b > 1) {
+      var falta = forma === 1 ? b : a, outro = forma === 1 ? a : b;
+      return numerica({
+        enunciado: 'Qual número está faltando?',
+        destaque: forma === 1 ? fmt(a) + ' × ' + LACUNA + ' = ' + fmt(c) : LACUNA + ' × ' + b + ' = ' + fmt(c),
+        certo: falta, minimo: 1, candidatos: [falta + 1, falta - 1, falta + 2, c - outro, outro],
+        explicacao: 'Divida para descobrir: ' + fmt(c) + ' ÷ ' + fmt(outro) + ' = ' + fmt(falta) + '.'
+      });
+    }
     return numerica({
       enunciado: 'Quanto é?', destaque: fmt(a) + ' × ' + b + CONTA, certo: c,
       candidatos: [a * (b + 1), a * (b - 1), (a + 1) * b, a + b, c + 10],
@@ -450,7 +812,21 @@
     if (nv === 1) { d = rand(2, 5); q = rand(1, 10); }
     else if (nv === 2) { d = rand(2, 10); q = rand(2, 10); }
     else { d = rand(2, 9); q = rand(11, 40); }
-    var t = d * q;
+    var t = d * q, forma = formaConta();
+    if (forma === 1) {
+      return numerica({
+        enunciado: 'Qual número está faltando?', destaque: LACUNA + ' ÷ ' + d + ' = ' + q,
+        certo: t, minimo: 1, candidatos: [t + d, t - d, q + d, t + 10, t + 1],
+        explicacao: 'Multiplique para descobrir: ' + q + ' × ' + d + ' = ' + fmt(t) + '.'
+      });
+    }
+    if (forma === 2 && q > 1) {
+      return numerica({
+        enunciado: 'Qual número está faltando?', destaque: fmt(t) + ' ÷ ' + LACUNA + ' = ' + q,
+        certo: d, minimo: 1, candidatos: [d + 1, d - 1, d + 2, q, t - q],
+        explicacao: fmt(t) + ' ÷ ' + q + ' = ' + d + ', porque ' + d + ' × ' + q + ' = ' + fmt(t) + '.'
+      });
+    }
     return numerica({
       enunciado: 'Quanto é?', destaque: fmt(t) + ' ÷ ' + d + CONTA, certo: q,
       candidatos: [q + 1, q - 1, q + 2, q + 10, d],
@@ -462,14 +838,14 @@
   // ================= Frações =================
   function svgPizza(n, k) {
     var cx = 80, cy = 80, r = 72;
-    var s = '<svg viewBox="0 0 160 160" width="170" height="170">';
+    var s = '<svg viewBox="0 0 160 160" width="160" height="160">';
     for (var i = 0; i < n; i++) {
       var a1 = (-90 + i * 360 / n) * Math.PI / 180, a2 = (-90 + (i + 1) * 360 / n) * Math.PI / 180;
       var x1 = (cx + r * Math.cos(a1)).toFixed(2), y1 = (cy + r * Math.sin(a1)).toFixed(2);
       var x2 = (cx + r * Math.cos(a2)).toFixed(2), y2 = (cy + r * Math.sin(a2)).toFixed(2);
-      var cor = i < k ? '#fb923c' : '#fff7ed';
-      s += '<path d="M' + cx + ',' + cy + ' L' + x1 + ',' + y1 + ' A' + r + ',' + r + ' 0 0,1 ' +
-        x2 + ',' + y2 + ' Z" fill="' + cor + '" stroke="#9a3412" stroke-width="2.5"/>';
+      s += '<path class="sv-traco ' + (i < k ? 'sv-pinta' : 'sv-fundo') + '" d="M' + cx + ',' + cy + ' L' + x1 + ',' + y1 +
+        ' A' + r + ',' + r + ' 0 0,1 ' + x2 + ',' + y2 + ' Z" fill="' + (i < k ? '#fb923c' : '#fff7ed') +
+        '" stroke="#9a3412" stroke-width="2.5"/>';
     }
     return s + '</svg>';
   }
@@ -478,14 +854,21 @@
     var w = 360, h = 64, pw = w / n;
     var s = '<svg viewBox="0 0 ' + (w + 6) + ' ' + (h + 6) + '" width="' + (w + 6) + '" height="' + (h + 6) + '">';
     for (var i = 0; i < n; i++) {
-      s += '<rect x="' + (3 + i * pw).toFixed(2) + '" y="3" width="' + pw.toFixed(2) + '" height="' + h +
-        '" fill="' + (i < k ? '#60a5fa' : '#eff6ff') + '" stroke="#1e3a8a" stroke-width="2.5"/>';
+      s += '<rect class="sv-traco ' + (i < k ? 'sv-pinta2' : 'sv-fundo') + '" x="' + (3 + i * pw).toFixed(2) + '" y="3" width="' +
+        pw.toFixed(2) + '" height="' + h + '" fill="' + (i < k ? '#60a5fa' : '#eff6ff') + '" stroke="#1e3a8a" stroke-width="2.5"/>';
     }
     return s + '</svg>';
   }
 
+  var NOMES_FRAC = { 2: ['meio', 'meios'], 3: ['terço', 'terços'], 4: ['quarto', 'quartos'], 5: ['quinto', 'quintos'],
+    6: ['sexto', 'sextos'], 7: ['sétimo', 'sétimos'], 8: ['oitavo', 'oitavos'], 9: ['nono', 'nonos'], 10: ['décimo', 'décimos'] };
+  function nomeFracao(a, b) {
+    if (NOMES_FRAC[b]) return (a === 1 ? 'um ' + NOMES_FRAC[b][0] : a + ' ' + NOMES_FRAC[b][1]);
+    return a + ' sobre ' + b;
+  }
+
   function genFracaoFigura(nv) {
-    var maxN = nv === 1 ? 4 : nv === 2 ? 8 : 12;
+    var maxN = nv === 1 ? 6 : nv === 2 ? 8 : 12;
     var n = rand(2, maxN), k = rand(1, n - 1);
     var pizza = n <= 8 && Math.random() < 0.5;
     var certa = k + '/' + n;
@@ -504,6 +887,7 @@
       enunciado: 'Que fração ' + (pizza ? 'da pizza' : 'da barra') + ' está pintada?',
       destaque: '', visual: pizza ? svgPizza(n, k) : svgBarra(n, k),
       opcoes: embaralhar(ops), certa: certa, fracao: true,
+      falaExtra: 'A figura tem ' + n + ' partes, e ' + k + (k === 1 ? ' está pintada.' : ' estão pintadas.'),
       explicacao: 'A figura tem ' + n + ' partes iguais e ' + k + (k === 1 ? ' está pintada' : ' estão pintadas') + '.'
     };
   }
@@ -548,7 +932,8 @@
       certa = maior + '/' + n;
       expl = 'As partes têm o mesmo tamanho, então a maior é a que tem mais partes: ' + certa + '.';
     }
-    return { enunciado: 'Qual é a <b>maior</b> fração?', destaque: '', visual: '', opcoes: ops, certa: certa, fracao: true, explicacao: expl };
+    return { enunciado: 'Qual é a <b>maior</b> fração?', destaque: '', visual: '', opcoes: ops, certa: certa, fracao: true, explicacao: expl,
+      id: 'fmaior:' + ops.slice().sort().join(',') };
   }
 
   // ================= Problemas =================
@@ -660,22 +1045,6 @@
         explicacao: reais(nota) + ' − ' + reais(preco) + ' = ' + reais(t) + '.'
       });
     },
-    function (nv) { // medidas de tempo
-      var lista = nv === 1
-        ? [{ u: 'semanas', d: 'dias', g: 'm', f: 7, frase: 'Cada semana tem 7 dias' }]
-        : nv === 2
-          ? [{ u: 'semanas', d: 'dias', g: 'm', f: 7, frase: 'Cada semana tem 7 dias' },
-             { u: 'anos', d: 'meses', g: 'm', f: 12, frase: 'Cada ano tem 12 meses' }]
-          : [{ u: 'horas', d: 'minutos', g: 'm', f: 60, frase: 'Cada hora tem 60 minutos' },
-             { u: 'anos', d: 'meses', g: 'm', f: 12, frase: 'Cada ano tem 12 meses' },
-             { u: 'dias', d: 'horas', g: 'f', f: 24, frase: 'Cada dia tem 24 horas' }];
-      var m = pick(lista), b = rand(2, nv === 3 ? 6 : 9), t = b * m.f;
-      return numerica({
-        enunciado: Quant(m.g) + ' ' + m.d + ' há em ' + b + ' ' + m.u + '?',
-        certo: t, candidatos: [t + m.f, t - m.f, b + m.f, t + 10],
-        explicacao: m.frase + ': ' + b + ' × ' + m.f + ' = ' + t + '.'
-      });
-    },
     function (nv) { // horas
       var h = rand(7, 15), d = rand(1, nv === 1 ? 3 : 6), t = h + d;
       var evento = pick(['Uma festa', 'Um filme', 'Um jogo de futebol', 'Uma aula de natação']);
@@ -713,6 +1082,7 @@
     return numerica({
       enunciado: 'Qual é o valor do algarismo destacado?',
       destaque: fmt(num).replace(String(d), '<span class="marca">' + d + '</span>'),
+      falaExtra: 'O algarismo destacado é o ' + d + '.',
       certo: valor, candidatos: cands, minimo: 1,
       explicacao: 'O ' + d + ' está na casa ' + CASAS[exp] + ', então vale ' + fmt(valor) + '.'
     });
@@ -769,9 +1139,302 @@
     for (var j = 0; j < nums.length; j++) ops.push(fmt(nums[j]));
     return {
       enunciado: 'Qual é o <b>' + (maior ? 'maior' : 'menor') + '</b> número?', destaque: '', visual: '',
-      opcoes: ops, certa: fmt(certo),
+      opcoes: ops, certa: fmt(certo), id: 'mm:' + maior + ':' + ops.slice().sort().join(','),
       explicacao: 'Compare os algarismos da esquerda para a direita. O ' + (maior ? 'maior' : 'menor') + ' é ' + fmt(certo) + '.'
     };
+  }
+
+  function genArredondar(nv) {
+    var n, casa, alvo;
+    if (nv === 1) { do { n = rand(11, 99); } while (n % 10 === 5 || n % 10 === 0); casa = 10; alvo = 'a <b>dezena</b> mais próxima'; }
+    else if (nv === 2) { do { n = rand(101, 999); } while (n % 100 === 50 || n % 10 === 0); casa = 100; alvo = 'a <b>centena</b> mais próxima'; }
+    else { do { n = rand(1001, 9999); } while (n % 1000 === 500 || n % 100 === 0); casa = 1000; alvo = 'o <b>milhar</b> mais próximo'; }
+    var baixo = Math.floor(n / casa) * casa, cima = baixo + casa;
+    var r = (n - baixo < cima - n) ? baixo : cima;
+    return numerica({
+      enunciado: 'Arredonde para ' + alvo + ':', destaque: fmt(n),
+      certo: r, minimo: 1, candidatos: [r === baixo ? cima : baixo, r + casa, r - casa, Math.round(n / (casa / 10)) * (casa / 10)],
+      explicacao: fmt(n) + ' fica entre ' + fmt(baixo) + ' e ' + fmt(cima) + ', mais perto de ' + fmt(r) + '.'
+    });
+  }
+
+  // ================= Geometria =================
+  var CORES_FIG = ['#fca5a5', '#fdba74', '#fde047', '#86efac', '#93c5fd', '#c4b5fd', '#f9a8d4'];
+
+  function svgPoligono(n, cor, comVertices) {
+    var s = '<svg viewBox="0 0 180 180" width="170" height="170">';
+    if (n === 0) return s + '<circle class="sv-fig sv-traco" cx="90" cy="90" r="72" fill="' + cor + '" stroke="#1e293b" stroke-width="4"/></svg>';
+    var giro = n === 4 ? -45 : -90, pts = [], cantos = '';
+    for (var i = 0; i < n; i++) {
+      var a = (giro + i * 360 / n) * Math.PI / 180;
+      var x = (90 + 74 * Math.cos(a)).toFixed(1), y = (94 + 74 * Math.sin(a)).toFixed(1);
+      pts.push(x + ',' + y);
+      if (comVertices) cantos += '<circle class="sv-vert" cx="' + x + '" cy="' + y + '" r="7" fill="#dc2626" stroke="#fff" stroke-width="2"/>';
+    }
+    return s + '<polygon class="sv-fig sv-traco" points="' + pts.join(' ') + '" fill="' + cor + '" stroke="#1e293b" stroke-width="4" stroke-linejoin="round"/>' + cantos + '</svg>';
+  }
+  function svgRetangulo(cor) {
+    return '<svg viewBox="0 0 200 140" width="200" height="140"><rect class="sv-fig sv-traco" x="10" y="25" width="180" height="90" fill="' + cor +
+      '" stroke="#1e293b" stroke-width="4" stroke-linejoin="round"/></svg>';
+  }
+
+  var FIGURAS = [
+    { nome: 'Triângulo', n: 3, nv: 1 }, { nome: 'Quadrado', n: 4, nv: 1 }, { nome: 'Retângulo', n: 4, ret: true, nv: 1 },
+    { nome: 'Círculo', n: 0, nv: 1 }, { nome: 'Pentágono', n: 5, nv: 1 }, { nome: 'Hexágono', n: 6, nv: 1 },
+    { nome: 'Octógono', n: 8, nv: 2 }, { nome: 'Heptágono', n: 7, nv: 3 }
+  ];
+
+  function genNomeFigura(nv) {
+    var pool = [];
+    for (var i = 0; i < FIGURAS.length; i++) if (FIGURAS[i].nv <= nv) pool.push(FIGURAS[i]);
+    var f = pick(pool), cor = pick(CORES_FIG), nomes = [];
+    for (var j = 0; j < pool.length; j++) nomes.push(pool[j].nome);
+    var expl = f.n === 0 ? 'O círculo é redondo e não tem lados retos.'
+      : f.ret ? 'O retângulo tem 4 lados e 4 cantos retos, com dois lados compridos e dois curtos.'
+      : f.nome === 'Quadrado' ? 'O quadrado tem 4 lados iguais e 4 cantos retos.'
+      : 'Essa figura tem ' + f.n + ' lados, por isso é um ' + f.nome.toLowerCase() + '.';
+    if (Math.random() < 0.4) {
+      var desc = f.n === 0 ? 'não tem nenhum lado reto e é toda redonda'
+        : f.ret ? 'tem 4 cantos retos, com 2 lados compridos e 2 curtos'
+        : f.nome === 'Quadrado' ? 'tem 4 lados iguais e 4 cantos retos'
+        : 'tem <b>' + f.n + ' lados</b>';
+      return deTexto({ enunciado: 'Qual figura ' + desc + '?', certa: f.nome, outras: nomes, explicacao: expl, id: 'figr:' + f.nome });
+    }
+    return deTexto({
+      enunciado: 'Qual é o nome desta figura?',
+      visual: f.ret ? svgRetangulo(cor) : svgPoligono(f.n, cor, false),
+      certa: f.nome, outras: nomes, explicacao: expl, id: 'fig:' + f.nome
+    });
+  }
+
+  function genLadosVertices(nv) {
+    var lista = nv === 1 ? [3, 4, 5, 6] : nv === 2 ? [3, 4, 5, 6, 8] : [5, 6, 7, 8, 9, 10];
+    var n = pick(lista), vert = Math.random() < 0.5;
+    return numerica({
+      enunciado: vert ? 'Quantos <b>vértices</b> (cantinhos) tem esta figura?' : 'Quantos <b>lados</b> tem esta figura?',
+      visual: svgPoligono(n, pick(CORES_FIG), vert), id: 'lados:' + n + ':' + vert,
+      certo: n, minimo: 3, candidatos: [n - 1, n + 1, n + 2, n - 2],
+      explicacao: vert ? 'Conte as bolinhas: são ' + n + ' vértices.' : 'Conte cada lado da figura: são ' + n + ' lados. Ela também tem ' + n + ' vértices.'
+    });
+  }
+
+  function cota(tx, ty, txt, ancora, classe, cor) {
+    return '<text class="' + classe + '" x="' + tx + '" y="' + ty + '" text-anchor="' + ancora +
+      '" font-size="20" font-weight="bold" fill="' + cor + '" font-family="Arial">' + txt + '</text>';
+  }
+
+  function svgRetCotado(a, b, todos) {
+    var maior = Math.max(a, b);
+    var W = Math.max(90, Math.round(200 * a / maior)), H = Math.max(60, Math.round(120 * b / maior));
+    var x = Math.round((340 - W) / 2), y = Math.round((190 - H) / 2) + 6;
+    var s = '<svg viewBox="0 0 340 200" width="340" height="200">' +
+      '<rect class="sv-ret" x="' + x + '" y="' + y + '" width="' + W + '" height="' + H + '" fill="#dbeafe" stroke="#1d4ed8" stroke-width="4"/>' +
+      cota(170, y - 10, a + ' cm', 'middle', 'sv-cota', '#1d4ed8') + cota(x + W + 8, y + H / 2 + 7, b + ' cm', 'start', 'sv-cota', '#1d4ed8');
+    if (todos) s += cota(170, y + H + 24, a + ' cm', 'middle', 'sv-cota', '#1d4ed8') + cota(x - 8, y + H / 2 + 7, b + ' cm', 'end', 'sv-cota', '#1d4ed8');
+    return s + '</svg>';
+  }
+
+  function svgTrianguloCotado(a, b, c) {
+    return '<svg viewBox="0 0 340 200" width="340" height="200">' +
+      '<polygon class="sv-tri" points="70,165 270,165 150,30" fill="#fce7f3" stroke="#be185d" stroke-width="4" stroke-linejoin="round"/>' +
+      cota(170, 192, a + ' cm', 'middle', 'sv-cota2', '#be185d') + cota(100, 95, b + ' cm', 'end', 'sv-cota2', '#be185d') +
+      cota(220, 95, c + ' cm', 'start', 'sv-cota2', '#be185d') + '</svg>';
+  }
+
+  function genPerimetro(nv) {
+    if (nv === 3 && Math.random() < 0.4) {
+      var b = rand(5, 20), c = rand(5, 20), a = rand(Math.abs(b - c) + 2, Math.min(b + c - 2, 25)), p = a + b + c;
+      return numerica({
+        enunciado: 'Qual é o <b>perímetro</b> deste triângulo?', visual: svgTrianguloCotado(a, b, c),
+        falaExtra: 'Os lados medem ' + a + ', ' + b + ' e ' + c + ' centímetros.',
+        certo: p, formatar: cm, minimo: 1, candidatos: [p + 10, p - 10, a + b, p + 1, p - 1],
+        explicacao: 'Perímetro é a soma de todos os lados: ' + a + ' + ' + b + ' + ' + c + ' = ' + p + ' cm.'
+      });
+    }
+    var x = nv === 1 ? rand(2, 9) : nv === 2 ? rand(5, 25) : rand(10, 60);
+    var y = nv === 1 ? rand(2, 9) : nv === 2 ? rand(3, 20) : rand(8, 45);
+    var per = 2 * x + 2 * y;
+    return numerica({
+      enunciado: 'Qual é o <b>perímetro</b> deste retângulo?', visual: svgRetCotado(x, y, nv === 1),
+      falaExtra: 'O retângulo mede ' + x + ' centímetros de um lado e ' + y + ' centímetros do outro.',
+      certo: per, formatar: cm, minimo: 1, candidatos: [x * y, x + y, 2 * x + y, per + 2, per - 2],
+      explicacao: (nv === 1 ? '' : 'Os lados de frente um para o outro são iguais. ') +
+        'Perímetro é a volta toda: ' + x + ' + ' + y + ' + ' + x + ' + ' + y + ' = ' + per + ' cm.'
+    });
+  }
+
+  function svgGrade(cols, linhas, pintadas) {
+    var t = 28, W = cols * t, H = linhas * t;
+    var s = '<svg viewBox="-3 -3 ' + (W + 6) + ' ' + (H + 6) + '" width="' + (W + 6) + '" height="' + (H + 6) + '">';
+    for (var y = 0; y < linhas; y++) for (var x = 0; x < cols; x++) {
+      var p = pintadas[x + ',' + y];
+      s += '<rect class="' + (p ? 'sv-verde' : 'sv-grade') + '" x="' + (x * t) + '" y="' + (y * t) + '" width="' + t + '" height="' + t +
+        '" fill="' + (p ? '#4ade80' : '#fff') + '" stroke="' + (p ? '#15803d' : '#cbd5e1') + '" stroke-width="' + (p ? 2 : 1.5) + '"/>';
+    }
+    return s + '</svg>';
+  }
+
+  function genArea(nv) {
+    var pint = {}, total, x, y;
+    if (nv < 3) {
+      var w = nv === 1 ? rand(2, 5) : rand(3, 8), h = nv === 1 ? rand(2, 4) : rand(3, 6);
+      for (y = 0; y < h; y++) for (x = 0; x < w; x++) pint[(x + 1) + ',' + (y + 1)] = true;
+      total = w * h;
+      return numerica({
+        enunciado: 'Quantos quadradinhos verdes formam a figura?', visual: svgGrade(w + 2, h + 2, pint),
+        falaExtra: 'A figura tem ' + h + ' fileiras com ' + w + ' quadradinhos em cada uma.',
+        certo: total, minimo: 1, candidatos: [2 * (w + h), total + 1, total - 1, w + h, total + w],
+        explicacao: 'São ' + h + ' fileiras de ' + w + ' quadradinhos: ' + h + ' × ' + w + ' = ' + total + '.'
+      });
+    }
+    var w1 = rand(3, 7), h1 = rand(2, 4), w2 = rand(1, w1 - 1), h2 = rand(1, 3);
+    for (y = 0; y < h1; y++) for (x = 0; x < w1; x++) pint[(x + 1) + ',' + (y + 1)] = true;
+    for (y = 0; y < h2; y++) for (x = 0; x < w2; x++) pint[(x + 1) + ',' + (y + 1 + h1)] = true;
+    total = w1 * h1 + w2 * h2;
+    return numerica({
+      enunciado: 'Cada quadradinho tem 1 cm². Qual é a <b>área</b> da figura verde?', visual: svgGrade(w1 + 2, h1 + h2 + 2, pint),
+      falaExtra: 'Em cima são ' + h1 + ' fileiras de ' + w1 + ' quadradinhos. Embaixo, ' + h2 + (h2 === 1 ? ' fileira' : ' fileiras') + ' de ' + w2 + '.',
+      certo: total, formatar: cm2, minimo: 1, candidatos: [w1 * (h1 + h2), total + 1, total - 1, total + w2, total - w2],
+      explicacao: 'Divida em dois retângulos: ' + h1 + ' × ' + w1 + ' = ' + (w1 * h1) + ' e ' + h2 + ' × ' + w2 + ' = ' + (w2 * h2) + '. Total: ' + total + ' cm².'
+    });
+  }
+
+  // ================= Medidas =================
+  function genConversao(nv) {
+    var op, a;
+    if (nv === 1) {
+      op = pick([
+        { um: 'metro', de: 'metros', para: 'centímetros', f: 100, max: 9 },
+        { um: 'hora', de: 'horas', para: 'minutos', f: 60, max: 5 },
+        { um: 'real', de: 'reais', para: 'centavos', f: 100, max: 9 },
+        { um: 'minuto', de: 'minutos', para: 'segundos', f: 60, max: 5 }
+      ]);
+    } else if (nv === 2) {
+      if (Math.random() < 0.35) {
+        var meio = pick([
+          { t: 'Quantos gramas há em meio quilo?', r: 500, f: 1000, e: '1 quilo tem 1.000 gramas. A metade é 500.' },
+          { t: 'Quantos minutos há em meia hora?', r: 30, f: 60, e: '1 hora tem 60 minutos. A metade é 30.' },
+          { t: 'Quantos centímetros há em meio metro?', r: 50, f: 100, e: '1 metro tem 100 centímetros. A metade é 50.' },
+          { t: 'Quantos mililitros há em meio litro?', r: 500, f: 1000, e: '1 litro tem 1.000 mililitros. A metade é 500.' }
+        ]);
+        return numerica({ enunciado: meio.t, certo: meio.r, minimo: 1, candidatos: [meio.f, meio.r / 2, meio.r + 50, meio.r * 10, meio.r - 10], explicacao: meio.e });
+      }
+      op = pick([
+        { um: 'quilômetro', de: 'quilômetros', para: 'metros', f: 1000, max: 9 },
+        { um: 'quilo', de: 'quilos', para: 'gramas', f: 1000, max: 9 },
+        { um: 'litro', de: 'litros', para: 'mililitros', f: 1000, max: 9 },
+        { um: 'metro', de: 'metros', para: 'centímetros', f: 100, max: 25 }
+      ]);
+    } else {
+      op = pick([
+        { um: 'metro', de: 'metros', para: 'centímetros', f: 100 },
+        { um: 'quilo', de: 'quilos', para: 'gramas', f: 1000 },
+        { um: 'hora', de: 'horas', para: 'minutos', f: 60 },
+        { um: 'quilômetro', de: 'quilômetros', para: 'metros', f: 1000 }
+      ]);
+      a = rand(1, 5);
+      var b = op.f === 60 ? rand(1, 11) * 5 : op.f === 100 ? rand(5, 95) : rand(1, 19) * 50;
+      var tot = a * op.f + b;
+      return numerica({
+        enunciado: a + ' ' + (a === 1 ? op.um : op.de) + ' e ' + b + ' ' + op.para + ' são quantos ' + op.para + '?',
+        certo: tot, minimo: 1, candidatos: [a * 10 + b, a * op.f, tot + op.f, tot - 10, a + b, tot + 10],
+        explicacao: a + ' × ' + fmt(op.f) + ' = ' + fmt(a * op.f) + ', mais ' + b + ' = ' + fmt(tot) + ' ' + op.para + '.'
+      });
+    }
+    a = rand(2, op.max);
+    var r = a * op.f;
+    return numerica({
+      enunciado: 'Quantos ' + op.para + ' há em ' + a + ' ' + op.de + '?',
+      certo: r, minimo: 1, candidatos: [a * op.f / 10, a * op.f * 10, a + op.f, r + op.f, r - op.f],
+      explicacao: 'Cada ' + op.um + ' tem ' + fmt(op.f) + ' ' + op.para + ': ' + a + ' × ' + fmt(op.f) + ' = ' + fmt(r) + '.'
+    });
+  }
+
+  var UNIDADES = [
+    { q: 'a distância entre duas cidades', r: 'Quilômetro', o: ['Metro', 'Centímetro', 'Milímetro'], nv: 1 },
+    { q: 'a altura de uma porta', r: 'Metro', o: ['Quilômetro', 'Milímetro', 'Litro'], nv: 1 },
+    { q: 'o comprimento de um lápis', r: 'Centímetro', o: ['Quilômetro', 'Metro', 'Quilograma'], nv: 1 },
+    { q: 'a espessura de uma moeda', r: 'Milímetro', o: ['Metro', 'Quilômetro', 'Litro'], nv: 2 },
+    { q: 'o peso de uma criança', r: 'Quilograma', o: ['Tonelada', 'Litro', 'Metro'], nv: 1 },
+    { q: 'o peso de uma bala', r: 'Grama', o: ['Tonelada', 'Quilômetro', 'Litro'], nv: 1 },
+    { q: 'o peso de um caminhão carregado', r: 'Tonelada', o: ['Grama', 'Litro', 'Centímetro'], nv: 2 },
+    { q: 'a água de uma garrafa grande', r: 'Litro', o: ['Quilograma', 'Metro', 'Hora'], nv: 1 },
+    { q: 'o remédio de uma colherzinha', r: 'Mililitro', o: ['Litro', 'Quilograma', 'Metro'], nv: 2 },
+    { q: 'o tempo de uma piscada', r: 'Segundo', o: ['Hora', 'Dia', 'Ano'], nv: 1 },
+    { q: 'o tempo para escovar os dentes', r: 'Minuto', o: ['Ano', 'Dia', 'Mês'], nv: 2 },
+    { q: 'a idade de uma pessoa', r: 'Ano', o: ['Segundo', 'Minuto', 'Hora'], nv: 1 }
+  ];
+  function genUnidade(nv) {
+    var pool = [];
+    for (var i = 0; i < UNIDADES.length; i++) if (UNIDADES[i].nv <= nv) pool.push(UNIDADES[i]);
+    var u = pick(pool);
+    return deTexto({
+      enunciado: 'Qual é a melhor unidade para medir <b>' + u.q + '</b>?',
+      certa: u.r, outras: u.o, explicacao: 'Para medir ' + u.q + ', o melhor é usar ' + u.r.toLowerCase() + '.'
+    });
+  }
+
+  function svgRelogio(h, m) {
+    var s = '<svg viewBox="0 0 200 200" width="180" height="180">' +
+      '<circle class="sv-fundo sv-traco" cx="100" cy="100" r="93" fill="#fff" stroke="#1e3a8a" stroke-width="6"/>', i, a;
+    for (i = 0; i < 60; i++) {
+      a = i * 6 * Math.PI / 180;
+      var r1 = i % 5 === 0 ? 79 : 85;
+      s += '<line class="sv-tick" x1="' + (100 + r1 * Math.sin(a)).toFixed(1) + '" y1="' + (100 - r1 * Math.cos(a)).toFixed(1) +
+        '" x2="' + (100 + 89 * Math.sin(a)).toFixed(1) + '" y2="' + (100 - 89 * Math.cos(a)).toFixed(1) +
+        '" stroke="#94a3b8" stroke-width="' + (i % 5 === 0 ? 3 : 1) + '"/>';
+    }
+    for (i = 1; i <= 12; i++) {
+      a = i * 30 * Math.PI / 180;
+      s += '<text class="sv-texto" x="' + (100 + 64 * Math.sin(a)).toFixed(1) + '" y="' + (100 - 64 * Math.cos(a) + 7).toFixed(1) +
+        '" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e293b" font-family="Arial">' + i + '</text>';
+    }
+    function ponteiro(graus, comp, larg, cor, classe) {
+      var b = graus * Math.PI / 180;
+      return '<line class="' + classe + '" x1="100" y1="100" x2="' + (100 + comp * Math.sin(b)).toFixed(1) + '" y2="' + (100 - comp * Math.cos(b)).toFixed(1) +
+        '" stroke="' + cor + '" stroke-width="' + larg + '" stroke-linecap="round"/>';
+    }
+    s += ponteiro(((h % 12) + m / 60) * 30, 42, 8, '#ef4444', 'sv-ph') + ponteiro(m * 6, 72, 5, '#2563eb', 'sv-pm');
+    return s + '<circle class="sv-centro" cx="100" cy="100" r="7" fill="#1e293b"/></svg>';
+  }
+
+  function genRelogio(nv) {
+    var h = rand(1, 12);
+    var m = nv === 1 ? pick([0, 30]) : nv === 2 ? pick([0, 15, 30, 45]) : rand(0, 11) * 5;
+    var trocaH = m === 0 ? 12 : m / 5, trocaM = (h % 12) * 5;
+    var outras = [fmtHora(trocaH, trocaM), fmtHora(h % 12 + 1, m), fmtHora(h === 1 ? 12 : h - 1, m),
+      fmtHora(h, (m + 30) % 60), fmtHora(h, (m + 15) % 60), fmtHora(h % 12 + 1, (m + 30) % 60)];
+    var marca = m === 0 ? 12 : m / 5;
+    return deTexto({
+      enunciado: 'Que horas o relógio está marcando?', visual: svgRelogio(h, m),
+      falaExtra: 'O ponteiro pequeno está ' + (m === 0 ? 'no ' + h : 'entre o ' + h + ' e o ' + (h % 12 + 1)) + ', e o ponteiro grande está no ' + marca + '.',
+      certa: fmtHora(h, m), outras: outras,
+      explicacao: 'O ponteiro pequeno mostra as horas: ' + h + '. O grande está no ' + marca +
+        (m === 0 ? ', então é hora cheia.' : ', que vale ' + m + ' minutos.')
+    });
+  }
+
+  function genDuracao(nv) {
+    if (nv === 1) {
+      var h1 = rand(1, 9), d = rand(1, 4), h2 = h1 + d;
+      return numerica({
+        enunciado: 'Uma aula começou às <b>' + h1 + ':00</b> e terminou às <b>' + h2 + ':00</b>. Quantas horas durou?',
+        certo: d, minimo: 1, candidatos: [d + 1, d - 1, d + 2, h2],
+        formatar: function (v) { return v + (v === 1 ? ' hora' : ' horas'); },
+        explicacao: 'De ' + h1 + ' até ' + h2 + ' horas passaram ' + d + (d === 1 ? ' hora.' : ' horas.')
+      });
+    }
+    var ini = rand(7, 15) * 60 + (nv === 2 ? pick([0, 30]) : rand(0, 11) * 5);
+    var dur = nv === 2 ? pick([30, 60, 90, 120, 150]) : rand(4, 22) * 5;
+    var fimMin = ini + dur;
+    var horasEMin = dur >= 60 ? ' (' + Math.floor(dur / 60) + 'h' + (dur % 60 ? ' e ' + (dur % 60) + ' min' : '') + ')' : '';
+    return numerica({
+      enunciado: pick(['Um filme', 'Um passeio', 'Um treino', 'Uma aula de música']) + ' começou às <b>' +
+        fmtHora(Math.floor(ini / 60), ini % 60) + '</b> e terminou às <b>' + fmtHora(Math.floor(fimMin / 60), fimMin % 60) + '</b>. Quantos minutos durou?',
+      certo: dur, minimo: 5, candidatos: [dur + 10, dur - 10, dur + 60, dur - 5, dur + 5, dur + 30],
+      formatar: function (v) { return v + ' min'; },
+      explicacao: 'Do começo até o fim passaram ' + dur + ' minutos' + horasEMin + '.'
+    });
   }
 
   // ================= Temas =================
@@ -783,16 +1446,21 @@
     { id: 'fracoes', nome: 'Frações', ic: '🍕', cor: '#f97316', claro: '#ffedd5' },
     { id: 'problemas', nome: 'Probleminhas', ic: '📖', cor: '#0ea5e9', claro: '#e0f2fe' },
     { id: 'numeros', nome: 'Números', ic: '🔢', cor: '#eab308', claro: '#fef9c3' },
+    { id: 'geometria', nome: 'Geometria', ic: '📐', cor: '#ec4899', claro: '#fce7f3' },
+    { id: 'medidas', nome: 'Medidas e horas', ic: '⏰', cor: '#14b8a6', claro: '#ccfbf1' },
     { id: 'misturado', nome: 'Tudo misturado', ic: '🎲', cor: '#64748b', claro: '#f1f5f9' }
   ];
   var GERADORES = {
     adicao: [genAdicao], subtracao: [genSubtracao], multiplicacao: [genMultiplicacao], divisao: [genDivisao],
     fracoes: [genFracaoFigura, genFracaoFigura, genFracaoQuantidade, genFracaoMaior],
     problemas: PROBLEMAS,
-    numeros: [genValorPosicional, genDecomposicao, genSucessor, genMaiorMenor]
+    numeros: [genValorPosicional, genDecomposicao, genSucessor, genMaiorMenor, genArredondar],
+    geometria: [genNomeFigura, genLadosVertices, genPerimetro, genArea],
+    medidas: [genRelogio, genRelogio, genConversao, genUnidade, genDuracao]
   };
   var NIVEIS = [null, { nome: 'Fácil', ic: '🙂' }, { nome: 'Médio', ic: '😎' }, { nome: 'Difícil', ic: '🔥' }];
   var QUANTIDADES = [5, 10, 15, 20];
+  var AVATARES = ['🦊', '🐼', '🐯', '🦁', '🐸', '🐵', '🦄', '🐙', '🐧', '🐨', '🐶', '🐱'];
 
   function temaPorId(id) {
     for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i].id === id) return TEMAS[i];
@@ -800,30 +1468,94 @@
   }
 
   function gerarPergunta(tema, nv) {
-    if (tema === 'misturado') tema = pick(['adicao', 'subtracao', 'multiplicacao', 'divisao', 'fracoes', 'problemas', 'numeros']);
+    if (tema === 'misturado') tema = pick(['adicao', 'subtracao', 'multiplicacao', 'divisao', 'fracoes', 'problemas', 'numeros', 'geometria', 'medidas']);
     var q = pick(GERADORES[tema])(nv);
     q.tema = tema;
     return q;
   }
 
-  function gerarRodada(tema, nv, total) {
-    var lista = [], chaves = [];
-    for (var i = 0; i < total; i++) {
-      var q, chave, tent = 0;
-      do {
-        q = gerarPergunta(tema, nv);
-        chave = q.enunciado + '|' + q.destaque + '|' + q.certa;
-        tent++;
-      } while (chaves.indexOf(chave) !== -1 && tent < 30);
-      chaves.push(chave);
-      lista.push(q);
+  // Resumo curto de uma pergunta, para saber se ela já apareceu
+  function resumo(s) {
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+    return (h >>> 0).toString(36);
+  }
+  function chaveDe(q) { return resumo(q.id || (q.enunciado + '|' + q.destaque + '|' + q.visual + '|' + q.certa)); }
+
+  // Evita repetir na rodada e também o que o aluno já viu nas últimas rodadas.
+  // Se o assunto não tiver mais perguntas inéditas, aceita uma já vista (mas nunca repete na mesma rodada).
+  function perguntaNova(chaves) {
+    var q, c, tent = 0;
+    do { q = gerarPergunta(estado.tema, estado.nivel); c = chaveDe(q); tent++; }
+    while ((chaves.indexOf(c) !== -1 || estado.vistas.indexOf(c) !== -1) && tent < 80);
+    tent = 0;
+    while (chaves.indexOf(c) !== -1 && tent < 40) { q = gerarPergunta(estado.tema, estado.nivel); c = chaveDe(q); tent++; }
+    q.chave = c;
+    chaves.push(c);
+    return q;
+  }
+
+  var CHAVE_VISTAS = 'quizMat4_v2_vistas', LIMITE_VISTAS = 1500;
+  function carregarVistas() {
+    var reg = ler(CHAVE_VISTAS, {});
+    estado.vistas = reg[chaveNome(estado.nome)] || [];
+  }
+  function marcarVista(q) {
+    if (!q || !q.chave || estado.vistas.indexOf(q.chave) !== -1) return;
+    estado.vistas.push(q.chave);
+    if (estado.vistas.length > LIMITE_VISTAS) estado.vistas.splice(0, estado.vistas.length - LIMITE_VISTAS);
+    var reg = ler(CHAVE_VISTAS, {});
+    reg[chaveNome(estado.nome)] = estado.vistas;
+    gravar(CHAVE_VISTAS, reg);
+  }
+
+  // ================= Mascote =================
+  function mascoteSVG() {
+    return '<svg viewBox="0 0 140 170" aria-hidden="true"><g class="corpo">' +
+      '<line x1="70" y1="12" x2="70" y2="32" stroke="#334155" stroke-width="5" stroke-linecap="round"/>' +
+      '<circle class="antena" cx="70" cy="11" r="9" fill="#f97316"/>' +
+      '<rect x="4" y="60" width="14" height="30" rx="7" fill="#f97316"/>' +
+      '<rect x="122" y="60" width="14" height="30" rx="7" fill="#f97316"/>' +
+      '<rect x="14" y="30" width="112" height="92" rx="30" fill="#60a5fa" stroke="#1e3a8a" stroke-width="4"/>' +
+      '<rect x="27" y="44" width="86" height="60" rx="20" fill="#e0f2fe" stroke="#1e3a8a" stroke-width="3"/>' +
+      '<g class="olhos"><ellipse cx="52" cy="68" rx="8" ry="10" fill="#0f172a"/><ellipse cx="88" cy="68" rx="8" ry="10" fill="#0f172a"/>' +
+      '<g class="pupila"><circle cx="55" cy="64" r="3" fill="#fff"/><circle cx="91" cy="64" r="3" fill="#fff"/></g></g>' +
+      '<g class="olhos-felizes"><path d="M43 71 Q52 58 61 71" stroke="#0f172a" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+      '<path d="M79 71 Q88 58 97 71" stroke="#0f172a" stroke-width="5" fill="none" stroke-linecap="round"/></g>' +
+      '<circle cx="38" cy="86" r="6" fill="#f9a8d4"/><circle cx="102" cy="86" r="6" fill="#f9a8d4"/>' +
+      '<path class="boca boca-normal" d="M58 86 Q70 95 82 86" stroke="#0f172a" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<path class="boca boca-feliz" d="M54 82 Q70 104 86 82 Z" fill="#0f172a"/>' +
+      '<path class="boca boca-triste" d="M58 95 Q70 85 82 95" stroke="#0f172a" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<path class="boca boca-pensando" d="M62 91 L80 88" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>' +
+      '<path class="lagrima" d="M95 76 Q99 84 95 88 Q91 84 95 76 Z" fill="#38bdf8"/>' +
+      '<rect x="38" y="124" width="64" height="38" rx="14" fill="#3b82f6" stroke="#1e3a8a" stroke-width="4"/>' +
+      '<text x="70" y="151" text-anchor="middle" font-size="24" font-weight="bold" fill="#fff" font-family="Georgia, serif">π</text>' +
+      '</g></svg>';
+  }
+
+  function humor(id, h, animacao) {
+    var el = $(id);
+    el.setAttribute('data-humor', h);
+    el.className = 'mascote';
+    if (animacao) { void el.offsetWidth; el.className = 'mascote ' + animacao; }
+  }
+  function fala(texto) { $('bolha-quiz').innerHTML = texto; }
+
+  // ================= Fundo animado =================
+  function montarFundo() {
+    var simb = ['+', '−', '×', '÷', '=', '%', '1', '2', '3', '4', '5', '7', '9', 'π', '½', '¼', '<', '>'];
+    var h = '';
+    for (var i = 0; i < 22; i++) {
+      var dur = rand(22, 45);
+      h += '<span style="left:' + rand(0, 96) + '%;font-size:' + rand(28, 70) + 'px;animation-duration:' + dur +
+        's;animation-delay:-' + rand(0, dur) + 's">' + pick(simb) + '</span>';
     }
-    return lista;
+    $('fundo').innerHTML = h;
   }
 
   // ================= Som =================
   var somLigado = true, ctxAudio = null;
-  function tocar(notas, dur, tipo) {
+  function tocar(notas, dur, tipo, volume) {
     if (!somLigado) return;
     try {
       if (!ctxAudio) {
@@ -838,43 +1570,196 @@
         o.frequency.value = notas[i];
         var ini = t0 + i * dur;
         g.gain.setValueAtTime(0.0001, ini);
-        g.gain.exponentialRampToValueAtTime(0.25, ini + 0.02);
+        g.gain.exponentialRampToValueAtTime(volume || 0.25, ini + 0.02);
         g.gain.exponentialRampToValueAtTime(0.0001, ini + dur * 1.6);
         o.connect(g); g.connect(ctxAudio.destination);
         o.start(ini); o.stop(ini + dur * 1.7);
       }
     } catch (e) { /* sem som, tudo bem */ }
   }
-  function somAcerto() { tocar([523, 659, 784], 0.11, 'triangle'); }
+  function somAcerto(combo) {
+    var base = combo >= 5 ? 659 : combo >= 3 ? 587 : 523;
+    tocar([base, base * 1.26, base * 1.5], 0.1, 'triangle');
+  }
   function somErro() { tocar([300, 220], 0.18, 'sine'); }
   function somFim() { tocar([523, 659, 784, 1047], 0.14, 'triangle'); }
+  function somMedalha() { tocar([784, 988, 1175, 1568], 0.12, 'square', 0.12); }
+  function somTique() { tocar([880], 0.05, 'square', 0.08); }
 
-  // ================= Placar (salvo neste computador) =================
-  var CHAVE_PLACAR = 'quizMatematica4ano_placar';
-  function lerPlacar() {
-    try { return JSON.parse(localStorage.getItem(CHAVE_PLACAR)) || []; } catch (e) { return []; }
+  // ================= Leitura em voz alta =================
+  var vozOk = typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined';
+  var falaId = 0, falando = false;
+
+  function atualizarBotaoOuvir() {
+    $('btn-ouvir').innerHTML = falando ? '⏹️ Parar' : '🔈 Ouvir';
   }
-  function salvarPlacar(lista) {
-    try { localStorage.setItem(CHAVE_PLACAR, JSON.stringify(lista)); } catch (e) { /* ignora */ }
+  function vozPortugues() {
+    var vozes = window.speechSynthesis.getVoices() || [], achada = null;
+    for (var i = 0; i < vozes.length; i++) {
+      var lang = (vozes[i].lang || '').replace('_', '-');
+      if (lang === 'pt-BR') return vozes[i];
+      if (!achada && lang.indexOf('pt') === 0) achada = vozes[i];
+    }
+    return achada;
   }
-  function registrarResultado(r) {
-    var lista = lerPlacar();
-    lista.push(r);
-    lista.sort(function (a, b) {
-      var pa = a.acertos / a.total, pb = b.acertos / b.total;
-      if (pb !== pa) return pb - pa;
-      if (b.acertos !== a.acertos) return b.acertos - a.acertos;
+  // Fala em pedaços (frase por frase): textos longos de uma vez só às vezes travam no Chrome
+  function falarTexto(t) {
+    if (!vozOk || !t || !somLigado) return;
+    try {
+      window.speechSynthesis.cancel();
+      var id = ++falaId, voz = vozPortugues();
+      var partes = String(t).split(/(?:[.!?:]\s+)/);
+      var lista = [];
+      for (var i = 0; i < partes.length; i++) if (partes[i].replace(/\s+/g, '')) lista.push(partes[i]);
+      if (!lista.length) return;
+      falando = true;
+      atualizarBotaoOuvir();
+      for (var j = 0; j < lista.length; j++) {
+        var u = new window.SpeechSynthesisUtterance(lista[j]);
+        u.lang = 'pt-BR';
+        u.rate = 0.92;
+        if (voz) u.voice = voz;
+        if (j === lista.length - 1) {
+          u.onend = u.onerror = function () {
+            if (id === falaId) { falando = false; atualizarBotaoOuvir(); }
+          };
+        }
+        window.speechSynthesis.speak(u);
+      }
+    } catch (e) { falando = false; atualizarBotaoOuvir(); }
+  }
+  function calarVoz() {
+    falaId++;
+    falando = false;
+    atualizarBotaoOuvir();
+    try { if (vozOk) window.speechSynthesis.cancel(); } catch (e) { /* ok */ }
+  }
+  function alternarOuvir() {
+    if (falando) calarVoz();
+    else lerPergunta();
+  }
+
+  // Transforma o texto da tela em algo que a voz lê bem ("3/4" vira "3 quartos", "×" vira "vezes"...)
+  function paraFala(html) {
+    var s = String(html).replace(/<span class="frac"><span>(\d+)<\/span><span>(\d+)<\/span><\/span>/g, function (_, a, b) {
+      return ' ' + nomeFracao(parseInt(a, 10), parseInt(b, 10)) + ' ';
+    });
+    s = s.replace(/=\s*<span class="interrog">\?<\/span>/g, '?')
+      .replace(/<span class="interrog lacuna">\?<\/span>/g, ' quanto ');
+    s = textoPuro(s);
+    s = s.replace(/(\d+):(\d\d)/g, function (_, h, m) {
+      return h + (m === '00' ? ' horas em ponto' : ' horas e ' + parseInt(m, 10) + ' minutos');
+    });
+    return s.replace(/cm²/g, ' centímetros quadrados').replace(/(\d) cm/g, '$1 centímetros')
+      .replace(/(\d) min\b/g, '$1 minutos').replace(/(\d)h\b/g, '$1 horas')
+      .replace(/×/g, ' vezes ').replace(/÷/g, ' dividido por ').replace(/−/g, ' menos ').replace(/\+/g, ' mais ')
+      .replace(/=/g, ' é igual a ').replace(/\s+\?/g, '?').replace(/\s+/g, ' ');
+  }
+  function lerPergunta() {
+    var q = estado.perguntas[estado.atual];
+    if (!q) return;
+    var t = paraFala(q.enunciado);
+    if (q.destaque) t += ' ' + paraFala(q.destaque);
+    if (q.falaExtra) t += '. ' + q.falaExtra;
+    t += '. As opções são: ';
+    for (var i = 0; i < q.opcoes.length; i++) t += LETRAS[i] + ': ' + paraFala(mostrarValor(q, q.opcoes[i])) + '. ';
+    falarTexto(t);
+  }
+
+  // ================= Guardado neste aparelho =================
+  var CHAVE_PLACAR = 'quizMat4_v2_placar', CHAVE_MEDALHAS = 'quizMat4_v2_medalhas', CHAVE_CONFORTO = 'quizMat4_v2_conforto';
+  function ler(chave, padrao) {
+    try { var v = JSON.parse(localStorage.getItem(chave)); return v || padrao; } catch (e) { return padrao; }
+  }
+  function gravar(chave, valor) {
+    try { localStorage.setItem(chave, JSON.stringify(valor)); } catch (e) { /* ignora */ }
+  }
+
+  function ordenarPlacar(lista, modo) {
+    return lista.sort(function (a, b) {
+      if (modo === 'classico') {
+        var pa = a.acertos / a.total, pb = b.acertos / b.total;
+        if (pb !== pa) return pb - pa;
+      } else if (b.acertos !== a.acertos) return b.acertos - a.acertos;
+      if (b.pontos !== a.pontos) return b.pontos - a.pontos;
       if (b.nivel !== a.nivel) return b.nivel - a.nivel;
       return a.quando - b.quando;
     });
-    salvarPlacar(lista.slice(0, 30));
+  }
+  function registrarResultado(r) {
+    var lista = ler(CHAVE_PLACAR, []);
+    lista.push(r);
+    var cl = [], rl = [];
+    for (var i = 0; i < lista.length; i++) (lista[i].modo === 'relampago' ? rl : cl).push(lista[i]);
+    gravar(CHAVE_PLACAR, ordenarPlacar(cl, 'classico').slice(0, 30).concat(ordenarPlacar(rl, 'relampago').slice(0, 30)));
+  }
+
+  var MEDALHAS = [
+    { id: 'primeira', ic: '🎈', nome: 'Primeira rodada', desc: 'Terminou a primeira rodada.' },
+    { id: 'gabarito', ic: '🏆', nome: 'Gabaritou!', desc: 'Acertou tudo numa rodada clássica de 10 ou mais perguntas.' },
+    { id: 'combo5', ic: '🔥', nome: 'Pegando fogo', desc: 'Acertou 5 seguidas.' },
+    { id: 'combo10', ic: '☄️', nome: 'Imparável', desc: 'Acertou 10 seguidas.' },
+    { id: 'raio10', ic: '⚡', nome: 'Raio veloz', desc: 'Fez 10 acertos no modo Relâmpago.' },
+    { id: 'raio20', ic: '🚀', nome: 'Velocidade da luz', desc: 'Fez 20 acertos no modo Relâmpago.' },
+    { id: 'dificil', ic: '💪', nome: 'Desafio aceito', desc: 'Acertou 70% ou mais no nível Difícil.' },
+    { id: 'sozinho', ic: '🧠', nome: 'Cabeça boa', desc: 'Acertou 80% ou mais de 10 perguntas sem usar ajuda.' },
+    { id: 'explorador', ic: '🧭', nome: 'Explorador', desc: 'Jogou 5 assuntos diferentes.' },
+    { id: 'fracoes', ic: '🍕', nome: 'Mestre das frações', desc: 'Acertou 80% ou mais em Frações.' },
+    { id: 'formas', ic: '📐', nome: 'Olho de geômetra', desc: 'Acertou 80% ou mais em Geometria.' },
+    { id: 'relogio', ic: '⏰', nome: 'Dono do tempo', desc: 'Acertou 80% ou mais em Medidas e horas.' },
+    { id: 'colecao', ic: '🌈', nome: 'Coleção de medalhas', desc: 'Ganhou 8 medalhas.' }
+  ];
+  function medalhaPorId(id) {
+    for (var i = 0; i < MEDALHAS.length; i++) if (MEDALHAS[i].id === id) return MEDALHAS[i];
+    return null;
+  }
+  function chaveNome(n) { return n.toLowerCase().replace(/^\s+|\s+$/g, ''); }
+  function perfilDe(nome) {
+    var reg = ler(CHAVE_MEDALHAS, {});
+    return reg[chaveNome(nome)] || { ganhas: [], temas: [] };
+  }
+  function salvarPerfil(nome, perfil) {
+    var reg = ler(CHAVE_MEDALHAS, {});
+    reg[chaveNome(nome)] = perfil;
+    gravar(CHAVE_MEDALHAS, reg);
+  }
+
+  function verificarMedalhas(r) {
+    var m = perfilDe(estado.nome);
+    if (m.temas.indexOf(r.tema) === -1) m.temas.push(r.tema);
+    var novas = [], classico = r.modo === 'classico';
+    function ganha(id, cond) { if (cond && m.ganhas.indexOf(id) === -1) { m.ganhas.push(id); novas.push(id); } }
+    ganha('primeira', true);
+    ganha('gabarito', classico && r.total >= 10 && r.acertos === r.total);
+    ganha('combo5', r.maxCombo >= 5);
+    ganha('combo10', r.maxCombo >= 10);
+    ganha('raio10', !classico && r.acertos >= 10);
+    ganha('raio20', !classico && r.acertos >= 20);
+    ganha('dificil', classico && r.total >= 5 && r.nivel === 3 && r.pct >= 70);
+    ganha('sozinho', classico && r.total >= 10 && !r.usouAjuda && r.pct >= 80);
+    ganha('explorador', m.temas.length >= 5);
+    ganha('fracoes', classico && r.total >= 5 && r.tema === 'fracoes' && r.pct >= 80);
+    ganha('formas', classico && r.total >= 5 && r.tema === 'geometria' && r.pct >= 80);
+    ganha('relogio', classico && r.total >= 5 && r.tema === 'medidas' && r.pct >= 80);
+    ganha('colecao', m.ganhas.length >= 8);
+    salvarPerfil(estado.nome, m);
+    return novas;
   }
 
   // ================= Estado e telas =================
-  var estado = { nome: '', tema: 'adicao', nivel: 1, total: 10, perguntas: [], atual: 0, acertos: 0, erros: [], respondida: false };
+  var estado = {
+    nome: '', avatar: AVATARES[0], modo: 'classico', tema: 'adicao', nivel: 1, total: 10,
+    perguntas: [], chaves: [], vistas: [], atual: 0, acertos: 0, pontos: 0, combo: 0, maxCombo: 0, erros: [],
+    respondida: false, ajudas: 2, usouAjuda: false, ajudaNestaPergunta: false,
+    tempoFim: 0, duracao: 60000, timer: null, autoProxima: null, ultimoSegundo: 0, jogando: false,
+    conforto: false, letraEnorme: false, leituraAuto: false
+  };
   var LETRAS = ['A', 'B', 'C', 'D'];
   var ELOGIOS = ['Muito bem! 🎉', 'Isso aí! ⭐', 'Mandou bem! 👏', 'Acertou! 🥳', 'Show de bola! ⚽', 'Que craque! 🌟', 'Perfeito! ✅'];
   var ANIMO = ['Quase! 💪', 'Não foi dessa vez! 🙂', 'Opa! Vamos aprender juntos. 🤓', 'Tudo bem errar! 😉'];
+  var FALAS_PENSAR = ['Pense com calma…', 'Você consegue!', 'Hmm, essa é boa!', 'Vamos lá!', 'Leia com atenção 👀', 'Eu confio em você!'];
+  var FALAS_ACERTO = ['Uhuul!', 'Boa!!', 'Arrasou!', 'Sabia que ia acertar!', 'Isso mesmo!'];
+  var FALAS_ERRO = ['Ops! Veja a explicação.', 'Errar faz parte!', 'Na próxima você pega!', 'Vamos entender juntos.'];
 
   function mostrarTela(id) {
     var telas = document.querySelectorAll('.tela');
@@ -884,6 +1769,42 @@
   }
 
   function mostrarValor(q, v) { return q.fracao ? fracHTML(v) : v; }
+
+  // ---------- Conforto visual ----------
+  function segundosRelampago() { return estado.conforto ? 90 : 60; }
+
+  function aplicarConforto(liga, avisar) {
+    estado.conforto = !!liga;
+    var raiz = document.documentElement;
+    raiz.setAttribute('data-conforto', estado.conforto ? 'on' : 'off');
+    raiz.setAttribute('data-letra', estado.letraEnorme ? 'enorme' : 'normal');
+    $('btn-conforto').setAttribute('aria-pressed', estado.conforto ? 'true' : 'false');
+    $('btn-conforto-canto').setAttribute('aria-pressed', estado.conforto ? 'true' : 'false');
+    $('conforto-rotulo').innerHTML = estado.conforto ? 'Ligado' : 'Desligado';
+    $('conforto-extra').hidden = !estado.conforto;
+    $('btn-letra').className = 'chip' + (estado.letraEnorme ? ' sel' : '');
+    $('btn-leitura').className = 'chip' + (estado.leituraAuto ? ' sel' : '');
+    $('btn-leitura').hidden = !vozOk;
+    $('desc-relampago').innerHTML = segundosRelampago() + ' segundos! Quantas você consegue acertar?';
+    gravar(CHAVE_CONFORTO, { liga: estado.conforto, enorme: estado.letraEnorme, leitura: estado.leituraAuto });
+    if (avisar) {
+      $('bolha-inicio').innerHTML = estado.conforto
+        ? 'Conforto visual <b>ligado</b>: tela suave, letras grandes e nada piscando. 😊'
+        : 'Conforto visual desligado. Bora jogar?';
+    }
+  }
+
+  function conferirPerfilDoNome() {
+    var nome = $('nome').value.replace(/^\s+|\s+$/g, '');
+    if (!nome) return;
+    var p = perfilDe(nome);
+    if (p.conforto && !estado.conforto) {
+      if (p.letraEnorme) estado.letraEnorme = true;
+      if (p.leituraAuto) estado.leituraAuto = true;
+      aplicarConforto(true, false);
+      $('bolha-inicio').innerHTML = 'Oi, ' + esc(nome) + '! Liguei o <b>conforto visual</b> que você usou da última vez. 😊';
+    }
+  }
 
   // ---------- Tela inicial ----------
   function montarInicio() {
@@ -903,6 +1824,10 @@
     for (var k = 0; k < QUANTIDADES.length; k++) qh += '<button class="chip" data-q="' + QUANTIDADES[k] + '">' + QUANTIDADES[k] + '</button>';
     $('quantidades').innerHTML = qh;
 
+    var ah = '';
+    for (var a = 0; a < AVATARES.length; a++) ah += '<button class="avatar" data-a="' + AVATARES[a] + '" title="Escolher bichinho">' + AVATARES[a] + '</button>';
+    $('avatares').innerHTML = ah;
+
     $('temas').onclick = function (ev) {
       var b = acharBotao(ev.target, 'tema');
       if (b) { estado.tema = b.getAttribute('data-id'); marcarSelecoes(); }
@@ -915,12 +1840,27 @@
       var b = acharBotao(ev.target, 'chip');
       if (b) { estado.total = parseInt(b.getAttribute('data-q'), 10); marcarSelecoes(); }
     };
+    $('avatares').onclick = function (ev) {
+      var b = acharBotao(ev.target, 'avatar');
+      if (b) { estado.avatar = b.getAttribute('data-a'); marcarSelecoes(); humor('masc-inicio', 'feliz', 'pulando'); }
+    };
+    $('modos').onclick = function (ev) {
+      var b = acharBotao(ev.target, 'modo');
+      if (b) {
+        estado.modo = b.getAttribute('data-modo');
+        marcarSelecoes();
+        $('bolha-inicio').innerHTML = estado.modo === 'relampago'
+          ? 'Modo <b>Relâmpago</b>! Você tem ' + segundosRelampago() + ' segundos. Preparado? ⚡'
+          : 'Modo <b>Clássico</b>: com calma e com 2 ajudas. 📝';
+        humor('masc-inicio', 'feliz', 'pulando');
+      }
+    };
     marcarSelecoes();
   }
 
   function acharBotao(el, classe) {
     while (el && el !== document) {
-      if (el.className && (' ' + el.className + ' ').indexOf(' ' + classe + ' ') !== -1) return el;
+      if (el.className && typeof el.className === 'string' && (' ' + el.className + ' ').indexOf(' ' + classe + ' ') !== -1) return el;
       el = el.parentNode;
     }
     return null;
@@ -939,49 +1879,120 @@
     for (var j = 0; j < ns.length; j++) ns[j].className = 'chip' + (parseInt(ns[j].getAttribute('data-n'), 10) === estado.nivel ? ' sel' : '');
     var qs = $('quantidades').getElementsByTagName('button');
     for (var k = 0; k < qs.length; k++) qs[k].className = 'chip' + (parseInt(qs[k].getAttribute('data-q'), 10) === estado.total ? ' sel' : '');
+    var as = $('avatares').getElementsByTagName('button');
+    for (var a = 0; a < as.length; a++) as[a].className = 'avatar' + (as[a].getAttribute('data-a') === estado.avatar ? ' sel' : '');
+    var ms = $('modos').getElementsByTagName('button');
+    for (var m = 0; m < ms.length; m++) ms[m].className = 'modo' + (ms[m].getAttribute('data-modo') === estado.modo ? ' sel' : '');
+    $('bloco-quantidade').hidden = estado.modo === 'relampago';
+  }
+
+  function lerNome() {
+    var nome = $('nome').value.replace(/^\s+|\s+$/g, '');
+    if (!nome) {
+      $('aviso-nome').innerHTML = 'Escreva seu nome primeiro 🙂';
+      $('nome').focus();
+      return '';
+    }
+    $('aviso-nome').innerHTML = '';
+    return nome;
   }
 
   function comecar() {
-    var nome = $('nome').value.replace(/^\s+|\s+$/g, '');
-    if (!nome) {
-      $('aviso-nome').innerHTML = 'Escreva seu nome para começar 🙂';
-      $('nome').focus();
-      return;
-    }
-    $('aviso-nome').innerHTML = '';
+    var nome = lerNome();
+    if (!nome) return;
     estado.nome = nome;
+    var p = perfilDe(nome);
+    p.conforto = estado.conforto;
+    p.letraEnorme = estado.letraEnorme;
+    p.leituraAuto = estado.leituraAuto;
+    salvarPerfil(nome, p);
     novaRodada();
   }
 
   // ---------- Quiz ----------
-  function novaRodada() {
-    estado.perguntas = gerarRodada(estado.tema, estado.nivel, estado.total);
-    estado.atual = 0; estado.acertos = 0; estado.erros = [];
-    var t = temaPorId(estado.tema);
-    $('q-aluno').innerHTML = '👤 ' + esc(estado.nome);
-    $('q-tema').innerHTML = t.ic + ' ' + t.nome + ' · ' + NIVEIS[estado.nivel].nome;
-    mostrarTela('tela-quiz');
-    renderPergunta();
+  function pararTimers() {
+    if (estado.timer) { clearInterval(estado.timer); estado.timer = null; }
+    if (estado.autoProxima) { clearTimeout(estado.autoProxima); estado.autoProxima = null; }
   }
 
-  function atualizarPontos() { $('q-pontos').innerHTML = '⭐ ' + estado.acertos; }
+  function relampago() { return estado.modo === 'relampago'; }
+
+  function novaRodada() {
+    pararTimers();
+    calarVoz();
+    estado.atual = 0; estado.acertos = 0; estado.pontos = 0; estado.combo = 0; estado.maxCombo = 0;
+    estado.erros = []; estado.ajudas = 2; estado.usouAjuda = false; estado.chaves = []; estado.perguntas = [];
+    estado.jogando = true;
+    carregarVistas();
+    if (!relampago()) for (var i = 0; i < estado.total; i++) estado.perguntas.push(perguntaNova(estado.chaves));
+
+    var t = temaPorId(estado.tema);
+    $('q-aluno').innerHTML = estado.avatar + ' ' + esc(estado.nome);
+    $('q-tema').innerHTML = t.ic + ' ' + t.nome + ' · ' + NIVEIS[estado.nivel].nome;
+    $('q-tempo').hidden = !relampago();
+    $('btn-ajuda').hidden = relampago();
+    $('btn-ouvir').hidden = !vozOk;
+    $('barra').className = relampago() ? 'relogio' : '';
+    mostrarTela('tela-quiz');
+
+    if (relampago()) {
+      estado.duracao = segundosRelampago() * 1000;
+      estado.tempoFim = new Date().getTime() + estado.duracao;
+      estado.ultimoSegundo = segundosRelampago();
+      estado.timer = setInterval(tique, 100);
+      tique();
+    }
+    renderPergunta();
+    fala(relampago() ? 'Valendo! Rápido! ⚡' : 'Vamos lá, ' + esc(estado.nome) + '!');
+  }
+
+  function tique() {
+    var resta = Math.max(0, estado.tempoFim - new Date().getTime());
+    var seg = Math.ceil(resta / 1000);
+    $('barra').style.width = (resta / estado.duracao * 100) + '%';
+    $('barra').className = 'relogio' + (seg <= 10 ? ' urgente' : '');
+    $('q-tempo').innerHTML = '⏱️ ' + seg + 's';
+    if (seg !== estado.ultimoSegundo) {
+      estado.ultimoSegundo = seg;
+      if (seg <= 5 && seg > 0) somTique();
+    }
+    if (resta <= 0) fim();
+  }
+
+  function atualizarTopo() {
+    $('q-pontos').innerHTML = '⭐ ' + estado.pontos;
+    var c = $('q-combo');
+    c.hidden = estado.combo < 2;
+    c.innerHTML = '🔥 ' + estado.combo + ' seguidas';
+    var ab = $('btn-ajuda');
+    ab.innerHTML = '💡 Ajuda (' + estado.ajudas + ')';
+    ab.disabled = estado.ajudas <= 0 || estado.respondida || estado.ajudaNestaPergunta;
+  }
 
   function renderPergunta() {
+    calarVoz();
+    if (relampago() && !estado.perguntas[estado.atual]) estado.perguntas.push(perguntaNova(estado.chaves));
     var q = estado.perguntas[estado.atual];
     estado.respondida = false;
-    atualizarPontos();
-    $('contador').innerHTML = 'Pergunta <b>' + (estado.atual + 1) + '</b> de ' + estado.total;
-    $('barra').style.width = (estado.atual / estado.total * 100) + '%';
+    estado.ajudaNestaPergunta = false;
+    marcarVista(q);
+    atualizarTopo();
+    if (relampago()) {
+      $('contador').innerHTML = 'Pergunta <b>' + (estado.atual + 1) + '</b> · ✅ ' + estado.acertos + (estado.acertos === 1 ? ' acerto' : ' acertos');
+    } else {
+      $('contador').innerHTML = 'Pergunta <b>' + (estado.atual + 1) + '</b> de ' + estado.total;
+      $('barra').style.width = (estado.atual / estado.total * 100) + '%';
+    }
     $('enunciado').innerHTML = q.enunciado;
 
     var d = $('destaque');
     d.innerHTML = q.destaque;
-    d.style.display = q.destaque ? '' : 'none';
+    d.hidden = !q.destaque;
     d.className = textoPuro(q.destaque).length > 15 ? 'longo' : '';
 
     var v = $('visual');
     v.innerHTML = q.visual || '';
-    v.style.display = q.visual ? '' : 'none';
+    v.hidden = !q.visual;
 
     var html = '';
     for (var i = 0; i < q.opcoes.length; i++) {
@@ -994,86 +2005,158 @@
     $('feedback').className = '';
     var bp = $('btn-proxima');
     bp.style.visibility = 'hidden';
-    bp.innerHTML = estado.atual === estado.total - 1 ? 'Ver resultado 🏁' : 'Próxima ➜';
+    bp.innerHTML = (!relampago() && estado.atual === estado.total - 1) ? 'Ver resultado 🏁' : 'Próxima ➜';
 
     var c = $('cartao-pergunta');
     c.className = 'cartao cartao-pergunta';
     void c.offsetWidth;
     c.className = 'cartao cartao-pergunta pulo';
+
+    if (estado.atual > 0) { humor('masc-quiz', 'pensando'); fala(pick(FALAS_PENSAR)); }
+    if (estado.conforto && estado.leituraAuto) setTimeout(lerPergunta, 250);
+  }
+
+  function usarAjuda() {
+    if (estado.respondida || estado.ajudas <= 0 || estado.ajudaNestaPergunta || relampago()) return;
+    var q = estado.perguntas[estado.atual];
+    var botoes = $('opcoes').getElementsByTagName('button'), erradas = [];
+    for (var i = 0; i < botoes.length; i++) if (q.opcoes[i] !== q.certa) erradas.push(i);
+    erradas = embaralhar(erradas).slice(0, 2);
+    for (var j = 0; j < erradas.length; j++) {
+      botoes[erradas[j]].disabled = true;
+      botoes[erradas[j]].className += ' removida';
+    }
+    estado.ajudas--;
+    estado.usouAjuda = true;
+    estado.ajudaNestaPergunta = true;
+    atualizarTopo();
+    humor('masc-quiz', 'feliz', 'pulando');
+    fala('Tirei duas erradas pra você! 💡');
+    tocar([660, 880], 0.08, 'sine');
+    if (estado.conforto && estado.leituraAuto) falarTexto('Tirei duas respostas erradas.');
+  }
+
+  function pontosFlutuando(n) {
+    var s = document.createElement('span');
+    s.className = 'flutua';
+    s.innerHTML = '+' + n;
+    $('q-pontos').appendChild(s);
+    setTimeout(function () { if (s.parentNode) s.parentNode.removeChild(s); }, 1000);
   }
 
   function responder(i) {
-    if (estado.respondida) return;
+    if (estado.respondida || !estado.jogando) return;
     var q = estado.perguntas[estado.atual];
     if (i < 0 || i >= q.opcoes.length) return;
+    var botoes = $('opcoes').getElementsByTagName('button');
+    if (botoes[i].disabled) return;
     estado.respondida = true;
+    calarVoz();
 
     var escolhida = q.opcoes[i], acertou = escolhida === q.certa;
-    var botoes = $('opcoes').getElementsByTagName('button');
     for (var j = 0; j < botoes.length; j++) {
+      var removida = botoes[j].className.indexOf('removida') !== -1;
       botoes[j].disabled = true;
-      if (q.opcoes[j] === q.certa) botoes[j].className += ' certa';
-      else if (j === i) botoes[j].className += ' errada';
-      else botoes[j].className += ' apagada';
+      // ✓ e ✗ além da cor, para quem enxerga pouco ou confunde cores
+      if (q.opcoes[j] === q.certa) { botoes[j].className += ' certa'; botoes[j].firstChild.innerHTML = '✓'; }
+      else if (j === i) { botoes[j].className += ' errada'; botoes[j].firstChild.innerHTML = '✗'; }
+      else if (!removida) botoes[j].className += ' apagada';
     }
 
     var fb = $('feedback');
-    var expl = q.explicacao ? '<span class="explic">' + q.explicacao + '</span>' : '';
+    var expl = (q.explicacao && !(relampago() && acertou)) ? '<span class="explic">' + q.explicacao + '</span>' : '';
+    var falaResultado;
     if (acertou) {
       estado.acertos++;
+      estado.combo++;
+      if (estado.combo > estado.maxCombo) estado.maxCombo = estado.combo;
+      var ganho = 10 + (estado.combo >= 5 ? 10 : estado.combo >= 3 ? 5 : 0);
+      estado.pontos += ganho;
+      pontosFlutuando(ganho);
       fb.className = 'bom';
       fb.innerHTML = pick(ELOGIOS) + expl;
-      somAcerto();
+      somAcerto(estado.combo);
+      if (estado.combo >= 3) { humor('masc-quiz', 'festa'); fala('🔥 ' + estado.combo + ' seguidas! Bônus de pontos!'); }
+      else { humor('masc-quiz', 'feliz', 'pulando'); fala(pick(FALAS_ACERTO)); }
+      falaResultado = 'Acertou!';
     } else {
+      estado.combo = 0;
       estado.erros.push({ q: q, resp: escolhida });
       fb.className = 'ruim';
       fb.innerHTML = pick(ANIMO) + ' A resposta certa é <b>' + mostrarValor(q, q.certa) + '</b>.' + expl;
       somErro();
+      humor('masc-quiz', 'triste', 'balancando');
+      fala(pick(FALAS_ERRO));
+      falaResultado = 'A resposta certa é ' + paraFala(mostrarValor(q, q.certa)) + '. ' + paraFala(q.explicacao);
     }
-    atualizarPontos();
+    atualizarTopo();
+    if (estado.conforto && estado.leituraAuto) falarTexto(falaResultado);
+
+    if (relampago()) {
+      var espera = acertou ? 650 : (estado.conforto && estado.leituraAuto ? 3500 : 1900);
+      estado.autoProxima = setTimeout(proxima, espera);
+      return;
+    }
     $('barra').style.width = ((estado.atual + 1) / estado.total * 100) + '%';
     var bp = $('btn-proxima');
     bp.style.visibility = 'visible';
-    try { bp.focus(); } catch (e) { /* ok */ }
+    try { bp.focus(); bp.scrollIntoView({ block: 'nearest', behavior: estado.conforto ? 'auto' : 'smooth' }); } catch (e) { /* ok */ }
   }
 
   function proxima() {
-    if (!estado.respondida) return;
+    if (!estado.respondida || !estado.jogando) return;
+    if (estado.autoProxima) { clearTimeout(estado.autoProxima); estado.autoProxima = null; }
     estado.atual++;
-    if (estado.atual >= estado.total) fim();
+    if (!relampago() && estado.atual >= estado.total) fim();
     else renderPergunta();
   }
 
   // ---------- Resultado ----------
   function fim() {
-    var pct = Math.round(estado.acertos / estado.total * 100);
-    var estrelas = pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= 50 ? 1 : 0;
-    var titulo, msg;
-    if (pct === 100) { titulo = 'Gabaritou! 🏆'; msg = 'Incrível, ' + esc(estado.nome) + '! Você acertou tudo!'; }
-    else if (pct >= 90) { titulo = 'Fera! 🏆'; msg = 'Excelente, ' + esc(estado.nome) + '! Você é fera em matemática!'; }
-    else if (pct >= 70) { titulo = 'Muito bem! 🌟'; msg = 'Parabéns, ' + esc(estado.nome) + '! Continue assim!'; }
-    else if (pct >= 50) { titulo = 'Bom trabalho! 👍'; msg = 'Boa, ' + esc(estado.nome) + '! Treinando mais um pouco você vai longe!'; }
-    else { titulo = 'Vamos de novo? 💪'; msg = 'Não desista, ' + esc(estado.nome) + '! Cada erro é uma chance de aprender.'; }
+    if (!estado.jogando) return;
+    estado.jogando = false;
+    pararTimers();
+    calarVoz();
+    var rel = relampago();
+    var respondidas = rel ? estado.acertos + estado.erros.length : estado.total;
+    var pct = respondidas ? Math.round(estado.acertos / respondidas * 100) : 0;
+    var estrelas = rel
+      ? (estado.acertos >= 15 ? 3 : estado.acertos >= 10 ? 2 : estado.acertos >= 5 ? 1 : 0)
+      : (pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= 50 ? 1 : 0);
+    var nome = esc(estado.nome), titulo, msg;
+    if (rel) {
+      titulo = estrelas >= 3 ? 'Super veloz! 🚀' : estrelas === 2 ? 'Rapidinho! ⚡' : estrelas === 1 ? 'Bom começo! 👍' : 'Vamos de novo? 💪';
+      msg = nome + ', você acertou <b>' + estado.acertos + '</b> em ' + Math.round(estado.duracao / 1000) + ' segundos!' +
+        (estrelas < 3 ? ' Tente bater seu recorde!' : ' Que velocidade!');
+    } else if (pct === 100) { titulo = 'Gabaritou! 🏆'; msg = 'Incrível, ' + nome + '! Você acertou tudo!'; }
+    else if (pct >= 90) { titulo = 'Fera! 🏆'; msg = 'Excelente, ' + nome + '! Você é fera em matemática!'; }
+    else if (pct >= 70) { titulo = 'Muito bem! 🌟'; msg = 'Parabéns, ' + nome + '! Continue assim!'; }
+    else if (pct >= 50) { titulo = 'Bom trabalho! 👍'; msg = 'Boa, ' + nome + '! Treinando mais um pouco você vai longe!'; }
+    else { titulo = 'Vamos de novo? 💪'; msg = 'Não desista, ' + nome + '! Cada erro é uma chance de aprender.'; }
 
     $('fim-titulo').innerHTML = titulo;
     var eh = '';
     for (var i = 0; i < 3; i++) eh += '<span class="' + (i < estrelas ? '' : 'apagada') + '">⭐</span>';
     $('fim-estrelas').innerHTML = eh;
-    $('fim-nota').innerHTML = estado.acertos + ' de ' + estado.total + ' acertos';
     $('fim-mensagem').innerHTML = msg;
+    $('st-acertos').innerHTML = rel ? estado.acertos : estado.acertos + '/' + estado.total;
+    $('st-pontos').innerHTML = estado.pontos;
+    $('st-combo').innerHTML = estado.maxCombo;
+    humor('masc-fim', estrelas >= 2 ? 'festa' : estrelas === 1 ? 'feliz' : 'normal');
 
     var rev = $('fim-revisao');
     if (estado.erros.length === 0) {
       rev.innerHTML = '<h3>🎯 Nenhum erro nesta rodada!</h3>';
     } else {
       var rh = '<h3>📝 Vamos revisar o que errou:</h3>';
-      for (var k = 0; k < estado.erros.length; k++) {
+      var lim = Math.min(estado.erros.length, 12);
+      for (var k = 0; k < lim; k++) {
         var e = estado.erros[k], q = e.q;
         rh += '<div class="item-rev">' +
           (q.visual ? '<div class="vis">' + q.visual + '</div>' : '') +
           '<div><div>' + q.enunciado + (q.destaque ? ' <b>' + q.destaque.replace(CONTA, '') + '</b>' : '') + '</div>' +
-          '<div class="resp">Você marcou: <span class="sua">' + mostrarValor(q, e.resp) + '</span> · ' +
-          'Certo: <span class="ok">' + mostrarValor(q, q.certa) + '</span></div>' +
+          '<div class="resp">Você marcou: <span class="sua">✗ ' + mostrarValor(q, e.resp) + '</span> · ' +
+          'Certo: <span class="ok">✓ ' + mostrarValor(q, q.certa) + '</span></div>' +
           (q.explicacao ? '<div class="expl">' + q.explicacao + '</div>' : '') +
           '</div></div>';
       }
@@ -1081,17 +2164,34 @@
     }
 
     registrarResultado({
-      nome: estado.nome, tema: estado.tema, nivel: estado.nivel,
-      acertos: estado.acertos, total: estado.total, quando: new Date().getTime()
+      nome: estado.nome, avatar: estado.avatar, modo: estado.modo, tema: estado.tema, nivel: estado.nivel,
+      acertos: estado.acertos, total: rel ? respondidas : estado.total, pontos: estado.pontos,
+      quando: new Date().getTime()
     });
+    var novas = verificarMedalhas({
+      modo: estado.modo, tema: estado.tema, nivel: estado.nivel, acertos: estado.acertos,
+      total: estado.total, pct: pct, maxCombo: estado.maxCombo, usouAjuda: estado.usouAjuda
+    });
+    var mh = '';
+    if (novas.length) {
+      mh = '<div class="novas-medalhas"><h3>' + (novas.length > 1 ? 'Novas medalhas!' : 'Nova medalha!') + ' 🎖️</h3>';
+      for (var n = 0; n < novas.length; n++) {
+        var md = medalhaPorId(novas[n]);
+        mh += '<span class="medalha-mini" title="' + md.desc + '"><span class="ic">' + md.ic + '</span>' + md.nome + '</span>';
+      }
+      mh += '</div>';
+    }
+    $('fim-medalhas').innerHTML = mh;
 
     mostrarTela('tela-fim');
     somFim();
-    if (estrelas >= 2) confetes();
+    if (novas.length) setTimeout(somMedalha, 650);
+    if (!estado.conforto && (estrelas >= 2 || novas.length)) confetes();
+    if (estado.conforto && estado.leituraAuto) falarTexto(textoPuro(titulo) + '. ' + textoPuro(msg));
   }
 
   function confetes() {
-    var simbolos = ['🎉', '⭐', '🎊', '✨', '🌟', '➕', '✖️', '🧮'];
+    var simbolos = ['🎉', '⭐', '🎊', '✨', '🌟', '➕', '✖️', '🧮', '🏅'];
     for (var i = 0; i < 40; i++) {
       var s = document.createElement('span');
       s.className = 'confete';
@@ -1105,34 +2205,51 @@
   }
 
   // ---------- Placar ----------
+  var abaPlacar = 'classico';
   function mostrarPlacar() {
-    var lista = lerPlacar().slice(0, 10);
+    var todos = ler(CHAVE_PLACAR, []), lista = [];
+    for (var j = 0; j < todos.length; j++) if ((todos[j].modo || 'classico') === abaPlacar) lista.push(todos[j]);
+    lista = ordenarPlacar(lista, abaPlacar).slice(0, 10);
+    var abas = $('abas-placar').getElementsByTagName('button');
+    for (var a = 0; a < abas.length; a++) abas[a].className = 'chip' + (abas[a].getAttribute('data-aba') === abaPlacar ? ' sel' : '');
+
     var c = $('placar-conteudo');
     if (!lista.length) {
-      c.innerHTML = '<div class="vazio">Ainda não tem ninguém no placar.<br>Jogue e seja o primeiro! 🚀</div>';
+      c.innerHTML = '<div class="vazio">Ainda não tem ninguém aqui.<br>Jogue e seja o primeiro! 🚀</div>';
     } else {
       var medalhas = ['🥇', '🥈', '🥉'];
-      var h = '<table class="placar"><tr><th></th><th>Nome</th><th>Assunto</th><th>Nível</th><th>Acertos</th></tr>';
+      var h = '<div class="tabela-rolagem"><table class="placar"><tr><th></th><th>Nome</th><th>Assunto</th><th>Nível</th><th>Acertos</th><th>Pontos</th></tr>';
       for (var i = 0; i < lista.length; i++) {
         var r = lista[i], t = temaPorId(r.tema);
         h += '<tr><td class="pos">' + (medalhas[i] || (i + 1) + 'º') + '</td>' +
-          '<td><b>' + esc(r.nome) + '</b></td>' +
+          '<td><b>' + (r.avatar || '') + ' ' + esc(r.nome) + '</b></td>' +
           '<td>' + t.ic + ' ' + t.nome + '</td>' +
           '<td>' + (NIVEIS[r.nivel] ? NIVEIS[r.nivel].nome : '') + '</td>' +
-          '<td>' + r.acertos + '/' + r.total + '</td></tr>';
+          '<td class="num">' + (abaPlacar === 'relampago' ? r.acertos : r.acertos + '/' + r.total) + '</td>' +
+          '<td class="num">' + (r.pontos || 0) + '</td></tr>';
       }
-      c.innerHTML = h + '</table>';
+      c.innerHTML = h + '</table></div>';
     }
     mostrarTela('tela-placar');
   }
 
-  // ================= Eventos =================
-  montarInicio();
+  // ---------- Medalhas ----------
+  function mostrarMedalhas() {
+    var nome = lerNome();
+    if (!nome) return;
+    var m = perfilDe(nome);
+    $('medalhas-sub').innerHTML = esc(nome) + ' tem <b>' + m.ganhas.length + '</b> de ' + MEDALHAS.length + ' medalhas';
+    var h = '';
+    for (var i = 0; i < MEDALHAS.length; i++) {
+      var md = MEDALHAS[i], tem = m.ganhas.indexOf(md.id) !== -1;
+      h += '<div class="medalha' + (tem ? '' : ' bloqueada') + '"><div class="ic">' + (tem ? md.ic : '🔒') + '</div>' +
+        '<b>' + md.nome + '</b><span>' + md.desc + '</span></div>';
+    }
+    $('medalhas-grade').innerHTML = h;
+    mostrarTela('tela-medalhas');
+  }
 
-  $('btn-comecar').onclick = comecar;
-  $('btn-ver-placar').onclick = mostrarPlacar;
-  $('btn-voltar').onclick = function () { mostrarTela('tela-inicio'); };
-  // confirm() não funciona em todo lugar, então usamos uma janelinha própria
+  // ---------- Janelinha de confirmação (confirm() não funciona em todo lugar) ----------
   var acaoSim = null;
   function perguntar(texto, seSim) {
     $('modal-texto').innerHTML = texto;
@@ -1141,12 +2258,32 @@
     $('modal-nao').focus();
   }
   function fecharModal() { $('modal').hidden = true; acaoSim = null; }
+
+  // ================= Eventos =================
+  montarFundo();
+  $('masc-inicio').innerHTML = mascoteSVG();
+  $('masc-quiz').innerHTML = mascoteSVG();
+  $('masc-fim').innerHTML = mascoteSVG();
+  montarInicio();
+  var salvo = ler(CHAVE_CONFORTO, {});
+  estado.letraEnorme = !!salvo.enorme;
+  estado.leituraAuto = !!salvo.leitura;
+  aplicarConforto(!!salvo.liga, false);
+
   $('modal-nao').onclick = fecharModal;
   $('modal-sim').onclick = function () { var f = acaoSim; fecharModal(); if (f) f(); };
-
+  $('btn-comecar').onclick = comecar;
+  $('btn-ver-placar').onclick = mostrarPlacar;
+  $('btn-ver-medalhas').onclick = mostrarMedalhas;
+  $('btn-voltar').onclick = function () { mostrarTela('tela-inicio'); };
+  $('btn-voltar-medalhas').onclick = function () { mostrarTela('tela-inicio'); };
+  $('abas-placar').onclick = function (ev) {
+    var b = acharBotao(ev.target, 'chip');
+    if (b) { abaPlacar = b.getAttribute('data-aba'); mostrarPlacar(); }
+  };
   $('btn-limpar').onclick = function () {
     perguntar('Apagar todos os resultados do placar?', function () {
-      salvarPlacar([]);
+      gravar(CHAVE_PLACAR, []);
       mostrarPlacar();
     });
   };
@@ -1154,38 +2291,75 @@
     var b = acharBotao(ev.target, 'opcao');
     if (b) responder(parseInt(b.getAttribute('data-i'), 10));
   };
+  $('btn-ajuda').onclick = usarAjuda;
+  $('btn-ouvir').onclick = alternarOuvir;
   $('btn-proxima').onclick = proxima;
   $('btn-sair').onclick = function () {
-    perguntar('Quer mesmo sair? As respostas desta rodada serão perdidas.', function () { mostrarTela('tela-inicio'); });
+    perguntar('Quer mesmo sair? As respostas desta rodada serão perdidas.', function () {
+      estado.jogando = false;
+      pararTimers();
+      calarVoz();
+      mostrarTela('tela-inicio');
+    });
   };
   $('btn-de-novo').onclick = novaRodada;
   $('btn-outro-tema').onclick = function () { mostrarTela('tela-inicio'); };
   $('btn-trocar-aluno').onclick = function () {
     $('nome').value = '';
     mostrarTela('tela-inicio');
+    $('bolha-inicio').innerHTML = 'Oi! Quem vai jogar agora? Escreva seu nome! 😄';
     $('nome').focus();
+  };
+  $('btn-conforto').onclick = function () { aplicarConforto(!estado.conforto, true); };
+  $('btn-conforto-canto').onclick = function () { aplicarConforto(!estado.conforto, true); };
+  $('btn-letra').onclick = function () { estado.letraEnorme = !estado.letraEnorme; aplicarConforto(true, false); };
+  $('btn-leitura').onclick = function () {
+    estado.leituraAuto = !estado.leituraAuto;
+    aplicarConforto(true, false);
+    if (estado.leituraAuto) falarTexto('Pronto! Vou ler as perguntas para você.');
   };
   $('btn-som').onclick = function () {
     somLigado = !somLigado;
+    if (!somLigado) calarVoz();
     this.innerHTML = somLigado ? '🔊' : '🔇';
+    this.title = somLigado ? 'Desligar som e voz' : 'Ligar som e voz';
+  };
+  $('btn-tela-cheia').onclick = function () {
+    try {
+      var d = document, el = d.documentElement;
+      if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+      else {
+        var p = (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
+        if (p && p['catch']) p['catch'](function () { /* sem tela cheia */ });
+      }
+    } catch (e) { /* sem tela cheia */ }
   };
   $('nome').onkeydown = function (ev) {
-    if (ev.keyCode === 13) comecar();
+    if (ev.keyCode === 13) { conferirPerfilDoNome(); comecar(); }
   };
+  $('nome').onchange = conferirPerfilDoNome;
+  $('nome').onblur = conferirPerfilDoNome;
 
   document.onkeydown = function (ev) {
     if (!$('modal').hidden) { if (ev.keyCode === 27) fecharModal(); return; }
     if ($('tela-quiz').className.indexOf('ativa') === -1) return;
     var k = ev.keyCode;
+    if (k === 79) { alternarOuvir(); return; }              // O = ouvir / parar
     if (!estado.respondida) {
       if (k >= 49 && k <= 52) responder(k - 49);           // 1-4
       else if (k >= 97 && k <= 100) responder(k - 97);     // teclado numérico 1-4
       else if (k >= 65 && k <= 68) responder(k - 65);      // A-D
+      else if (k === 72) usarAjuda();                      // H = ajuda
     } else if (k === 13 || k === 32) {
       ev.preventDefault();
       proxima();
     }
   };
+
+  // gancho para conferir o gerador de perguntas pelo console
+  window.__quizTeste = function (tema, nv) { return gerarPergunta(tema, nv); };
+  window.__quizFala = paraFala;
+  window.__quizChave = chaveDe;
 
   $('nome').focus();
 })();
