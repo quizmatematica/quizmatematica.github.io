@@ -300,9 +300,11 @@
   .opcao {
     font-family: inherit; font-size: calc(30px * var(--z)); font-weight: 800; color: var(--tinta); cursor: pointer;
     padding: 12px 14px; min-height: calc(80px * var(--z)); border-radius: 20px; border: 3px solid var(--borda); background: var(--superficie);
-    display: flex; align-items: center; gap: 12px; box-shadow: 0 5px 0 var(--borda); transition: transform .08s;
+    display: flex; align-items: center; gap: 12px; box-shadow: 0 5px 0 var(--borda);
+    transition: transform .08s, box-shadow .08s, background-color .2s, border-color .2s;
   }
   .opcao:hover { border-color: var(--primaria); transform: translateY(-2px); }
+  .opcao:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--borda); }
   .opcao:disabled { cursor: default; transform: none; }
   .opcao .letra {
     width: 44px; height: 44px; border-radius: 12px; background: var(--letra-fundo); color: var(--letra-texto); font-size: 22px;
@@ -401,6 +403,27 @@
     text-align: center; box-shadow: 0 8px 0 var(--borda);
   }
   #modal p { font-size: calc(22px * var(--z)); margin: 0 0 16px; font-weight: 800; }
+
+  /* ----- movimento: curto, pequeno e só para mostrar o que mudou (o modo conforto desliga tudo) ----- */
+  :root { --mov: cubic-bezier(.2, .8, .2, 1); }
+  @keyframes surgir { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes destacar { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.12); } }
+  .cartao-pergunta.entra { animation: surgir .3s var(--mov) backwards; }
+  .opcoes.entra .opcao { animation: surgir .3s var(--mov) backwards; }
+  .opcoes.entra .opcao:nth-child(2) { animation-delay: .05s; }
+  .opcoes.entra .opcao:nth-child(3) { animation-delay: .1s; }
+  .opcoes.entra .opcao:nth-child(4) { animation-delay: .15s; }
+  .opcao.certa .letra, .opcao.errada .letra { animation: destacar .35s var(--mov); }
+  #feedback.bom, #feedback.ruim { animation: surgir .28s var(--mov) backwards; }
+  #btn-proxima.aparece { animation: surgir .28s .12s var(--mov) backwards; }
+  .pill.pop { animation: destacar .35s var(--mov); }
+  .bolha.troca { animation: aparecer .25s ease-out; }
+  .chip, .modo { transition: background-color .15s, border-color .15s, box-shadow .15s, color .15s; }
+  #tela-fim.ativa .stat { animation: surgir .35s .15s var(--mov) backwards; }
+  #tela-fim.ativa .stat:nth-child(2) { animation-delay: .25s; }
+  #tela-fim.ativa .stat:nth-child(3) { animation-delay: .35s; }
+  #modal .caixa { animation: surgir .22s var(--mov) backwards; }
 
   button:focus-visible, input:focus-visible { outline: 4px solid var(--foco); outline-offset: 3px; }
 
@@ -565,7 +588,7 @@
     <div class="topo">
       <span class="pill" id="q-aluno"></span>
       <span class="pill" id="q-tema"></span>
-      <span class="pill" id="q-pontos"></span>
+      <span class="pill" id="q-pontos">⭐ <span id="q-pontos-n">0</span></span>
       <span class="pill combo" id="q-combo" hidden></span>
       <span class="pill tempo" id="q-tempo" hidden></span>
       <span class="espaco"></span>
@@ -1539,7 +1562,36 @@
     el.className = 'mascote';
     if (animacao) { void el.offsetWidth; el.className = 'mascote ' + animacao; }
   }
-  function fala(texto) { $('bolha-quiz').innerHTML = texto; }
+  function fala(texto) {
+    var b = $('bolha-quiz');
+    if (b.innerHTML === texto) return;
+    b.innerHTML = texto;
+    reanimar(b, 'troca');
+  }
+
+  // ================= Movimento =================
+  function semMovimento() {
+    return estado.conforto || !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+  // Tira e põe a classe de novo, para a animação recomeçar
+  function reanimar(el, cls) {
+    el.className = el.className.replace(new RegExp('\\s*\\b' + cls + '\\b', 'g'), '');
+    void el.offsetWidth;
+    el.className += ' ' + cls;
+  }
+  // Número que sobe contando até o valor novo (direto, sem contar, no modo conforto ou quando diminui)
+  function contar(el, ate, ms) {
+    var de = parseInt(el.getAttribute('data-n'), 10) || 0;
+    el.setAttribute('data-n', ate);
+    if (el.contaTimer) { clearInterval(el.contaTimer); el.contaTimer = null; }
+    if (ate <= de || semMovimento()) { el.innerHTML = ate; return; }
+    var inicio = new Date().getTime();
+    el.contaTimer = setInterval(function () {
+      var t = Math.min(1, (new Date().getTime() - inicio) / ms);
+      el.innerHTML = Math.round(de + (ate - de) * (1 - Math.pow(1 - t, 3)));
+      if (t === 1) { clearInterval(el.contaTimer); el.contaTimer = null; }
+    }, 30);
+  }
 
   // ================= Fundo animado =================
   function montarFundo() {
@@ -1960,10 +2012,14 @@
   }
 
   function atualizarTopo() {
-    $('q-pontos').innerHTML = '⭐ ' + estado.pontos;
-    var c = $('q-combo');
+    var pn = $('q-pontos-n'), pontosAntes = parseInt(pn.getAttribute('data-n'), 10) || 0;
+    contar(pn, estado.pontos, 450);
+    if (estado.pontos > pontosAntes) reanimar($('q-pontos'), 'pop');
+    var c = $('q-combo'), comboAntes = parseInt(c.getAttribute('data-n'), 10) || 0;
+    c.setAttribute('data-n', estado.combo);
     c.hidden = estado.combo < 2;
     c.innerHTML = '🔥 ' + estado.combo + ' seguidas';
+    if (estado.combo >= 2 && estado.combo > comboAntes) reanimar(c, 'pop');
     var ab = $('btn-ajuda');
     ab.innerHTML = '💡 Ajuda (' + estado.ajudas + ')';
     ab.disabled = estado.ajudas <= 0 || estado.respondida || estado.ajudaNestaPergunta;
@@ -1999,18 +2055,20 @@
       html += '<button class="opcao" data-i="' + i + '"><span class="letra">' + LETRAS[i] + '</span>' +
         '<span class="txt">' + mostrarValor(q, q.opcoes[i]) + '</span></button>';
     }
+    $('opcoes').className = 'opcoes entra';
     $('opcoes').innerHTML = html;
 
     $('feedback').innerHTML = '';
     $('feedback').className = '';
     var bp = $('btn-proxima');
     bp.style.visibility = 'hidden';
+    bp.className = 'btn azul';
     bp.innerHTML = (!relampago() && estado.atual === estado.total - 1) ? 'Ver resultado 🏁' : 'Próxima ➜';
 
     var c = $('cartao-pergunta');
     c.className = 'cartao cartao-pergunta';
     void c.offsetWidth;
-    c.className = 'cartao cartao-pergunta pulo';
+    c.className = 'cartao cartao-pergunta entra';
 
     if (estado.atual > 0) { humor('masc-quiz', 'pensando'); fala(pick(FALAS_PENSAR)); }
     if (estado.conforto && estado.leituraAuto) setTimeout(lerPergunta, 250);
@@ -2062,6 +2120,7 @@
       else if (j === i) { botoes[j].className += ' errada'; botoes[j].firstChild.innerHTML = '✗'; }
       else if (!removida) botoes[j].className += ' apagada';
     }
+    $('opcoes').className = 'opcoes';
 
     var fb = $('feedback');
     var expl = (q.explicacao && !(relampago() && acertou)) ? '<span class="explic">' + q.explicacao + '</span>' : '';
@@ -2100,6 +2159,7 @@
     $('barra').style.width = ((estado.atual + 1) / estado.total * 100) + '%';
     var bp = $('btn-proxima');
     bp.style.visibility = 'visible';
+    bp.className = 'btn azul aparece';
     try { bp.focus(); bp.scrollIntoView({ block: 'nearest', behavior: estado.conforto ? 'auto' : 'smooth' }); } catch (e) { /* ok */ }
   }
 
@@ -2140,7 +2200,9 @@
     $('fim-estrelas').innerHTML = eh;
     $('fim-mensagem').innerHTML = msg;
     $('st-acertos').innerHTML = rel ? estado.acertos : estado.acertos + '/' + estado.total;
-    $('st-pontos').innerHTML = estado.pontos;
+    $('st-pontos').setAttribute('data-n', 0);
+    $('st-pontos').innerHTML = '0';
+    contar($('st-pontos'), estado.pontos, 900);
     $('st-combo').innerHTML = estado.maxCombo;
     humor('masc-fim', estrelas >= 2 ? 'festa' : estrelas === 1 ? 'feliz' : 'normal');
 
