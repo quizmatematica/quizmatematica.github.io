@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz de Matemática 4º Ano</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Quiz de matemática grátis para o 4º ano: adição, subtração, multiplicação, divisão, frações, probleminhas e números, com três níveis e correção na hora.">
+<meta property="og:title" content="Quiz de Matemática 4º Ano">
+<meta property="og:description" content="Treine adição, subtração, multiplicação, divisão, frações e probleminhas. Grátis, sem cadastro.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AE%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700;800&display=swap">
+<style>
+  /* Visual único e claro, de sala de aula: cartões brancos sobre céu azul-amarelo. */
+  :root {
+    color-scheme: light;
+    --display: "Baloo 2", var(--display);
+    --texto: "Nunito", "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--texto);
+    background: #e0f2fe;
+    background-image: linear-gradient(160deg, #e0f2fe 0%, #fef9c3 100%);
+    background-attachment: fixed;
+    color: #1e293b;
+    min-height: 100vh;
+  }
+  .app {
+    max-width: 960px; margin: 0 auto; padding-block: 18px 40px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .tela { display: none; }
+  .tela.ativa { display: block; animation: entrar .35s ease-out; }
+  @keyframes entrar { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  h1.titulo {
+    font-family: var(--display);
+    font-size: 46px; text-align: center; color: #1d4ed8;
+    margin: 8px 0 2px; text-shadow: 3px 3px 0 #fde047;
+  }
+  .subtitulo { text-align: center; font-size: 19px; color: #475569; margin: 0 0 18px; }
+
+  .cartao {
+    background: #fff; border-radius: 24px; padding: 20px 24px; margin-bottom: 18px;
+    box-shadow: 0 8px 0 #cbd5e1, 0 12px 30px rgba(15, 23, 42, .08);
+  }
+  .passo { font-weight: bold; font-size: 21px; margin: 0 0 12px; color: #334155; }
+  .passo .num {
+    display: inline-block; width: 34px; height: 34px; border-radius: 50%;
+    background: #3b82f6; color: #fff; text-align: center; line-height: 34px; margin-right: 8px;
+  }
+  #nome {
+    width: 100%; font-size: 26px; padding: 12px 16px; font-family: inherit;
+    border: 3px solid #cbd5e1; border-radius: 16px; color: #1e293b;
+  }
+  #nome:focus { outline: none; border-color: #3b82f6; }
+  .aviso { color: #dc2626; font-weight: bold; margin-top: 8px; min-height: 1.2em; font-size: 18px; }
+
+  .temas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .tema {
+    font-family: inherit; font-size: 18px; font-weight: bold; color: #1e293b;
+    border: 3px solid transparent; border-radius: 18px; padding: 14px 8px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    transition: transform .1s;
+  }
+  .tema .ic { font-size: 36px; line-height: 1; }
+  .tema:hover { transform: translateY(-3px); }
+  .tema.sel { background: #fff !important; transform: translateY(-3px); }
+
+  .chips { display: flex; gap: 10px; flex-wrap: wrap; }
+  .chip {
+    font-family: inherit; font-size: 20px; font-weight: bold; cursor: pointer;
+    padding: 10px 22px; border-radius: 999px; border: 3px solid #cbd5e1; background: #fff; color: #334155;
+  }
+  .chip.sel { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+  .linha-config { display: flex; gap: 28px; flex-wrap: wrap; }
+  .linha-config > div { flex: 1; min-width: 260px; }
+
+  .btn {
+    font-family: inherit; font-size: 25px; font-weight: bold; color: #fff; cursor: pointer;
+    border: none; border-radius: 18px; padding: 14px 36px; margin: 6px;
+    background: #22c55e; box-shadow: 0 6px 0 #15803d; transition: transform .08s;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #15803d; }
+  .btn.azul { background: #3b82f6; box-shadow: 0 6px 0 #1d4ed8; }
+  .btn.laranja { background: #f97316; box-shadow: 0 6px 0 #c2410c; }
+  .btn.cinza { background: #94a3b8; box-shadow: 0 6px 0 #64748b; }
+  .btn.pequeno { font-size: 18px; padding: 10px 20px; }
+  .centro { text-align: center; }
+  .rodape { text-align: center; color: #64748b; font-size: 15px; margin-top: 10px; }
+
+  #btn-som {
+    position: fixed; z-index: 50;
+    top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px));
+    width: 52px; height: 52px; border-radius: 50%; border: none; cursor: pointer;
+    background: #fff; font-size: 26px; box-shadow: 0 4px 0 #cbd5e1;
+  }
+
+  /* ----- Quiz ----- */
+  .topo { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 60px 12px 0; }
+  .pill {
+    background: #fff; border-radius: 999px; padding: 8px 16px; font-weight: bold; font-size: 18px;
+    box-shadow: 0 3px 0 #cbd5e1;
+  }
+  .espaco { flex: 1; }
+  .btn-sair {
+    font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; color: #64748b;
+    background: #fff; border: none; border-radius: 999px; padding: 9px 16px; box-shadow: 0 3px 0 #cbd5e1;
+  }
+  .progresso {
+    height: 18px; background: #fff; border-radius: 999px; overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, .1);
+  }
+  #barra {
+    height: 100%; width: 0; border-radius: 999px; transition: width .4s;
+    background: linear-gradient(90deg, #22c55e, #84cc16);
+  }
+  .contador { text-align: center; font-weight: bold; color: #475569; margin: 10px 0; font-size: 18px; }
+  .cartao-pergunta {
+    text-align: center; padding: 26px 24px; min-height: 190px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+  }
+  #enunciado { font-size: 27px; line-height: 1.4; max-width: 780px; }
+  #destaque {
+    font-family: var(--display);
+    font-size: 58px; font-weight: bold; color: #1d4ed8; margin-top: 8px; letter-spacing: 1px;
+  }
+  #destaque.longo { font-size: 38px; }
+  #destaque .interrog { color: #f97316; }
+  #destaque .marca {
+    color: #fff; background: #f97316; border-radius: 10px; padding: 0 8px; margin: 0 2px;
+  }
+  #visual { margin-top: 12px; }
+  #visual svg { max-width: 100%; height: auto; }
+
+  .opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .opcao {
+    font-family: inherit; font-size: 31px; font-weight: bold; color: #1e293b; cursor: pointer;
+    padding: 14px; min-height: 86px; border-radius: 20px; border: 3px solid #cbd5e1; background: #fff;
+    display: flex; align-items: center; gap: 12px; box-shadow: 0 5px 0 #cbd5e1;
+    transition: transform .08s;
+  }
+  .opcao:hover { border-color: #3b82f6; transform: translateY(-2px); }
+  .opcao:disabled { cursor: default; transform: none; }
+  .opcao .letra {
+    width: 46px; height: 46px; border-radius: 12px; background: #e0e7ff; color: #3730a3; font-size: 22px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .opcao .txt { flex: 1; text-align: center; padding-right: 46px; }
+  .opcao.certa { background: #dcfce7; border-color: #22c55e; box-shadow: 0 5px 0 #16a34a; }
+  .opcao.certa .letra { background: #22c55e; color: #fff; }
+  .opcao.errada { background: #fee2e2; border-color: #ef4444; box-shadow: 0 5px 0 #dc2626; animation: tremer .4s; }
+  .opcao.errada .letra { background: #ef4444; color: #fff; }
+  .opcao.apagada { opacity: .5; border-color: #cbd5e1; }
+  @keyframes tremer {
+    0%, 100% { transform: translateX(0); } 20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); }
+  }
+  .pulo { animation: pulo .45s; }
+  @keyframes pulo { 0% { transform: scale(1); } 40% { transform: scale(1.06); } 100% { transform: scale(1); } }
+
+  #feedback { text-align: center; font-size: 25px; font-weight: bold; min-height: 44px; margin: 18px 0 6px; }
+  #feedback.bom { color: #16a34a; }
+  #feedback.ruim { color: #dc2626; }
+  #feedback .explic { display: block; font-size: 20px; color: #475569; font-weight: normal; margin-top: 6px; }
+  #btn-proxima { visibility: hidden; }
+
+  /* frações em pé */
+  .frac {
+    display: inline-flex; flex-direction: column; align-items: center;
+    vertical-align: middle; line-height: 1.05; margin: 0 .12em;
+  }
+  .frac span:first-child { border-bottom: 3px solid currentColor; padding: 0 .2em .06em; }
+  .frac span:last-child { padding-top: .06em; }
+
+  /* ----- Resultado ----- */
+  .estrelas { font-size: 70px; letter-spacing: 10px; margin: 6px 0; }
+  .estrelas .apagada { filter: grayscale(1); opacity: .25; }
+  .nota { font-size: 42px; font-weight: bold; color: #1d4ed8; margin: 4px 0; }
+  .mensagem { font-size: 24px; margin: 6px 0 16px; }
+  .revisao h3 { margin: 4px 0 12px; font-size: 22px; }
+  .item-rev {
+    display: flex; gap: 14px; align-items: center; border-top: 2px dashed #e2e8f0; padding: 12px 0; font-size: 19px;
+  }
+  .item-rev:first-of-type { border-top: none; }
+  .item-rev .vis svg { width: 90px; height: auto; }
+  .item-rev .resp { margin-top: 4px; }
+  .item-rev .sua { color: #dc2626; font-weight: bold; }
+  .item-rev .ok { color: #16a34a; font-weight: bold; }
+  .item-rev .expl { color: #64748b; font-size: 17px; margin-top: 2px; }
+
+  /* ----- Placar ----- */
+  table.placar { width: 100%; border-collapse: collapse; font-size: 20px; }
+  table.placar th { text-align: left; color: #64748b; font-size: 16px; padding: 8px; border-bottom: 3px solid #e2e8f0; }
+  table.placar td { padding: 10px 8px; border-bottom: 2px solid #f1f5f9; }
+  table.placar td.pos { font-size: 26px; width: 50px; text-align: center; }
+  .vazio { text-align: center; color: #64748b; font-size: 20px; padding: 20px; }
+
+  .confete {
+    position: fixed; top: -50px; font-size: 30px; pointer-events: none; z-index: 99;
+    animation: cair linear forwards;
+  }
+  @keyframes cair { to { transform: translateY(115vh) rotate(600deg); } }
+
+  button:focus-visible, input:focus-visible { outline: 4px solid #f59e0b; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .confete { display: none; }
+  }
+
+  /* janelinha de confirmação */
+  #modal {
+    position: fixed; inset: 0; z-index: 100; background: rgba(15, 23, 42, .45);
+    display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  #modal[hidden] { display: none; }
+  #modal .caixa {
+    background: #fff; color: #1e293b; border-radius: 24px; padding: 26px 24px; max-width: 460px; width: 100%;
+    text-align: center; box-shadow: 0 8px 0 #cbd5e1;
+  }
+  #modal p { font-size: 22px; margin: 0 0 16px; font-weight: bold; }
+
+  @media (max-width: 720px) {
+    h1.titulo { font-size: 32px; padding: 0 50px; }
+    .temas { grid-template-columns: repeat(2, 1fr); }
+    .opcoes { grid-template-columns: 1fr; }
+    #destaque { font-size: 42px; }
+    #destaque.longo { font-size: 28px; }
+    #enunciado { font-size: 22px; }
+    .opcao { font-size: 26px; min-height: 70px; }
+  }
+</style>
+</head>
+<body>
+<button id="btn-som" title="Ligar/desligar som">🔊</button>
+<div id="modal" hidden>
+  <div class="caixa">
+    <p id="modal-texto"></p>
+    <button class="btn" id="modal-sim">Sim</button>
+    <button class="btn cinza" id="modal-nao">Não</button>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- ===================== INÍCIO ===================== -->
+  <div class="tela ativa" id="tela-inicio">
+    <h1 class="titulo">🧮 Quiz de Matemática</h1>
+    <p class="subtitulo">4º ano – vamos treinar e se divertir!</p>
+
+    <div class="cartao">
+      <p class="passo"><span class="num">1</span>Qual é o seu nome?</p>
+      <input id="nome" type="text" maxlength="25" placeholder="Digite seu nome aqui" autocomplete="off">
+      <div class="aviso" id="aviso-nome"></div>
+    </div>
+
+    <div class="cartao">
+      <p class="passo"><span class="num">2</span>Escolha o assunto</p>
+      <div class="temas" id="temas"></div>
+    </div>
+
+    <div class="cartao">
+      <div class="linha-config">
+        <div>
+          <p class="passo"><span class="num">3</span>Nível</p>
+          <div class="chips" id="niveis"></div>
+        </div>
+        <div>
+          <p class="passo"><span class="num">4</span>Quantas perguntas?</p>
+          <div class="chips" id="quantidades"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="centro">
+      <button class="btn" id="btn-comecar">Começar! 🚀</button>
+      <button class="btn azul" id="btn-ver-placar">🏆 Placar</button>
+    </div>
+    <p class="rodape">Funciona sem internet. Dica: aperte <b>F11</b> para tela cheia.
+      Também dá para responder com as teclas <b>1, 2, 3, 4</b> e passar com <b>Enter</b>.</p>
+  </div>
+
+  <!-- ===================== QUIZ ===================== -->
+  <div class="tela" id="tela-quiz">
+    <div class="topo">
+      <span class="pill" id="q-aluno"></span>
+      <span class="pill" id="q-tema"></span>
+      <span class="pill" id="q-pontos"></span>
+      <span class="espaco"></span>
+      <button class="btn-sair" id="btn-sair">✕ Sair</button>
+    </div>
+    <div class="progresso"><div id="barra"></div></div>
+    <div class="contador" id="contador"></div>
+
+    <div class="cartao cartao-pergunta" id="cartao-pergunta">
+      <div id="enunciado"></div>
+      <div id="destaque"></div>
+      <div id="visual"></div>
+    </div>
+
+    <div class="opcoes" id="opcoes"></div>
+    <div id="feedback"></div>
+    <div class="centro"><button class="btn azul" id="btn-proxima">Próxima ➜</button></div>
+  </div>
+
+  <!-- ===================== RESULTADO ===================== -->
+  <div class="tela" id="tela-fim">
+    <div class="cartao centro">
+      <h1 class="titulo" id="fim-titulo"></h1>
+      <div class="estrelas" id="fim-estrelas"></div>
+      <div class="nota" id="fim-nota"></div>
+      <div class="mensagem" id="fim-mensagem"></div>
+      <button class="btn" id="btn-de-novo">🔁 Jogar de novo</button>
+      <button class="btn laranja" id="btn-outro-tema">📚 Mudar assunto</button>
+      <button class="btn cinza" id="btn-trocar-aluno">👤 Próximo aluno</button>
+    </div>
+    <div class="cartao revisao" id="fim-revisao"></div>
+  </div>
+
+  <!-- ===================== PLACAR ===================== -->
+  <div class="tela" id="tela-placar">
+    <h1 class="titulo">🏆 Placar</h1>
+    <p class="subtitulo">Os melhores resultados neste aparelho</p>
+    <div class="cartao" id="placar-conteudo"></div>
+    <div class="centro">
+      <button class="btn azul" id="btn-voltar">⬅ Voltar</button>
+      <button class="btn cinza pequeno" id="btn-limpar">Limpar placar (professor)</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ================= Utilidades =================
+  function $(id) { return document.getElementById(id); }
+  function rand(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+  function pick(arr) { return arr[rand(0, arr.length - 1)]; }
+  function embaralhar(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  // 4582 -> "4.582"
+  function fmt(n) {
+    var s = String(Math.abs(n)), out = '';
+    while (s.length > 3) { out = '.' + s.slice(-3) + out; s = s.slice(0, -3); }
+    return (n < 0 ? '-' : '') + s + out;
+  }
+  function reais(v) { return 'R$ ' + fmt(v) + ',00'; }
+  function horas(v) { return v + 'h'; }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function textoPuro(html) { return String(html).replace(/<[^>]*>/g, ''); }
+  function fracHTML(f) {
+    var p = f.split('/');
+    return '<span class="frac"><span>' + p[0] + '</span><span>' + p[1] + '</span></span>';
+  }
+  function equivalentes(f1, f2) {
+    var a = f1.split('/'), b = f2.split('/');
+    return parseInt(a[0], 10) * parseInt(b[1], 10) === parseInt(b[0], 10) * parseInt(a[1], 10);
+  }
+
+  // Monta 4 alternativas numéricas: a certa + distratores plausíveis
+  function montarOpcoes(certo, candidatos, formatar, minimo) {
+    formatar = formatar || fmt;
+    minimo = (minimo === undefined) ? 0 : minimo;
+    var vals = [certo];
+    function tenta(v) {
+      if (typeof v !== 'number' || isNaN(v) || v < minimo || v !== Math.round(v)) return;
+      if (vals.length < 4 && vals.indexOf(v) === -1) vals.push(v);
+    }
+    var c = embaralhar((candidatos || []).slice());
+    for (var i = 0; i < c.length; i++) tenta(c[i]);
+    var passo = certo >= 1000 ? 100 : (certo >= 100 ? 10 : 1);
+    var tent = 0;
+    while (vals.length < 4 && tent < 300) {
+      tent++;
+      var d = rand(1, 5) * (Math.random() < 0.5 ? -1 : 1);
+      tenta(certo + d * pick([1, passo, 10]));
+    }
+    var k = 1;
+    while (vals.length < 4) { tenta(certo + 7 * k); k++; }
+    embaralhar(vals);
+    var opcoes = [];
+    for (var j = 0; j < vals.length; j++) opcoes.push(formatar(vals[j]));
+    return { opcoes: opcoes, certa: formatar(certo) };
+  }
+
+  function numerica(o) {
+    var r = montarOpcoes(o.certo, o.candidatos, o.formatar, o.minimo);
+    return {
+      enunciado: o.enunciado || '', destaque: o.destaque || '', visual: o.visual || '',
+      opcoes: r.opcoes, certa: r.certa, explicacao: o.explicacao || ''
+    };
+  }
+
+  var CONTA = ' = <span class="interrog">?</span>';
+
+  // ================= Operações =================
+  function genAdicao(nv) {
+    var r = nv === 1 ? [10, 99] : nv === 2 ? [100, 999] : [1000, 9999];
+    var a = rand(r[0], r[1]), b = rand(r[0], r[1]), c = a + b;
+    return numerica({
+      enunciado: 'Quanto é?', destaque: fmt(a) + ' + ' + fmt(b) + CONTA, certo: c,
+      candidatos: [c + 10, c - 10, c + 1, c - 1, c + 100],
+      explicacao: fmt(a) + ' + ' + fmt(b) + ' = ' + fmt(c)
+    });
+  }
+
+  function genSubtracao(nv) {
+    var a, b;
+    if (nv === 1) { a = rand(30, 99); b = rand(10, a - 5); }
+    else if (nv === 2) { a = rand(200, 999); b = rand(100, a - 10); }
+    else { a = rand(2000, 9999); b = rand(1000, a - 100); }
+    var c = a - b;
+    return numerica({
+      enunciado: 'Quanto é?', destaque: fmt(a) + ' − ' + fmt(b) + CONTA, certo: c,
+      candidatos: [c + 10, c - 10, c + 1, c - 1, c + 100],
+      explicacao: fmt(a) + ' − ' + fmt(b) + ' = ' + fmt(c)
+    });
+  }
+
+  function genMultiplicacao(nv) {
+    var a, b;
+    if (nv === 1) { a = rand(2, 5); b = rand(1, 10); }
+    else if (nv === 2) { a = rand(2, 10); b = rand(2, 10); }
+    else { a = rand(12, 99); b = rand(2, 9); }
+    var c = a * b;
+    return numerica({
+      enunciado: 'Quanto é?', destaque: fmt(a) + ' × ' + b + CONTA, certo: c,
+      candidatos: [a * (b + 1), a * (b - 1), (a + 1) * b, a + b, c + 10],
+      explicacao: fmt(a) + ' × ' + b + ' = ' + fmt(c)
+    });
+  }
+
+  function genDivisao(nv) {
+    var d, q;
+    if (nv === 1) { d = rand(2, 5); q = rand(1, 10); }
+    else if (nv === 2) { d = rand(2, 10); q = rand(2, 10); }
+    else { d = rand(2, 9); q = rand(11, 40); }
+    var t = d * q;
+    return numerica({
+      enunciado: 'Quanto é?', destaque: fmt(t) + ' ÷ ' + d + CONTA, certo: q,
+      candidatos: [q + 1, q - 1, q + 2, q + 10, d],
+      minimo: 1,
+      explicacao: fmt(t) + ' ÷ ' + d + ' = ' + q + ', porque ' + q + ' × ' + d + ' = ' + fmt(t)
+    });
+  }
+
+  // ================= Frações =================
+  function svgPizza(n, k) {
+    var cx = 80, cy = 80, r = 72;
+    var s = '<svg viewBox="0 0 160 160" width="170" height="170">';
+    for (var i = 0; i < n; i++) {
+      var a1 = (-90 + i * 360 / n) * Math.PI / 180, a2 = (-90 + (i + 1) * 360 / n) * Math.PI / 180;
+      var x1 = (cx + r * Math.cos(a1)).toFixed(2), y1 = (cy + r * Math.sin(a1)).toFixed(2);
+      var x2 = (cx + r * Math.cos(a2)).toFixed(2), y2 = (cy + r * Math.sin(a2)).toFixed(2);
+      var cor = i < k ? '#fb923c' : '#fff7ed';
+      s += '<path d="M' + cx + ',' + cy + ' L' + x1 + ',' + y1 + ' A' + r + ',' + r + ' 0 0,1 ' +
+        x2 + ',' + y2 + ' Z" fill="' + cor + '" stroke="#9a3412" stroke-width="2.5"/>';
+    }
+    return s + '</svg>';
+  }
+
+  function svgBarra(n, k) {
+    var w = 360, h = 64, pw = w / n;
+    var s = '<svg viewBox="0 0 ' + (w + 6) + ' ' + (h + 6) + '" width="' + (w + 6) + '" height="' + (h + 6) + '">';
+    for (var i = 0; i < n; i++) {
+      s += '<rect x="' + (3 + i * pw).toFixed(2) + '" y="3" width="' + pw.toFixed(2) + '" height="' + h +
+        '" fill="' + (i < k ? '#60a5fa' : '#eff6ff') + '" stroke="#1e3a8a" stroke-width="2.5"/>';
+    }
+    return s + '</svg>';
+  }
+
+  function genFracaoFigura(nv) {
+    var maxN = nv === 1 ? 4 : nv === 2 ? 8 : 12;
+    var n = rand(2, maxN), k = rand(1, n - 1);
+    var pizza = n <= 8 && Math.random() < 0.5;
+    var certa = k + '/' + n;
+    var cands = embaralhar([(n - k) + '/' + n, n + '/' + k, k + '/' + (n + 1), (k + 1) + '/' + n, k + '/' + (n - 1)]);
+    var ops = [certa];
+    function tenta(f) {
+      var p = f.split('/');
+      if (parseInt(p[0], 10) < 1 || parseInt(p[1], 10) < 1 || p[0] === p[1]) return;
+      if (ops.length >= 4 || ops.indexOf(f) !== -1 || equivalentes(f, certa)) return;
+      ops.push(f);
+    }
+    for (var i = 0; i < cands.length; i++) tenta(cands[i]);
+    var tent = 0;
+    while (ops.length < 4 && tent < 200) { tent++; tenta(rand(1, n + 1) + '/' + rand(2, n + 2)); }
+    return {
+      enunciado: 'Que fração ' + (pizza ? 'da pizza' : 'da barra') + ' está pintada?',
+      destaque: '', visual: pizza ? svgPizza(n, k) : svgBarra(n, k),
+      opcoes: embaralhar(ops), certa: certa, fracao: true,
+      explicacao: 'A figura tem ' + n + ' partes iguais e ' + k + (k === 1 ? ' está pintada' : ' estão pintadas') + '.'
+    };
+  }
+
+  function genFracaoQuantidade(nv) {
+    var d, num = 1;
+    if (nv === 1) d = 2;
+    else if (nv === 2) d = pick([2, 3, 4, 5]);
+    else {
+      d = pick([2, 3, 4, 5, 10]);
+      if (Math.random() < 0.5) { d = pick([3, 4, 5]); num = rand(2, d - 1); }
+    }
+    var parte = rand(2, nv === 1 ? 25 : 12), total = d * parte, resp = num * parte;
+    var enun = (d === 2 && num === 1)
+      ? 'Quanto é a <b>metade</b> de ' + fmt(total) + '?'
+      : 'Quanto é ' + fracHTML(num + '/' + d) + ' de ' + fmt(total) + '?';
+    var expl = num === 1
+      ? fmt(total) + ' ÷ ' + d + ' = ' + fmt(resp)
+      : fmt(total) + ' ÷ ' + d + ' = ' + parte + ' e ' + parte + ' × ' + num + ' = ' + fmt(resp);
+    return numerica({
+      enunciado: enun, certo: resp, minimo: 1,
+      candidatos: [total, parte, resp + 1, resp - 1, total - resp, resp * 2],
+      explicacao: expl
+    });
+  }
+
+  function genFracaoMaior(nv) {
+    var ops, certa, expl;
+    if (nv === 3 && Math.random() < 0.5) {
+      var dens = embaralhar([2, 3, 4, 5, 6, 8, 10]).slice(0, 4);
+      ops = []; var menor = 99;
+      for (var i = 0; i < 4; i++) { ops.push('1/' + dens[i]); if (dens[i] < menor) menor = dens[i]; }
+      certa = '1/' + menor;
+      expl = 'Quanto menos partes o inteiro tem, maior é cada parte. Por isso a maior é 1/' + menor + '.';
+    } else {
+      var n = nv === 1 ? pick([5, 6, 8]) : pick([6, 8, 10, 12]);
+      var nums = [];
+      for (var x = 1; x < n; x++) nums.push(x);
+      nums = embaralhar(nums).slice(0, 4);
+      var maior = 0; ops = [];
+      for (var j = 0; j < 4; j++) { ops.push(nums[j] + '/' + n); if (nums[j] > maior) maior = nums[j]; }
+      certa = maior + '/' + n;
+      expl = 'As partes têm o mesmo tamanho, então a maior é a que tem mais partes: ' + certa + '.';
+    }
+    return { enunciado: 'Qual é a <b>maior</b> fração?', destaque: '', visual: '', opcoes: ops, certa: certa, fracao: true, explicacao: expl };
+  }
+
+  // ================= Problemas =================
+  var NOMES = ['Ana', 'Pedro', 'Lucas', 'Júlia', 'Gabriel', 'Sofia', 'Miguel', 'Laura', 'Davi',
+    'Helena', 'Arthur', 'Alice', 'Bia', 'Enzo', 'Lara', 'Theo', 'Manu', 'Rafa'];
+  var COISAS = [
+    { p: 'figurinhas', g: 'f' }, { p: 'bolinhas de gude', g: 'f' }, { p: 'lápis de cor', g: 'm' },
+    { p: 'adesivos', g: 'm' }, { p: 'cartas', g: 'f' }, { p: 'carrinhos', g: 'm' }, { p: 'gibis', g: 'm' }
+  ];
+  var RECIPIENTES = [
+    { s: 'Uma caixa', p: 'caixas', obj: 'lápis', g: 'm' },
+    { s: 'Um pacote', p: 'pacotes', obj: 'biscoitos', g: 'm' },
+    { s: 'Um saquinho', p: 'saquinhos', obj: 'balas', g: 'f' },
+    { s: 'Uma cartela', p: 'cartelas', obj: 'adesivos', g: 'm' },
+    { s: 'Um pote', p: 'potes', obj: 'bolinhas de gude', g: 'f' },
+    { s: 'Uma bandeja', p: 'bandejas', obj: 'pães de queijo', g: 'm' }
+  ];
+  var PRODUTOS = [
+    { s: 'caderno', p: 'cadernos' }, { s: 'estojo', p: 'estojos' }, { s: 'livro', p: 'livros' },
+    { s: 'pacote de figurinhas', p: 'pacotes de figurinhas' }, { s: 'brinquedo', p: 'brinquedos' }
+  ];
+  function quant(g) { return g === 'f' ? 'quantas' : 'quantos'; }
+  function Quant(g) { return g === 'f' ? 'Quantas' : 'Quantos'; }
+  function faixa(nv) { return nv === 1 ? [10, 50] : nv === 2 ? [50, 300] : [200, 2000]; }
+  function doisNomes() { var n = embaralhar(NOMES.slice()); return [n[0], n[1]]; }
+
+  var PROBLEMAS = [
+    function (nv) { // juntar
+      var r = faixa(nv), nome = pick(NOMES), c = pick(COISAS);
+      var a = rand(r[0], r[1]), b = rand(r[0], r[1]), t = a + b;
+      return numerica({
+        enunciado: nome + ' tinha ' + fmt(a) + ' ' + c.p + ' e ganhou mais ' + fmt(b) + '. Com ' + quant(c.g) + ' ' + c.p + ' ficou?',
+        certo: t, candidatos: [Math.abs(a - b), t + 10, t - 10, t + 1, t - 1],
+        explicacao: 'Ganhou, então somamos: ' + fmt(a) + ' + ' + fmt(b) + ' = ' + fmt(t) + '.'
+      });
+    },
+    function (nv) { // tirar
+      var r = faixa(nv), nome = pick(NOMES), c = pick(COISAS);
+      var a = rand(Math.round((r[0] + r[1]) / 2), r[1]), b = rand(Math.max(2, Math.round(r[0] / 2)), a - 3), t = a - b;
+      return numerica({
+        enunciado: nome + ' tinha ' + fmt(a) + ' ' + c.p + ' e deu ' + fmt(b) + ' para os colegas. Com ' + quant(c.g) + ' ' + c.p + ' ficou?',
+        certo: t, candidatos: [a + b, t + 10, t - 10, t + 1, t - 1],
+        explicacao: 'Deu, então subtraímos: ' + fmt(a) + ' − ' + fmt(b) + ' = ' + fmt(t) + '.'
+      });
+    },
+    function (nv) { // ônibus
+      var a = nv === 1 ? rand(20, 45) : nv === 2 ? rand(40, 80) : rand(50, 90);
+      var b = rand(5, a - 10);
+      if (nv === 3) {
+        var c = rand(5, 30), t = a - b + c;
+        return numerica({
+          enunciado: 'Um ônibus saiu com ' + a + ' passageiros. No primeiro ponto, desceram ' + b + ' e subiram ' + c + '. Quantos passageiros estão no ônibus agora?',
+          certo: t, candidatos: [a - b, a + c, a + b + c, t + 10, t - 10],
+          explicacao: a + ' − ' + b + ' + ' + c + ' = ' + t + '.'
+        });
+      }
+      return numerica({
+        enunciado: 'Um ônibus saiu com ' + a + ' passageiros. No primeiro ponto, desceram ' + b + '. Quantos passageiros ficaram no ônibus?',
+        certo: a - b, candidatos: [a + b, a - b + 10, a - b - 10, a - b + 1],
+        explicacao: a + ' − ' + b + ' = ' + (a - b) + '.'
+      });
+    },
+    function (nv) { // grupos iguais (multiplicação)
+      var R = pick(RECIPIENTES);
+      var a = nv === 1 ? rand(2, 6) : nv === 2 ? rand(4, 10) : rand(12, 30);
+      var b = nv === 1 ? rand(2, 5) : rand(3, 9), t = a * b;
+      return numerica({
+        enunciado: R.s + ' tem ' + a + ' ' + R.obj + '. ' + Quant(R.g) + ' ' + R.obj + ' há em ' + b + ' ' + R.p + '?',
+        certo: t, candidatos: [a + b, t + a, t - a, t + 10, t + 1],
+        explicacao: b + ' × ' + a + ' = ' + fmt(t) + '.'
+      });
+    },
+    function (nv) { // repartir (divisão)
+      var d = nv === 1 ? rand(2, 5) : nv === 2 ? rand(3, 9) : rand(4, 9);
+      var q = nv === 1 ? rand(2, 8) : nv === 2 ? rand(3, 10) : rand(11, 25), total = d * q;
+      var c = pick([{ p: 'balas', g: 'f' }, { p: 'figurinhas', g: 'f' }, { p: 'lápis', g: 'm' }, { p: 'biscoitos', g: 'm' }]);
+      return numerica({
+        enunciado: 'A professora tem ' + total + ' ' + c.p + ' para dividir igualmente entre ' + d + ' grupos. ' + Quant(c.g) + ' ' + c.p + ' cada grupo vai receber?',
+        certo: q, minimo: 1, candidatos: [q + 1, q - 1, total - d, q + d, q * 2],
+        explicacao: total + ' ÷ ' + d + ' = ' + q + '.'
+      });
+    },
+    function (nv) { // dobro / triplo
+      var m = nv === 1 ? 2 : pick([2, 3]), n = doisNomes();
+      var p = nv === 1 ? rand(5, 40) : nv === 2 ? rand(15, 150) : rand(120, 999), t = p * m;
+      var palavra = m === 2 ? 'o dobro' : 'o triplo';
+      return numerica({
+        enunciado: n[0] + ' fez ' + fmt(p) + ' pontos em um jogo. ' + n[1] + ' fez ' + palavra + ' dos pontos de ' + n[0] + '. Quantos pontos ' + n[1] + ' fez?',
+        certo: t, candidatos: [p + m, p * (m === 2 ? 3 : 2), t + 10, t - 1, p],
+        explicacao: (m === 2 ? 'Dobro' : 'Triplo') + ' é multiplicar por ' + m + ': ' + fmt(p) + ' × ' + m + ' = ' + fmt(t) + '.'
+      });
+    },
+    function (nv) { // compra
+      var P = pick(PRODUTOS);
+      var preco = nv === 1 ? rand(2, 9) : nv === 2 ? rand(5, 25) : rand(15, 99);
+      var q = nv === 1 ? rand(2, 5) : nv === 2 ? rand(3, 8) : rand(3, 9), t = preco * q;
+      return numerica({
+        enunciado: 'Um ' + P.s + ' custa ' + reais(preco) + '. Quanto custam ' + q + ' ' + P.p + '?',
+        certo: t, formatar: reais, minimo: 1, candidatos: [preco + q, t + preco, t - preco, t + 10],
+        explicacao: q + ' × ' + reais(preco) + ' = ' + reais(t) + '.'
+      });
+    },
+    function (nv) { // troco
+      var nota = nv === 1 ? pick([10, 20]) : nv === 2 ? pick([50, 100]) : pick([100, 200]);
+      var preco = rand(Math.ceil(nota * 0.3), nota - 1), t = nota - preco, nome = pick(NOMES);
+      return numerica({
+        enunciado: nome + ' comprou um brinquedo de ' + reais(preco) + ' e pagou com uma nota de ' + reais(nota) + '. Quanto recebeu de troco?',
+        certo: t, formatar: reais, minimo: 1, candidatos: [t + 10, t - 10, t + 1, t - 1, nota + preco],
+        explicacao: reais(nota) + ' − ' + reais(preco) + ' = ' + reais(t) + '.'
+      });
+    },
+    function (nv) { // medidas de tempo
+      var lista = nv === 1
+        ? [{ u: 'semanas', d: 'dias', g: 'm', f: 7, frase: 'Cada semana tem 7 dias' }]
+        : nv === 2
+          ? [{ u: 'semanas', d: 'dias', g: 'm', f: 7, frase: 'Cada semana tem 7 dias' },
+             { u: 'anos', d: 'meses', g: 'm', f: 12, frase: 'Cada ano tem 12 meses' }]
+          : [{ u: 'horas', d: 'minutos', g: 'm', f: 60, frase: 'Cada hora tem 60 minutos' },
+             { u: 'anos', d: 'meses', g: 'm', f: 12, frase: 'Cada ano tem 12 meses' },
+             { u: 'dias', d: 'horas', g: 'f', f: 24, frase: 'Cada dia tem 24 horas' }];
+      var m = pick(lista), b = rand(2, nv === 3 ? 6 : 9), t = b * m.f;
+      return numerica({
+        enunciado: Quant(m.g) + ' ' + m.d + ' há em ' + b + ' ' + m.u + '?',
+        certo: t, candidatos: [t + m.f, t - m.f, b + m.f, t + 10],
+        explicacao: m.frase + ': ' + b + ' × ' + m.f + ' = ' + t + '.'
+      });
+    },
+    function (nv) { // horas
+      var h = rand(7, 15), d = rand(1, nv === 1 ? 3 : 6), t = h + d;
+      var evento = pick(['Uma festa', 'Um filme', 'Um jogo de futebol', 'Uma aula de natação']);
+      return numerica({
+        enunciado: evento + ' começou às ' + h + 'h e durou ' + d + ' hora' + (d > 1 ? 's' : '') + '. A que horas terminou?',
+        certo: t, formatar: horas, minimo: 1, candidatos: [t + 1, t - 1, t + 2, h - d],
+        explicacao: h + 'h + ' + d + 'h = ' + t + 'h.'
+      });
+    },
+    function (nv) { // duas etapas
+      if (nv === 1) return PROBLEMAS[0](nv);
+      var nome = pick(NOMES);
+      var din = nv === 2 ? pick([20, 30, 50]) : pick([50, 100]);
+      var preco = nv === 2 ? rand(2, 5) : rand(5, 12);
+      var q = rand(2, Math.min(6, Math.floor(din / preco) - 1));
+      var gasto = q * preco, sobra = din - gasto;
+      return numerica({
+        enunciado: nome + ' tinha ' + reais(din) + ' e comprou ' + q + ' sorvetes de ' + reais(preco) + ' cada. Quanto sobrou?',
+        certo: sobra, formatar: reais, minimo: 1, candidatos: [gasto, din - preco, sobra + preco, sobra - preco],
+        explicacao: 'Gastou ' + q + ' × ' + reais(preco) + ' = ' + reais(gasto) + '. Sobrou ' + reais(din) + ' − ' + reais(gasto) + ' = ' + reais(sobra) + '.'
+      });
+    }
+  ];
+
+  // ================= Números =================
+  var CASAS = ['das unidades', 'das dezenas', 'das centenas', 'das unidades de milhar', 'das dezenas de milhar'];
+  function digitosDistintos(qtd) { return embaralhar([1, 2, 3, 4, 5, 6, 7, 8, 9]).slice(0, qtd); }
+
+  function genValorPosicional(nv) {
+    var dig = nv === 1 ? 3 : nv === 2 ? 4 : 5;
+    var ds = digitosDistintos(dig), num = parseInt(ds.join(''), 10);
+    var pos = rand(0, dig - 1), d = ds[pos], exp = dig - 1 - pos, valor = d * Math.pow(10, exp);
+    var cands = [];
+    for (var e = 0; e <= dig; e++) if (e !== exp) cands.push(d * Math.pow(10, e));
+    return numerica({
+      enunciado: 'Qual é o valor do algarismo destacado?',
+      destaque: fmt(num).replace(String(d), '<span class="marca">' + d + '</span>'),
+      certo: valor, candidatos: cands, minimo: 1,
+      explicacao: 'O ' + d + ' está na casa ' + CASAS[exp] + ', então vale ' + fmt(valor) + '.'
+    });
+  }
+
+  function genDecomposicao(nv) {
+    var dig = nv === 1 ? 3 : nv === 2 ? 4 : 5;
+    var ds = digitosDistintos(dig), num = parseInt(ds.join(''), 10);
+    var partes = [];
+    for (var i = 0; i < dig; i++) partes.push(fmt(ds[i] * Math.pow(10, dig - 1 - i)));
+    var cands = [];
+    for (var t = 0; t < 6; t++) {
+      var c = ds.slice(), i1 = rand(0, dig - 1), i2 = rand(0, dig - 1), x = c[i1];
+      c[i1] = c[i2]; c[i2] = x;
+      cands.push(parseInt(c.join(''), 10));
+    }
+    cands.push(parseInt(ds.slice().reverse().join(''), 10));
+    return numerica({
+      enunciado: 'Que número é formado por:', destaque: partes.join(' + '),
+      certo: num, candidatos: cands, minimo: 1,
+      explicacao: partes.join(' + ') + ' = ' + fmt(num)
+    });
+  }
+
+  function genSucessor(nv) {
+    var base = nv === 1 ? rand(1, 9) * 100 : nv === 2 ? rand(1, 9) * 1000 : rand(1, 9) * 10000;
+    if (nv >= 2 && Math.random() < 0.5) base = nv === 2 ? rand(11, 99) * 100 : rand(11, 99) * 1000;
+    if (Math.random() < 0.5) {
+      return numerica({
+        enunciado: 'Qual número vem <b>logo depois</b> de', destaque: fmt(base - 1) + ' <span class="interrog">?</span>',
+        certo: base, candidatos: [base - 2, base + 1, base + 9, base - 10, base + 99],
+        explicacao: fmt(base - 1) + ' + 1 = ' + fmt(base)
+      });
+    }
+    return numerica({
+      enunciado: 'Qual número vem <b>logo antes</b> de', destaque: fmt(base) + ' <span class="interrog">?</span>',
+      certo: base - 1, candidatos: [base + 1, base - 10, base - 11, base - 2, base - 100],
+      explicacao: fmt(base) + ' − 1 = ' + fmt(base - 1)
+    });
+  }
+
+  function genMaiorMenor(nv) {
+    var dig = nv === 1 ? 3 : nv === 2 ? 4 : 5;
+    var ds = digitosDistintos(dig), nums = [], tent = 0;
+    while (nums.length < 4 && tent < 100) {
+      tent++;
+      var v = parseInt(embaralhar(ds.slice()).join(''), 10);
+      if (nums.indexOf(v) === -1) nums.push(v);
+    }
+    var maior = Math.random() < 0.5;
+    var certo = nums[0];
+    for (var i = 1; i < nums.length; i++) if (maior ? nums[i] > certo : nums[i] < certo) certo = nums[i];
+    var ops = [];
+    for (var j = 0; j < nums.length; j++) ops.push(fmt(nums[j]));
+    return {
+      enunciado: 'Qual é o <b>' + (maior ? 'maior' : 'menor') + '</b> número?', destaque: '', visual: '',
+      opcoes: ops, certa: fmt(certo),
+      explicacao: 'Compare os algarismos da esquerda para a direita. O ' + (maior ? 'maior' : 'menor') + ' é ' + fmt(certo) + '.'
+    };
+  }
+
+  // ================= Temas =================
+  var TEMAS = [
+    { id: 'adicao', nome: 'Adição', ic: '➕', cor: '#22c55e', claro: '#dcfce7' },
+    { id: 'subtracao', nome: 'Subtração', ic: '➖', cor: '#ef4444', claro: '#fee2e2' },
+    { id: 'multiplicacao', nome: 'Multiplicação', ic: '✖️', cor: '#3b82f6', claro: '#dbeafe' },
+    { id: 'divisao', nome: 'Divisão', ic: '➗', cor: '#a855f7', claro: '#f3e8ff' },
+    { id: 'fracoes', nome: 'Frações', ic: '🍕', cor: '#f97316', claro: '#ffedd5' },
+    { id: 'problemas', nome: 'Probleminhas', ic: '📖', cor: '#0ea5e9', claro: '#e0f2fe' },
+    { id: 'numeros', nome: 'Números', ic: '🔢', cor: '#eab308', claro: '#fef9c3' },
+    { id: 'misturado', nome: 'Tudo misturado', ic: '🎲', cor: '#64748b', claro: '#f1f5f9' }
+  ];
+  var GERADORES = {
+    adicao: [genAdicao], subtracao: [genSubtracao], multiplicacao: [genMultiplicacao], divisao: [genDivisao],
+    fracoes: [genFracaoFigura, genFracaoFigura, genFracaoQuantidade, genFracaoMaior],
+    problemas: PROBLEMAS,
+    numeros: [genValorPosicional, genDecomposicao, genSucessor, genMaiorMenor]
+  };
+  var NIVEIS = [null, { nome: 'Fácil', ic: '🙂' }, { nome: 'Médio', ic: '😎' }, { nome: 'Difícil', ic: '🔥' }];
+  var QUANTIDADES = [5, 10, 15, 20];
+
+  function temaPorId(id) {
+    for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i].id === id) return TEMAS[i];
+    return TEMAS[0];
+  }
+
+  function gerarPergunta(tema, nv) {
+    if (tema === 'misturado') tema = pick(['adicao', 'subtracao', 'multiplicacao', 'divisao', 'fracoes', 'problemas', 'numeros']);
+    var q = pick(GERADORES[tema])(nv);
+    q.tema = tema;
+    return q;
+  }
+
+  function gerarRodada(tema, nv, total) {
+    var lista = [], chaves = [];
+    for (var i = 0; i < total; i++) {
+      var q, chave, tent = 0;
+      do {
+        q = gerarPergunta(tema, nv);
+        chave = q.enunciado + '|' + q.destaque + '|' + q.certa;
+        tent++;
+      } while (chaves.indexOf(chave) !== -1 && tent < 30);
+      chaves.push(chave);
+      lista.push(q);
+    }
+    return lista;
+  }
+
+  // ================= Som =================
+  var somLigado = true, ctxAudio = null;
+  function tocar(notas, dur, tipo) {
+    if (!somLigado) return;
+    try {
+      if (!ctxAudio) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        ctxAudio = new AC();
+      }
+      var t0 = ctxAudio.currentTime;
+      for (var i = 0; i < notas.length; i++) {
+        var o = ctxAudio.createOscillator(), g = ctxAudio.createGain();
+        o.type = tipo || 'sine';
+        o.frequency.value = notas[i];
+        var ini = t0 + i * dur;
+        g.gain.setValueAtTime(0.0001, ini);
+        g.gain.exponentialRampToValueAtTime(0.25, ini + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ini + dur * 1.6);
+        o.connect(g); g.connect(ctxAudio.destination);
+        o.start(ini); o.stop(ini + dur * 1.7);
+      }
+    } catch (e) { /* sem som, tudo bem */ }
+  }
+  function somAcerto() { tocar([523, 659, 784], 0.11, 'triangle'); }
+  function somErro() { tocar([300, 220], 0.18, 'sine'); }
+  function somFim() { tocar([523, 659, 784, 1047], 0.14, 'triangle'); }
+
+  // ================= Placar (salvo neste computador) =================
+  var CHAVE_PLACAR = 'quizMatematica4ano_placar';
+  function lerPlacar() {
+    try { return JSON.parse(localStorage.getItem(CHAVE_PLACAR)) || []; } catch (e) { return []; }
+  }
+  function salvarPlacar(lista) {
+    try { localStorage.setItem(CHAVE_PLACAR, JSON.stringify(lista)); } catch (e) { /* ignora */ }
+  }
+  function registrarResultado(r) {
+    var lista = lerPlacar();
+    lista.push(r);
+    lista.sort(function (a, b) {
+      var pa = a.acertos / a.total, pb = b.acertos / b.total;
+      if (pb !== pa) return pb - pa;
+      if (b.acertos !== a.acertos) return b.acertos - a.acertos;
+      if (b.nivel !== a.nivel) return b.nivel - a.nivel;
+      return a.quando - b.quando;
+    });
+    salvarPlacar(lista.slice(0, 30));
+  }
+
+  // ================= Estado e telas =================
+  var estado = { nome: '', tema: 'adicao', nivel: 1, total: 10, perguntas: [], atual: 0, acertos: 0, erros: [], respondida: false };
+  var LETRAS = ['A', 'B', 'C', 'D'];
+  var ELOGIOS = ['Muito bem! 🎉', 'Isso aí! ⭐', 'Mandou bem! 👏', 'Acertou! 🥳', 'Show de bola! ⚽', 'Que craque! 🌟', 'Perfeito! ✅'];
+  var ANIMO = ['Quase! 💪', 'Não foi dessa vez! 🙂', 'Opa! Vamos aprender juntos. 🤓', 'Tudo bem errar! 😉'];
+
+  function mostrarTela(id) {
+    var telas = document.querySelectorAll('.tela');
+    for (var i = 0; i < telas.length; i++) telas[i].className = 'tela';
+    $(id).className = 'tela ativa';
+    window.scrollTo(0, 0);
+  }
+
+  function mostrarValor(q, v) { return q.fracao ? fracHTML(v) : v; }
+
+  // ---------- Tela inicial ----------
+  function montarInicio() {
+    var html = '';
+    for (var i = 0; i < TEMAS.length; i++) {
+      var t = TEMAS[i];
+      html += '<button class="tema" data-id="' + t.id + '" style="background:' + t.claro + '">' +
+        '<span class="ic">' + t.ic + '</span>' + t.nome + '</button>';
+    }
+    $('temas').innerHTML = html;
+
+    var nh = '';
+    for (var n = 1; n <= 3; n++) nh += '<button class="chip" data-n="' + n + '">' + NIVEIS[n].ic + ' ' + NIVEIS[n].nome + '</button>';
+    $('niveis').innerHTML = nh;
+
+    var qh = '';
+    for (var k = 0; k < QUANTIDADES.length; k++) qh += '<button class="chip" data-q="' + QUANTIDADES[k] + '">' + QUANTIDADES[k] + '</button>';
+    $('quantidades').innerHTML = qh;
+
+    $('temas').onclick = function (ev) {
+      var b = acharBotao(ev.target, 'tema');
+      if (b) { estado.tema = b.getAttribute('data-id'); marcarSelecoes(); }
+    };
+    $('niveis').onclick = function (ev) {
+      var b = acharBotao(ev.target, 'chip');
+      if (b) { estado.nivel = parseInt(b.getAttribute('data-n'), 10); marcarSelecoes(); }
+    };
+    $('quantidades').onclick = function (ev) {
+      var b = acharBotao(ev.target, 'chip');
+      if (b) { estado.total = parseInt(b.getAttribute('data-q'), 10); marcarSelecoes(); }
+    };
+    marcarSelecoes();
+  }
+
+  function acharBotao(el, classe) {
+    while (el && el !== document) {
+      if (el.className && (' ' + el.className + ' ').indexOf(' ' + classe + ' ') !== -1) return el;
+      el = el.parentNode;
+    }
+    return null;
+  }
+
+  function marcarSelecoes() {
+    var bs = $('temas').getElementsByTagName('button');
+    for (var i = 0; i < bs.length; i++) {
+      var t = temaPorId(bs[i].getAttribute('data-id'));
+      var sel = t.id === estado.tema;
+      bs[i].className = 'tema' + (sel ? ' sel' : '');
+      bs[i].style.borderColor = sel ? t.cor : 'transparent';
+      bs[i].style.boxShadow = sel ? '0 5px 0 ' + t.cor : 'none';
+    }
+    var ns = $('niveis').getElementsByTagName('button');
+    for (var j = 0; j < ns.length; j++) ns[j].className = 'chip' + (parseInt(ns[j].getAttribute('data-n'), 10) === estado.nivel ? ' sel' : '');
+    var qs = $('quantidades').getElementsByTagName('button');
+    for (var k = 0; k < qs.length; k++) qs[k].className = 'chip' + (parseInt(qs[k].getAttribute('data-q'), 10) === estado.total ? ' sel' : '');
+  }
+
+  function comecar() {
+    var nome = $('nome').value.replace(/^\s+|\s+$/g, '');
+    if (!nome) {
+      $('aviso-nome').innerHTML = 'Escreva seu nome para começar 🙂';
+      $('nome').focus();
+      return;
+    }
+    $('aviso-nome').innerHTML = '';
+    estado.nome = nome;
+    novaRodada();
+  }
+
+  // ---------- Quiz ----------
+  function novaRodada() {
+    estado.perguntas = gerarRodada(estado.tema, estado.nivel, estado.total);
+    estado.atual = 0; estado.acertos = 0; estado.erros = [];
+    var t = temaPorId(estado.tema);
+    $('q-aluno').innerHTML = '👤 ' + esc(estado.nome);
+    $('q-tema').innerHTML = t.ic + ' ' + t.nome + ' · ' + NIVEIS[estado.nivel].nome;
+    mostrarTela('tela-quiz');
+    renderPergunta();
+  }
+
+  function atualizarPontos() { $('q-pontos').innerHTML = '⭐ ' + estado.acertos; }
+
+  function renderPergunta() {
+    var q = estado.perguntas[estado.atual];
+    estado.respondida = false;
+    atualizarPontos();
+    $('contador').innerHTML = 'Pergunta <b>' + (estado.atual + 1) + '</b> de ' + estado.total;
+    $('barra').style.width = (estado.atual / estado.total * 100) + '%';
+    $('enunciado').innerHTML = q.enunciado;
+
+    var d = $('destaque');
+    d.innerHTML = q.destaque;
+    d.style.display = q.destaque ? '' : 'none';
+    d.className = textoPuro(q.destaque).length > 15 ? 'longo' : '';
+
+    var v = $('visual');
+    v.innerHTML = q.visual || '';
+    v.style.display = q.visual ? '' : 'none';
+
+    var html = '';
+    for (var i = 0; i < q.opcoes.length; i++) {
+      html += '<button class="opcao" data-i="' + i + '"><span class="letra">' + LETRAS[i] + '</span>' +
+        '<span class="txt">' + mostrarValor(q, q.opcoes[i]) + '</span></button>';
+    }
+    $('opcoes').innerHTML = html;
+
+    $('feedback').innerHTML = '';
+    $('feedback').className = '';
+    var bp = $('btn-proxima');
+    bp.style.visibility = 'hidden';
+    bp.innerHTML = estado.atual === estado.total - 1 ? 'Ver resultado 🏁' : 'Próxima ➜';
+
+    var c = $('cartao-pergunta');
+    c.className = 'cartao cartao-pergunta';
+    void c.offsetWidth;
+    c.className = 'cartao cartao-pergunta pulo';
+  }
+
+  function responder(i) {
+    if (estado.respondida) return;
+    var q = estado.perguntas[estado.atual];
+    if (i < 0 || i >= q.opcoes.length) return;
+    estado.respondida = true;
+
+    var escolhida = q.opcoes[i], acertou = escolhida === q.certa;
+    var botoes = $('opcoes').getElementsByTagName('button');
+    for (var j = 0; j < botoes.length; j++) {
+      botoes[j].disabled = true;
+      if (q.opcoes[j] === q.certa) botoes[j].className += ' certa';
+      else if (j === i) botoes[j].className += ' errada';
+      else botoes[j].className += ' apagada';
+    }
+
+    var fb = $('feedback');
+    var expl = q.explicacao ? '<span class="explic">' + q.explicacao + '</span>' : '';
+    if (acertou) {
+      estado.acertos++;
+      fb.className = 'bom';
+      fb.innerHTML = pick(ELOGIOS) + expl;
+      somAcerto();
+    } else {
+      estado.erros.push({ q: q, resp: escolhida });
+      fb.className = 'ruim';
+      fb.innerHTML = pick(ANIMO) + ' A resposta certa é <b>' + mostrarValor(q, q.certa) + '</b>.' + expl;
+      somErro();
+    }
+    atualizarPontos();
+    $('barra').style.width = ((estado.atual + 1) / estado.total * 100) + '%';
+    var bp = $('btn-proxima');
+    bp.style.visibility = 'visible';
+    try { bp.focus(); } catch (e) { /* ok */ }
+  }
+
+  function proxima() {
+    if (!estado.respondida) return;
+    estado.atual++;
+    if (estado.atual >= estado.total) fim();
+    else renderPergunta();
+  }
+
+  // ---------- Resultado ----------
+  function fim() {
+    var pct = Math.round(estado.acertos / estado.total * 100);
+    var estrelas = pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= 50 ? 1 : 0;
+    var titulo, msg;
+    if (pct === 100) { titulo = 'Gabaritou! 🏆'; msg = 'Incrível, ' + esc(estado.nome) + '! Você acertou tudo!'; }
+    else if (pct >= 90) { titulo = 'Fera! 🏆'; msg = 'Excelente, ' + esc(estado.nome) + '! Você é fera em matemática!'; }
+    else if (pct >= 70) { titulo = 'Muito bem! 🌟'; msg = 'Parabéns, ' + esc(estado.nome) + '! Continue assim!'; }
+    else if (pct >= 50) { titulo = 'Bom trabalho! 👍'; msg = 'Boa, ' + esc(estado.nome) + '! Treinando mais um pouco você vai longe!'; }
+    else { titulo = 'Vamos de novo? 💪'; msg = 'Não desista, ' + esc(estado.nome) + '! Cada erro é uma chance de aprender.'; }
+
+    $('fim-titulo').innerHTML = titulo;
+    var eh = '';
+    for (var i = 0; i < 3; i++) eh += '<span class="' + (i < estrelas ? '' : 'apagada') + '">⭐</span>';
+    $('fim-estrelas').innerHTML = eh;
+    $('fim-nota').innerHTML = estado.acertos + ' de ' + estado.total + ' acertos';
+    $('fim-mensagem').innerHTML = msg;
+
+    var rev = $('fim-revisao');
+    if (estado.erros.length === 0) {
+      rev.innerHTML = '<h3>🎯 Nenhum erro nesta rodada!</h3>';
+    } else {
+      var rh = '<h3>📝 Vamos revisar o que errou:</h3>';
+      for (var k = 0; k < estado.erros.length; k++) {
+        var e = estado.erros[k], q = e.q;
+        rh += '<div class="item-rev">' +
+          (q.visual ? '<div class="vis">' + q.visual + '</div>' : '') +
+          '<div><div>' + q.enunciado + (q.destaque ? ' <b>' + q.destaque.replace(CONTA, '') + '</b>' : '') + '</div>' +
+          '<div class="resp">Você marcou: <span class="sua">' + mostrarValor(q, e.resp) + '</span> · ' +
+          'Certo: <span class="ok">' + mostrarValor(q, q.certa) + '</span></div>' +
+          (q.explicacao ? '<div class="expl">' + q.explicacao + '</div>' : '') +
+          '</div></div>';
+      }
+      rev.innerHTML = rh;
+    }
+
+    registrarResultado({
+      nome: estado.nome, tema: estado.tema, nivel: estado.nivel,
+      acertos: estado.acertos, total: estado.total, quando: new Date().getTime()
+    });
+
+    mostrarTela('tela-fim');
+    somFim();
+    if (estrelas >= 2) confetes();
+  }
+
+  function confetes() {
+    var simbolos = ['🎉', '⭐', '🎊', '✨', '🌟', '➕', '✖️', '🧮'];
+    for (var i = 0; i < 40; i++) {
+      var s = document.createElement('span');
+      s.className = 'confete';
+      s.innerHTML = pick(simbolos);
+      s.style.left = rand(0, 98) + 'vw';
+      s.style.animationDuration = (2 + Math.random() * 2.5) + 's';
+      s.style.animationDelay = (Math.random() * 0.8) + 's';
+      document.body.appendChild(s);
+      (function (el) { setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 6000); })(s);
+    }
+  }
+
+  // ---------- Placar ----------
+  function mostrarPlacar() {
+    var lista = lerPlacar().slice(0, 10);
+    var c = $('placar-conteudo');
+    if (!lista.length) {
+      c.innerHTML = '<div class="vazio">Ainda não tem ninguém no placar.<br>Jogue e seja o primeiro! 🚀</div>';
+    } else {
+      var medalhas = ['🥇', '🥈', '🥉'];
+      var h = '<table class="placar"><tr><th></th><th>Nome</th><th>Assunto</th><th>Nível</th><th>Acertos</th></tr>';
+      for (var i = 0; i < lista.length; i++) {
+        var r = lista[i], t = temaPorId(r.tema);
+        h += '<tr><td class="pos">' + (medalhas[i] || (i + 1) + 'º') + '</td>' +
+          '<td><b>' + esc(r.nome) + '</b></td>' +
+          '<td>' + t.ic + ' ' + t.nome + '</td>' +
+          '<td>' + (NIVEIS[r.nivel] ? NIVEIS[r.nivel].nome : '') + '</td>' +
+          '<td>' + r.acertos + '/' + r.total + '</td></tr>';
+      }
+      c.innerHTML = h + '</table>';
+    }
+    mostrarTela('tela-placar');
+  }
+
+  // ================= Eventos =================
+  montarInicio();
+
+  $('btn-comecar').onclick = comecar;
+  $('btn-ver-placar').onclick = mostrarPlacar;
+  $('btn-voltar').onclick = function () { mostrarTela('tela-inicio'); };
+  // confirm() não funciona em todo lugar, então usamos uma janelinha própria
+  var acaoSim = null;
+  function perguntar(texto, seSim) {
+    $('modal-texto').innerHTML = texto;
+    acaoSim = seSim;
+    $('modal').hidden = false;
+    $('modal-nao').focus();
+  }
+  function fecharModal() { $('modal').hidden = true; acaoSim = null; }
+  $('modal-nao').onclick = fecharModal;
+  $('modal-sim').onclick = function () { var f = acaoSim; fecharModal(); if (f) f(); };
+
+  $('btn-limpar').onclick = function () {
+    perguntar('Apagar todos os resultados do placar?', function () {
+      salvarPlacar([]);
+      mostrarPlacar();
+    });
+  };
+  $('opcoes').onclick = function (ev) {
+    var b = acharBotao(ev.target, 'opcao');
+    if (b) responder(parseInt(b.getAttribute('data-i'), 10));
+  };
+  $('btn-proxima').onclick = proxima;
+  $('btn-sair').onclick = function () {
+    perguntar('Quer mesmo sair? As respostas desta rodada serão perdidas.', function () { mostrarTela('tela-inicio'); });
+  };
+  $('btn-de-novo').onclick = novaRodada;
+  $('btn-outro-tema').onclick = function () { mostrarTela('tela-inicio'); };
+  $('btn-trocar-aluno').onclick = function () {
+    $('nome').value = '';
+    mostrarTela('tela-inicio');
+    $('nome').focus();
+  };
+  $('btn-som').onclick = function () {
+    somLigado = !somLigado;
+    this.innerHTML = somLigado ? '🔊' : '🔇';
+  };
+  $('nome').onkeydown = function (ev) {
+    if (ev.keyCode === 13) comecar();
+  };
+
+  document.onkeydown = function (ev) {
+    if (!$('modal').hidden) { if (ev.keyCode === 27) fecharModal(); return; }
+    if ($('tela-quiz').className.indexOf('ativa') === -1) return;
+    var k = ev.keyCode;
+    if (!estado.respondida) {
+      if (k >= 49 && k <= 52) responder(k - 49);           // 1-4
+      else if (k >= 97 && k <= 100) responder(k - 97);     // teclado numérico 1-4
+      else if (k >= 65 && k <= 68) responder(k - 65);      // A-D
+    } else if (k === 13 || k === 32) {
+      ev.preventDefault();
+      proxima();
+    }
+  };
+
+  $('nome').focus();
+})();
+</script>
+</body>
+</html>
