@@ -37,6 +37,10 @@
     --combo-fundo: #fff7ed; --combo-texto: #c2410c;
     --tempo-fundo: #fef2f2; --tempo-texto: #b91c1c;
     --foco: #f59e0b; --veu: rgba(15, 23, 42, .45);
+    --gelo: #38bdf8; --gelo-fundo: #e0f2fe; --gelo-borda: #7dd3fc; --gelo-texto: #075985; --gelo-veio: rgba(255, 255, 255, .55);
+    --sombra-pi: rgba(15, 23, 42, .14);
+    /* movimento: saída suave e uma molinha leve */
+    --mov: cubic-bezier(.2, .8, .2, 1); --mola: cubic-bezier(.34, 1.45, .64, 1);
   }
 
   [data-conforto="on"] {
@@ -59,6 +63,8 @@
     --combo-fundo: #33281d; --combo-texto: #e7b27a;
     --tempo-fundo: #3a2622; --tempo-texto: #eeab9c;
     --foco: #e7c27a; --veu: rgba(0, 0, 0, .6);
+    --gelo: #6b93bd; --gelo-fundo: #223040; --gelo-borda: #5e86b0; --gelo-texto: #c3dcf5; --gelo-veio: rgba(195, 220, 245, .1);
+    --sombra-pi: rgba(0, 0, 0, .35);
   }
   [data-conforto="on"][data-letra="enorme"] { --z: 1.4; }
 
@@ -91,7 +97,7 @@
     padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
   .tela { display: none; }
-  .tela.ativa { display: block; animation: entrar .35s ease-out; }
+  .tela.ativa { display: block; animation: entrar .4s var(--mov); }
   @keyframes entrar { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
   h1.titulo {
@@ -134,7 +140,8 @@
   .avatares { display: flex; flex-wrap: wrap; gap: 8px; }
   .avatar {
     width: 56px; height: 56px; font-size: 32px; border-radius: 16px; cursor: pointer;
-    border: 3px solid transparent; background: var(--superficie-2); transition: transform .1s;
+    border: 3px solid transparent; background: var(--superficie-2);
+    transition: transform .25s var(--mola), background-color .15s, border-color .15s;
   }
   .avatar:hover { transform: scale(1.1); }
   .avatar.sel { border-color: var(--primaria); background: var(--primaria-fundo); transform: scale(1.1); }
@@ -153,7 +160,7 @@
   .chave .trilho { width: 46px; height: 26px; border-radius: 999px; background: var(--cinza); position: relative; flex-shrink: 0; }
   .chave .trilho::after {
     content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--superficie);
-    transition: left .15s;
+    transition: left .22s var(--mola);
   }
   .chave[aria-pressed="true"] { border-color: var(--sucesso); }
   .chave[aria-pressed="true"] .trilho { background: var(--sucesso); }
@@ -175,9 +182,10 @@
   .tema {
     font-family: inherit; font-size: calc(17px * var(--z)); font-weight: 800; color: var(--tinta);
     border: 3px solid transparent; border-radius: 18px; padding: 14px 6px; cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; gap: 6px; transition: transform .1s;
+    display: flex; flex-direction: column; align-items: center; gap: 6px; transition: transform .2s var(--mov);
   }
   .tema .ic { font-size: 34px; line-height: 1; }
+  .modo:hover, .chip:hover:not(.sel) { border-color: var(--primaria); }
   .tema:hover { transform: translateY(-3px); }
   .tema.sel { background: var(--superficie) !important; transform: translateY(-3px); }
 
@@ -193,13 +201,15 @@
   .btn {
     font-family: var(--display); font-size: calc(26px * var(--z)); font-weight: 800; color: var(--btn-texto); cursor: pointer;
     border: none; border-radius: 18px; padding: 12px 34px; margin: 6px;
-    background: var(--sucesso); box-shadow: 0 6px 0 var(--sucesso-sombra); transition: transform .08s;
+    --sb: var(--sucesso-sombra);
+    background: var(--sucesso); box-shadow: 0 6px 0 var(--sb); transition: transform .12s var(--mov), box-shadow .12s var(--mov);
   }
-  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--sucesso-sombra); }
-  .btn.azul { background: var(--primaria); box-shadow: 0 6px 0 var(--primaria-sombra); }
-  .btn.laranja { background: var(--laranja); box-shadow: 0 6px 0 var(--laranja-sombra); }
-  .btn.roxo { background: var(--roxo); box-shadow: 0 6px 0 var(--roxo-sombra); }
-  .btn.cinza { background: var(--cinza); box-shadow: 0 6px 0 var(--cinza-sombra); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--sb); }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--sb); transition-duration: .05s; }
+  .btn.azul { background: var(--primaria); --sb: var(--primaria-sombra); }
+  .btn.laranja { background: var(--laranja); --sb: var(--laranja-sombra); }
+  .btn.roxo { background: var(--roxo); --sb: var(--roxo-sombra); }
+  .btn.cinza { background: var(--cinza); --sb: var(--cinza-sombra); }
   .btn.pequeno { font-size: calc(18px * var(--z)); padding: 8px 18px; }
   .btn.gigante { font-size: calc(32px * var(--z)); padding: 14px 48px; }
   .centro { text-align: center; }
@@ -212,7 +222,10 @@
   .canto button {
     width: 50px; height: 50px; border-radius: 50%; border: 3px solid transparent; cursor: pointer;
     background: var(--superficie); color: var(--tinta); font-size: 23px; box-shadow: 0 4px 0 var(--borda);
+    transition: transform .12s var(--mov), box-shadow .12s var(--mov);
   }
+  .canto button:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--borda); }
+  .canto button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--borda); }
   .canto button[aria-pressed="true"] { border-color: var(--titulo); }
 
   /* ----- mascote ----- */
@@ -227,15 +240,48 @@
   .mascote[data-humor="feliz"] .olhos, .mascote[data-humor="festa"] .olhos { display: none; }
   .mascote[data-humor="feliz"] .olhos-felizes, .mascote[data-humor="festa"] .olhos-felizes { display: inline; }
   .mascote[data-humor="pensando"] .pupila { transform: translate(3px, -3px); }
-  .mascote .antena { animation: piscar 1.6s infinite; }
-  @keyframes piscar { 0%, 100% { fill: #f97316; } 50% { fill: #fde047; } }
-  .mascote .corpo { transform-origin: 70px 150px; animation: respirar 3s ease-in-out infinite; }
+  .mascote { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .mascote .pi-sombra { fill: var(--sombra-pi); transform-origin: 70px 166px; }
+  /* parado: respira devagar, pisca os olhos de vez em quando e a antena brilha de leve */
+  .mascote .corpo { transform-origin: 70px 150px; animation: respirar 3.2s ease-in-out infinite; }
   @keyframes respirar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-  .mascote.pulando .corpo { animation: pular .55s ease-out; }
-  .mascote[data-humor="festa"] .corpo { animation: pular .55s ease-out infinite; }
-  @keyframes pular { 0%, 100% { transform: translateY(0) rotate(0); } 35% { transform: translateY(-16px) rotate(-6deg); } 70% { transform: translateY(0) rotate(5deg); } }
-  .mascote.balancando .corpo { animation: balancar .5s; }
-  @keyframes balancar { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+  .mascote .piscar { transform-box: fill-box; transform-origin: center; animation: piscar-olho 5s infinite; }
+  @keyframes piscar-olho { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+  .mascote .antena { animation: brilho 2.8s ease-in-out infinite; }
+  @keyframes brilho { 0%, 100% { fill: #f97316; } 50% { fill: #fb923c; } }
+  .mascote .olhar { transition: transform .25s var(--mov); }
+  /* jeito de cada humor */
+  .mascote .pose { transform-origin: 70px 160px; transition: transform .35s var(--mov); }
+  .mascote[data-humor="pensando"] .pose { transform: rotate(-4deg); }
+  .mascote[data-humor="triste"] .pose { transform: translateY(3px) rotate(2deg); }
+  .mascote .braco-e { transform-origin: 11px 62px; }
+  .mascote .braco-d { transform-origin: 129px 62px; }
+  /* falando: a boca abre e fecha enquanto a voz lê */
+  .mascote .boca-fala { display: none; transform-box: fill-box; transform-origin: center; }
+  .mascote.falando .boca { display: none; }
+  .mascote.falando .boca.boca-fala { display: inline; animation: falar .3s ease-in-out infinite alternate; }
+  @keyframes falar { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
+  /* reações curtinhas (data-anim): pulo de alegria, festa, balanço triste e aceno */
+  .mascote[data-anim="pulando"] .pose { animation: pular .6s var(--mov); }
+  .mascote[data-anim="festa"] .pose { animation: pular .6s var(--mov) 2; }
+  .mascote[data-anim="pulando"] .pi-sombra, .mascote[data-anim="festa"] .pi-sombra { animation: sombra-pulo .6s var(--mov); }
+  .mascote[data-anim="festa"] .pi-sombra { animation-iteration-count: 2; }
+  .mascote[data-anim="pulando"] .braco-e, .mascote[data-anim="festa"] .braco-e { animation: abre-e .6s var(--mov); }
+  .mascote[data-anim="pulando"] .braco-d, .mascote[data-anim="festa"] .braco-d { animation: abre-d .6s var(--mov); }
+  .mascote[data-anim="festa"] .braco-e, .mascote[data-anim="festa"] .braco-d { animation-iteration-count: 2; }
+  .mascote[data-anim="balancando"] .pose { animation: balancar .55s ease-in-out; }
+  .mascote[data-anim="acenando"] .braco-d { animation: acenar 1s ease-in-out; }
+  @keyframes pular {
+    0%, 100% { transform: translateY(0) rotate(0); } 35% { transform: translateY(-14px) rotate(-4deg); }
+    70% { transform: translateY(0) rotate(3deg); } 85% { transform: translateY(0) scale(1.02, .97); }
+  }
+  @keyframes sombra-pulo { 35% { transform: scale(.72); opacity: .55; } }
+  @keyframes abre-e { 40% { transform: rotate(32deg); } }
+  @keyframes abre-d { 40% { transform: rotate(-32deg); } }
+  @keyframes balancar { 0%, 100% { transform: translateY(3px) rotate(2deg); } 30% { transform: translateY(3px) rotate(-6deg); } 65% { transform: translateY(3px) rotate(6deg); } }
+  @keyframes acenar {
+    0%, 100% { transform: rotate(0); } 20%, 60% { transform: rotate(-40deg); } 40%, 80% { transform: rotate(-18deg); }
+  }
 
   /* ----- quiz ----- */
   .topo { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 0 180px 12px 0; }
@@ -244,12 +290,20 @@
     font-weight: 800; font-size: calc(18px * var(--z)); box-shadow: 0 3px 0 var(--borda); white-space: nowrap;
   }
   .pill.combo { background: var(--combo-fundo); color: var(--combo-texto); }
-  .pill.tempo { background: var(--tempo-fundo); color: var(--tempo-texto); font-variant-numeric: tabular-nums; }
+  .pill.tempo {
+    background: var(--tempo-fundo); color: var(--tempo-texto); font-variant-numeric: tabular-nums;
+    transition: background-color .6s ease, color .6s ease, box-shadow .6s ease;
+  }
+  /* tempo congelado: azul gelo, sem piscar */
+  .pill.tempo.congelado { background: var(--gelo-fundo); color: var(--gelo-texto); box-shadow: inset 0 0 0 2px var(--gelo-borda), 0 3px 0 var(--borda); }
   .espaco { flex: 1; }
   .btn-sair {
     font-family: inherit; font-size: calc(16px * var(--z)); font-weight: 800; cursor: pointer; color: var(--fraco);
     background: var(--superficie); border: none; border-radius: 999px; padding: 9px 16px; box-shadow: 0 3px 0 var(--borda);
+    transition: transform .12s var(--mov), box-shadow .12s var(--mov), color .15s;
   }
+  .btn-sair:hover { color: var(--erro-texto); }
+  .btn-sair:active, .btn-mini:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 var(--borda); }
   .flutua {
     position: absolute; left: 50%; top: -6px; transform: translateX(-50%);
     color: var(--sucesso-texto); font-weight: 800; font-size: 22px; pointer-events: none; animation: flutuar 1s ease-out forwards;
@@ -257,19 +311,29 @@
   @keyframes flutuar { to { transform: translate(-50%, -40px); opacity: 0; } }
 
   .progresso {
-    height: 18px; background: var(--superficie); border-radius: 999px; overflow: hidden;
+    position: relative; height: 18px; background: var(--superficie); border-radius: 999px; overflow: hidden;
     box-shadow: inset 0 2px 4px var(--sombra);
   }
-  #barra { height: 100%; width: 0; border-radius: 999px; transition: width .35s; background: var(--sucesso); }
-  #barra.relogio { transition: width .1s linear; background: var(--laranja); }
+  #barra { height: 100%; width: 0; border-radius: 999px; transition: width .45s var(--mov), background-color .4s; background: var(--sucesso); }
+  #barra.relogio { transition: width .1s linear, background-color .6s ease; background: var(--laranja); }
   #barra.urgente { background: var(--erro); }
+  #barra.congelado { background: var(--gelo); }
+  /* camada de geada por cima da barra quando o tempo congela */
+  .progresso::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+    background: repeating-linear-gradient(135deg, transparent 0 8px, var(--gelo-veio) 8px 10px);
+    box-shadow: inset 0 0 0 2px var(--gelo-borda); transition: opacity .6s ease;
+  }
+  .progresso.congelado::after { opacity: 1; }
   .linha-contador { display: flex; align-items: center; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
   .contador { font-weight: 800; color: var(--suave); font-size: calc(18px * var(--z)); flex: 1; }
   .btn-mini {
     font-family: inherit; font-size: calc(17px * var(--z)); font-weight: 800; cursor: pointer; color: var(--amarelo-texto);
     background: var(--amarelo-fundo); border: 3px solid var(--amarelo-borda); border-radius: 999px; padding: 6px 16px;
+    box-shadow: 0 3px 0 var(--borda); transition: transform .12s var(--mov), box-shadow .12s var(--mov), background-color .2s, color .2s;
   }
   .btn-mini.azul { color: var(--letra-texto); background: var(--letra-fundo); border-color: var(--primaria); }
+  .btn-mini.azul[aria-pressed="true"] { color: var(--btn-texto); background: var(--primaria); }
   .btn-mini:disabled { opacity: .45; cursor: default; }
 
   .area-pergunta { display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: center; margin-bottom: 18px; }
@@ -388,7 +452,7 @@
   .medalha.bloqueada .ic { filter: grayscale(1); opacity: .35; }
 
   .confete {
-    position: fixed; top: -50px; font-size: 30px; pointer-events: none; z-index: 99;
+    position: fixed; top: -50px; font-size: 24px; pointer-events: none; z-index: 99; opacity: .9;
     animation: cair linear forwards;
   }
   @keyframes cair { to { transform: translateY(115vh) rotate(600deg); } }
@@ -405,7 +469,9 @@
   #modal p { font-size: calc(22px * var(--z)); margin: 0 0 16px; font-weight: 800; }
 
   /* ----- movimento: curto, pequeno e só para mostrar o que mudou (o modo conforto desliga tudo) ----- */
-  :root { --mov: cubic-bezier(.2, .8, .2, 1); }
+  @keyframes quicar { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.22) translateY(-3px); } }
+  .tema.sel .ic, .modo.sel .ic { display: inline-block; animation: quicar .45s var(--mov); }
+  .entra-item { animation: surgir .35s var(--mov) backwards; }
   @keyframes surgir { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
   @keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
   @keyframes destacar { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.12); } }
@@ -423,7 +489,8 @@
   #tela-fim.ativa .stat { animation: surgir .35s .15s var(--mov) backwards; }
   #tela-fim.ativa .stat:nth-child(2) { animation-delay: .25s; }
   #tela-fim.ativa .stat:nth-child(3) { animation-delay: .35s; }
-  #modal .caixa { animation: surgir .22s var(--mov) backwards; }
+  #modal { animation: aparecer .2s ease-out; }
+  #modal .caixa { animation: surgir .25s var(--mov) backwards; }
 
   button:focus-visible, input:focus-visible { outline: 4px solid var(--foco); outline-offset: 3px; }
 
@@ -432,6 +499,9 @@
   [data-conforto="on"] *, [data-conforto="on"] *::before, [data-conforto="on"] *::after {
     animation: none !important; transition: none !important;
   }
+  /* única exceção: o gelo do relógio chega devagar (só troca de cor, sem piscar nem mexer) */
+  [data-conforto="on"] .progresso::after { transition: opacity .8s ease !important; }
+  [data-conforto="on"] .pill.tempo, [data-conforto="on"] #barra.relogio { transition: background-color .8s ease, color .8s ease, box-shadow .8s ease !important; }
   [data-conforto="on"] body { background-image: none; }
   [data-conforto="on"] .cartao { box-shadow: 0 0 0 2px var(--borda); }
   [data-conforto="on"] .tema { background: var(--superficie-2) !important; border-color: var(--linha); }
@@ -594,7 +664,7 @@
       <span class="espaco"></span>
       <button class="btn-sair" id="btn-sair">✕ Sair</button>
     </div>
-    <div class="progresso"><div id="barra"></div></div>
+    <div class="progresso" id="progresso"><div id="barra"></div></div>
     <div class="linha-contador">
       <div class="contador" id="contador"></div>
       <button class="btn-mini azul" id="btn-ouvir">🔈 Ouvir</button>
@@ -1533,16 +1603,20 @@
   }
 
   // ================= Mascote =================
+  // corpo (respira) > pose (pula, balança, inclina) > braços, rosto e olhos (piscam e seguem o mouse)
   function mascoteSVG() {
-    return '<svg viewBox="0 0 140 170" aria-hidden="true"><g class="corpo">' +
+    return '<svg viewBox="0 0 140 172" aria-hidden="true">' +
+      '<ellipse class="pi-sombra" cx="70" cy="166" rx="34" ry="4.5"/>' +
+      '<g class="corpo"><g class="pose">' +
       '<line x1="70" y1="12" x2="70" y2="32" stroke="#334155" stroke-width="5" stroke-linecap="round"/>' +
       '<circle class="antena" cx="70" cy="11" r="9" fill="#f97316"/>' +
-      '<rect x="4" y="60" width="14" height="30" rx="7" fill="#f97316"/>' +
-      '<rect x="122" y="60" width="14" height="30" rx="7" fill="#f97316"/>' +
+      '<rect class="braco braco-e" x="4" y="60" width="14" height="30" rx="7" fill="#f97316"/>' +
+      '<rect class="braco braco-d" x="122" y="60" width="14" height="30" rx="7" fill="#f97316"/>' +
       '<rect x="14" y="30" width="112" height="92" rx="30" fill="#60a5fa" stroke="#1e3a8a" stroke-width="4"/>' +
       '<rect x="27" y="44" width="86" height="60" rx="20" fill="#e0f2fe" stroke="#1e3a8a" stroke-width="3"/>' +
-      '<g class="olhos"><ellipse cx="52" cy="68" rx="8" ry="10" fill="#0f172a"/><ellipse cx="88" cy="68" rx="8" ry="10" fill="#0f172a"/>' +
-      '<g class="pupila"><circle cx="55" cy="64" r="3" fill="#fff"/><circle cx="91" cy="64" r="3" fill="#fff"/></g></g>' +
+      '<g class="olhos"><g class="olhar"><g class="piscar">' +
+      '<ellipse cx="52" cy="68" rx="8" ry="10" fill="#0f172a"/><ellipse cx="88" cy="68" rx="8" ry="10" fill="#0f172a"/>' +
+      '<g class="pupila"><circle cx="55" cy="64" r="3" fill="#fff"/><circle cx="91" cy="64" r="3" fill="#fff"/></g></g></g></g>' +
       '<g class="olhos-felizes"><path d="M43 71 Q52 58 61 71" stroke="#0f172a" stroke-width="5" fill="none" stroke-linecap="round"/>' +
       '<path d="M79 71 Q88 58 97 71" stroke="#0f172a" stroke-width="5" fill="none" stroke-linecap="round"/></g>' +
       '<circle cx="38" cy="86" r="6" fill="#f9a8d4"/><circle cx="102" cy="86" r="6" fill="#f9a8d4"/>' +
@@ -1550,17 +1624,44 @@
       '<path class="boca boca-feliz" d="M54 82 Q70 104 86 82 Z" fill="#0f172a"/>' +
       '<path class="boca boca-triste" d="M58 95 Q70 85 82 95" stroke="#0f172a" stroke-width="4" fill="none" stroke-linecap="round"/>' +
       '<path class="boca boca-pensando" d="M62 91 L80 88" stroke="#0f172a" stroke-width="4" stroke-linecap="round"/>' +
+      '<ellipse class="boca boca-fala" cx="70" cy="89" rx="8" ry="6" fill="#0f172a"/>' +
       '<path class="lagrima" d="M95 76 Q99 84 95 88 Q91 84 95 76 Z" fill="#38bdf8"/>' +
       '<rect x="38" y="124" width="64" height="38" rx="14" fill="#3b82f6" stroke="#1e3a8a" stroke-width="4"/>' +
       '<text x="70" y="151" text-anchor="middle" font-size="24" font-weight="bold" fill="#fff" font-family="Georgia, serif">π</text>' +
-      '</g></svg>';
+      '</g></g></svg>';
   }
 
+  // h = humor (normal, feliz, festa, pensando, triste); animacao = reação curta (pulando, festa, balancando, acenando)
   function humor(id, h, animacao) {
     var el = $(id);
     el.setAttribute('data-humor', h);
-    el.className = 'mascote';
-    if (animacao) { void el.offsetWidth; el.className = 'mascote ' + animacao; }
+    if (animacao) { el.setAttribute('data-anim', ''); void el.offsetWidth; el.setAttribute('data-anim', animacao); }
+  }
+  // Boca mexendo nos três Pi enquanto a voz lê
+  function mascotesFalando(sim) {
+    var ms = document.querySelectorAll('.mascote');
+    for (var i = 0; i < ms.length; i++) ms[i].className = 'mascote' + (sim ? ' falando' : '');
+  }
+  // Os olhos do Pi acompanham o mouse (bem pouquinho)
+  var mouseX = -1, mouseY = -1, olharAgendado = false;
+  function moverOlhar() {
+    olharAgendado = false;
+    var ms = document.querySelectorAll('.mascote');
+    for (var i = 0; i < ms.length; i++) {
+      var g = ms[i].querySelector('.olhar');
+      if (!g) continue;
+      var r = ms[i].getBoundingClientRect();
+      if (!r.width || mouseX < 0 || semMovimento()) { g.style.transform = ''; continue; }
+      var dx = mouseX - (r.left + r.width / 2), dy = mouseY - (r.top + r.height * 0.4);
+      var d = Math.sqrt(dx * dx + dy * dy) || 1, k = Math.min(1, d / 260);
+      g.style.transform = 'translate(' + (dx / d * 4 * k).toFixed(1) + 'px,' + (dy / d * 3 * k).toFixed(1) + 'px)';
+    }
+  }
+  var CUTUCAR = ['Hihi, faz cócegas! 😄', 'Bip bop! 🤖', 'Vamos aprender juntos!', 'Eu adoro matemática! ➕', 'Oi, oi! 👋'];
+  function cutucarPi(el) {
+    humor(el.id, el.getAttribute('data-humor') === 'triste' ? 'normal' : el.getAttribute('data-humor'), 'pulando');
+    somBoop();
+    if (el.id === 'masc-inicio') $('bolha-inicio').innerHTML = pick(CUTUCAR);
   }
   function fala(texto) {
     var b = $('bolha-quiz');
@@ -1606,15 +1707,22 @@
   }
 
   // ================= Som =================
-  var somLigado = true, ctxAudio = null;
-  function tocar(notas, dur, tipo, volume) {
-    if (!somLigado) return;
+  var somLigado = true, ctxAudio = null, ruido = null;
+  function audio() {
+    if (!somLigado) return null;
     try {
       if (!ctxAudio) {
         var AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return;
+        if (!AC) return null;
         ctxAudio = new AC();
       }
+      if (ctxAudio.state === 'suspended' && ctxAudio.resume) ctxAudio.resume();
+      return ctxAudio;
+    } catch (e) { return null; }
+  }
+  function tocar(notas, dur, tipo, volume) {
+    if (!audio()) return;
+    try {
       var t0 = ctxAudio.currentTime;
       for (var i = 0; i < notas.length; i++) {
         var o = ctxAudio.createOscillator(), g = ctxAudio.createGain();
@@ -1633,18 +1741,61 @@
     var base = combo >= 5 ? 659 : combo >= 3 ? 587 : 523;
     tocar([base, base * 1.26, base * 1.5], 0.1, 'triangle');
   }
-  function somErro() { tocar([300, 220], 0.18, 'sine'); }
-  function somFim() { tocar([523, 659, 784, 1047], 0.14, 'triangle'); }
-  function somMedalha() { tocar([784, 988, 1175, 1568], 0.12, 'square', 0.12); }
-  function somTique() { tocar([880], 0.05, 'square', 0.08); }
+  function somErro() { tocar([300, 220], 0.18, 'sine', 0.2); }
+  function somFim() { tocar([523, 659, 784, 1047], 0.14, 'triangle', 0.2); }
+  function somMedalha() { tocar([784, 988, 1175, 1568], 0.12, 'triangle', 0.16); }
+  function somTique() { tocar([1046], 0.04, 'sine', 0.07); }
+  function somBoop() { tocar([660, 990], 0.06, 'sine', 0.09); }
+
+  // Clique macio: um "toc" curtinho que desce de tom, com um fiozinho de textura. Bem baixinho.
+  function somClique(grave) {
+    var c = audio();
+    if (!c) return;
+    try {
+      var t = c.currentTime, o = c.createOscillator(), g = c.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(grave ? 560 : 820, t);
+      o.frequency.exponentialRampToValueAtTime(grave ? 280 : 410, t + 0.06);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.075, t + 0.004);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+      o.connect(g); g.connect(c.destination);
+      o.start(t); o.stop(t + 0.1);
+      if (!ruido) {
+        ruido = c.createBuffer(1, Math.floor(c.sampleRate * 0.02), c.sampleRate);
+        var d = ruido.getChannelData(0);
+        for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+      }
+      var n = c.createBufferSource(), f = c.createBiquadFilter(), gn = c.createGain();
+      n.buffer = ruido;
+      f.type = 'bandpass'; f.frequency.value = grave ? 1800 : 3200; f.Q.value = 1.2;
+      gn.gain.value = 0.03;
+      n.connect(f); f.connect(gn); gn.connect(c.destination);
+      n.start(t);
+    } catch (e) { /* sem som, tudo bem */ }
+  }
 
   // ================= Leitura em voz alta =================
   var vozOk = typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined';
   var falaId = 0, falando = false;
 
   function atualizarBotaoOuvir() {
-    $('btn-ouvir').innerHTML = falando ? '⏹️ Parar' : '🔈 Ouvir';
+    var b = $('btn-ouvir');
+    b.innerHTML = falando ? '⏹️ Parar' : '🔈 Ouvir';
+    b.setAttribute('aria-pressed', falando ? 'true' : 'false');
+    mascotesFalando(falando);
   }
+  // O Chrome às vezes não avisa que terminou de falar: se nada está tocando há quase 1 segundo, considera que acabou
+  var silencioDesde = 0;
+  function conferirFala() {
+    if (!falando || !vozOk) { silencioDesde = 0; return; }
+    var ss = window.speechSynthesis;
+    if (ss.speaking || ss.pending) { silencioDesde = 0; return; }
+    var agora = new Date().getTime();
+    if (!silencioDesde) silencioDesde = agora;
+    else if (agora - silencioDesde > 900) { silencioDesde = 0; falaId++; falando = false; atualizarBotaoOuvir(); }
+  }
+  setInterval(conferirFala, 300);
   function vozPortugues() {
     var vozes = window.speechSynthesis.getVoices() || [], achada = null;
     for (var i = 0; i < vozes.length; i++) {
@@ -1803,7 +1954,8 @@
     nome: '', avatar: AVATARES[0], modo: 'classico', tema: 'adicao', nivel: 1, total: 10,
     perguntas: [], chaves: [], vistas: [], atual: 0, acertos: 0, pontos: 0, combo: 0, maxCombo: 0, erros: [],
     respondida: false, ajudas: 2, usouAjuda: false, ajudaNestaPergunta: false,
-    tempoFim: 0, duracao: 60000, timer: null, autoProxima: null, ultimoSegundo: 0, jogando: false,
+    restante: 0, ultimoTique: 0, duracao: 60000, timer: null, autoProxima: null, ultimoSegundo: 0, jogando: false,
+    congelado: false, avisouGelo: false,
     conforto: false, letraEnorme: false, leituraAuto: false
   };
   var LETRAS = ['A', 'B', 'C', 'D'];
@@ -1818,6 +1970,8 @@
     for (var i = 0; i < telas.length; i++) telas[i].className = 'tela';
     $(id).className = 'tela ativa';
     window.scrollTo(0, 0);
+    moverOlhar();
+    if (id === 'tela-inicio') setTimeout(function () { humor('masc-inicio', 'feliz', 'acenando'); }, 250);
   }
 
   function mostrarValor(q, v) { return q.fracao ? fracHTML(v) : v; }
@@ -1839,6 +1993,7 @@
     $('btn-leitura').hidden = !vozOk;
     $('desc-relampago').innerHTML = segundosRelampago() + ' segundos! Quantas você consegue acertar?';
     gravar(CHAVE_CONFORTO, { liga: estado.conforto, enorme: estado.letraEnorme, leitura: estado.leituraAuto });
+    moverOlhar();
     if (avisar) {
       $('bolha-inicio').innerHTML = estado.conforto
         ? 'Conforto visual <b>ligado</b>: tela suave, letras grandes e nada piscando. 😊'
@@ -1846,16 +2001,21 @@
     }
   }
 
+  var ultimoNomeSaudado = '';
   function conferirPerfilDoNome() {
     var nome = $('nome').value.replace(/^\s+|\s+$/g, '');
-    if (!nome) return;
+    if (!nome || chaveNome(nome) === ultimoNomeSaudado) return;
+    ultimoNomeSaudado = chaveNome(nome);
     var p = perfilDe(nome);
     if (p.conforto && !estado.conforto) {
       if (p.letraEnorme) estado.letraEnorme = true;
       if (p.leituraAuto) estado.leituraAuto = true;
       aplicarConforto(true, false);
       $('bolha-inicio').innerHTML = 'Oi, ' + esc(nome) + '! Liguei o <b>conforto visual</b> que você usou da última vez. 😊';
+    } else {
+      $('bolha-inicio').innerHTML = 'Oi, <b>' + esc(nome) + '</b>! 👋 Agora escolha como quer jogar.';
     }
+    humor('masc-inicio', 'feliz', 'acenando');
   }
 
   // ---------- Tela inicial ----------
@@ -1987,10 +2147,13 @@
     $('barra').className = relampago() ? 'relogio' : '';
     mostrarTela('tela-quiz');
 
+    mostrarGelo(false);
     if (relampago()) {
       estado.duracao = segundosRelampago() * 1000;
-      estado.tempoFim = new Date().getTime() + estado.duracao;
+      estado.restante = estado.duracao;
+      estado.ultimoTique = new Date().getTime();
       estado.ultimoSegundo = segundosRelampago();
+      estado.avisouGelo = false;
       estado.timer = setInterval(tique, 100);
       tique();
     }
@@ -1998,12 +2161,25 @@
     fala(relampago() ? 'Valendo! Rápido! ⚡' : 'Vamos lá, ' + esc(estado.nome) + '!');
   }
 
+  // No conforto visual o relógio congela enquanto a voz lê, para ouvir com calma sem perder tempo
+  function tempoCongelado() { return estado.conforto && falando && estado.jogando; }
+  function mostrarGelo(liga) {
+    estado.congelado = liga;
+    $('q-tempo').className = 'pill tempo' + (liga ? ' congelado' : '');
+    $('q-tempo').title = liga ? 'Tempo congelado enquanto o Pi lê' : '';
+    $('progresso').className = 'progresso' + (liga ? ' congelado' : '');
+    if (liga && !estado.avisouGelo) { estado.avisouGelo = true; fala('❄ O tempo congela enquanto eu leio!'); }
+  }
+
   function tique() {
-    var resta = Math.max(0, estado.tempoFim - new Date().getTime());
-    var seg = Math.ceil(resta / 1000);
+    var agora = new Date().getTime(), gelo = tempoCongelado();
+    if (!gelo) estado.restante = Math.max(0, estado.restante - (agora - estado.ultimoTique));
+    estado.ultimoTique = agora;
+    if (gelo !== estado.congelado) mostrarGelo(gelo);
+    var resta = estado.restante, seg = Math.ceil(resta / 1000);
     $('barra').style.width = (resta / estado.duracao * 100) + '%';
-    $('barra').className = 'relogio' + (seg <= 10 ? ' urgente' : '');
-    $('q-tempo').innerHTML = '⏱️ ' + seg + 's';
+    $('barra').className = 'relogio' + (gelo ? ' congelado' : seg <= 10 ? ' urgente' : '');
+    $('q-tempo').innerHTML = (gelo ? '❄︎ ' : '⏱️ ') + seg + 's';
     if (seg !== estado.ultimoSegundo) {
       estado.ultimoSegundo = seg;
       if (seg <= 5 && seg > 0) somTique();
@@ -2071,6 +2247,7 @@
     c.className = 'cartao cartao-pergunta entra';
 
     if (estado.atual > 0) { humor('masc-quiz', 'pensando'); fala(pick(FALAS_PENSAR)); }
+    else humor('masc-quiz', 'feliz', 'acenando');
     if (estado.conforto && estado.leituraAuto) setTimeout(lerPergunta, 250);
   }
 
@@ -2135,7 +2312,7 @@
       fb.className = 'bom';
       fb.innerHTML = pick(ELOGIOS) + expl;
       somAcerto(estado.combo);
-      if (estado.combo >= 3) { humor('masc-quiz', 'festa'); fala('🔥 ' + estado.combo + ' seguidas! Bônus de pontos!'); }
+      if (estado.combo >= 3) { humor('masc-quiz', 'festa', 'festa'); fala('🔥 ' + estado.combo + ' seguidas! Bônus de pontos!'); }
       else { humor('masc-quiz', 'feliz', 'pulando'); fala(pick(FALAS_ACERTO)); }
       falaResultado = 'Acertou!';
     } else {
@@ -2152,8 +2329,7 @@
     if (estado.conforto && estado.leituraAuto) falarTexto(falaResultado);
 
     if (relampago()) {
-      var espera = acertou ? 650 : (estado.conforto && estado.leituraAuto ? 3500 : 1900);
-      estado.autoProxima = setTimeout(proxima, espera);
+      estado.autoProxima = setTimeout(proximaDepoisDaFala, acertou ? 650 : 1900);
       return;
     }
     $('barra').style.width = ((estado.atual + 1) / estado.total * 100) + '%';
@@ -2161,6 +2337,13 @@
     bp.style.visibility = 'visible';
     bp.className = 'btn azul aparece';
     try { bp.focus(); bp.scrollIntoView({ block: 'nearest', behavior: estado.conforto ? 'auto' : 'smooth' }); } catch (e) { /* ok */ }
+  }
+
+  // No Relâmpago com conforto visual, espera a voz terminar a explicação antes de passar
+  function proximaDepoisDaFala() {
+    estado.autoProxima = null;
+    if (estado.conforto && falando && estado.jogando) { estado.autoProxima = setTimeout(proximaDepoisDaFala, 250); return; }
+    proxima();
   }
 
   function proxima() {
@@ -2204,7 +2387,8 @@
     $('st-pontos').innerHTML = '0';
     contar($('st-pontos'), estado.pontos, 900);
     $('st-combo').innerHTML = estado.maxCombo;
-    humor('masc-fim', estrelas >= 2 ? 'festa' : estrelas === 1 ? 'feliz' : 'normal');
+    humor('masc-fim', estrelas >= 2 ? 'festa' : estrelas === 1 ? 'feliz' : 'normal',
+      estrelas >= 2 ? 'festa' : estrelas === 1 ? 'pulando' : 'acenando');
 
     var rev = $('fim-revisao');
     if (estado.erros.length === 0) {
@@ -2254,7 +2438,7 @@
 
   function confetes() {
     var simbolos = ['🎉', '⭐', '🎊', '✨', '🌟', '➕', '✖️', '🧮', '🏅'];
-    for (var i = 0; i < 40; i++) {
+    for (var i = 0; i < 22; i++) {
       var s = document.createElement('span');
       s.className = 'confete';
       s.innerHTML = pick(simbolos);
@@ -2283,7 +2467,7 @@
       var h = '<div class="tabela-rolagem"><table class="placar"><tr><th></th><th>Nome</th><th>Assunto</th><th>Nível</th><th>Acertos</th><th>Pontos</th></tr>';
       for (var i = 0; i < lista.length; i++) {
         var r = lista[i], t = temaPorId(r.tema);
-        h += '<tr><td class="pos">' + (medalhas[i] || (i + 1) + 'º') + '</td>' +
+        h += '<tr class="entra-item" style="animation-delay:' + (i * 40) + 'ms"><td class="pos">' + (medalhas[i] || (i + 1) + 'º') + '</td>' +
           '<td><b>' + (r.avatar || '') + ' ' + esc(r.nome) + '</b></td>' +
           '<td>' + t.ic + ' ' + t.nome + '</td>' +
           '<td>' + (NIVEIS[r.nivel] ? NIVEIS[r.nivel].nome : '') + '</td>' +
@@ -2304,7 +2488,7 @@
     var h = '';
     for (var i = 0; i < MEDALHAS.length; i++) {
       var md = MEDALHAS[i], tem = m.ganhas.indexOf(md.id) !== -1;
-      h += '<div class="medalha' + (tem ? '' : ' bloqueada') + '"><div class="ic">' + (tem ? md.ic : '🔒') + '</div>' +
+      h += '<div class="medalha entra-item' + (tem ? '' : ' bloqueada') + '" style="animation-delay:' + (i * 35) + 'ms"><div class="ic">' + (tem ? md.ic : '🔒') + '</div>' +
         '<b>' + md.nome + '</b><span>' + md.desc + '</span></div>';
     }
     $('medalhas-grade').innerHTML = h;
@@ -2326,6 +2510,20 @@
   $('masc-inicio').innerHTML = mascoteSVG();
   $('masc-quiz').innerHTML = mascoteSVG();
   $('masc-fim').innerHTML = mascoteSVG();
+  var mascotes = document.querySelectorAll('.mascote');
+  for (var mi = 0; mi < mascotes.length; mi++) mascotes[mi].onclick = function () { cutucarPi(this); };
+  setTimeout(function () { humor('masc-inicio', 'feliz', 'acenando'); }, 600);
+  document.addEventListener('mousemove', function (ev) {
+    mouseX = ev.clientX; mouseY = ev.clientY;
+    if (!olharAgendado) { olharAgendado = true; setTimeout(moverOlhar, 40); }
+  });
+  // Clique macio em todo botão (as respostas já têm o som de acerto e erro)
+  document.addEventListener('click', function (ev) {
+    var b = ev.target;
+    while (b && b !== document && b.tagName !== 'BUTTON') b = b.parentNode;
+    if (!b || b === document || b.disabled || (' ' + b.className + ' ').indexOf(' opcao ') !== -1) return;
+    somClique(/\b(tema|chip|avatar|modo|chave)\b/.test(b.className));
+  });
   montarInicio();
   var salvo = ler(CHAVE_CONFORTO, {});
   estado.letraEnorme = !!salvo.enorme;
@@ -2368,6 +2566,7 @@
   $('btn-outro-tema').onclick = function () { mostrarTela('tela-inicio'); };
   $('btn-trocar-aluno').onclick = function () {
     $('nome').value = '';
+    ultimoNomeSaudado = '';
     mostrarTela('tela-inicio');
     $('bolha-inicio').innerHTML = 'Oi! Quem vai jogar agora? Escreva seu nome! 😄';
     $('nome').focus();
